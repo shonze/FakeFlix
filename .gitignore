@@ -1,0 +1,6 @@
+.vscode
+config
+src/MVC/node_modules
+curl.exe
+.env.local
+src/MVC/config

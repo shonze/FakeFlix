@@ -1,0 +1,31 @@
+# Use the official Node.js image as the base image
+FROM node:18
+
+# Set the working directory inside the container
+WORKDIR /usr/src/app
+
+# Copy the package.json and package-lock.json files to the working directory
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code to the working directory
+COPY . .
+
+
+# Accept three arguments during the build process
+ARG CONNECTION_STRING
+ARG PORT
+ARG CPP_PORT
+
+# Create a .env.local file with the passed arguments
+RUN echo "CONNECTION_STRING=$CONNECTION_STRING" > ./config/.env.local && \
+    echo "PORT=$PORT" >> ./config/.env.local && \
+    echo "CPP_PORT=$CPP_PORT" >> ./config/.env.local
+
+# Expose the port your app runs on
+# EXPOSE 8080
+
+# Set the default command to run your app
+CMD ["npm", "start"]
