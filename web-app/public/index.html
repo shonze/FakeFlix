@@ -1,43 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fakeflix Login Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-image: url('./login2.jpg');
+            background-size: 100% 100%; /* This ensures the image covers the entire viewport without distortion */
+            background-attachment: fixed;
+            margin: 0; /* This removes any default margin */
+            height: 100vh; /* This sets the body height to 100% of the viewport height */
+        }
+    </style>
+</head>
+<body class="h-screen flex justify-center items-center">
+    <div class="bg-black p-10 rounded-lg shadow-lg w-80 bg-opacity-50">
+        <h1 class="text-3xl text-red-500 font-bold mb-4">Fakeflix</h1>
+        <form>
+            <div class="mb-4">
+                <label for="email" class="block text-gray-200 text-sm font-bold mb-2">Email</label>
+                <input type="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter your email">
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-gray-200 text-sm font-bold mb-2">Password</label>
+                <input type="password" id="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 mb-3 leading-tight focus:outline-none focus:shadow-outline" placeholder="******************">
+            </div>
+            <div class="flex items-center justify-between">
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" type="submit">Sign In</button>
+                <a class="inline-block align-baseline font-bold text-sm text-gray-200 hover:text-gray-400" href="#">Forgot Password?</a>
+            </div>
+        </form>
+        <div class="mt-6">
+            <p class="text-gray-200 text-sm">New to Fakeflix? <a class="text-red-500 hover:text-red-700" href="#">Sign up now</a></p>
+        </div>
+    </div>
+</body>
 </html>
