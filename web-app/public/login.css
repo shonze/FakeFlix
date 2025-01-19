@@ -3,5 +3,11 @@ body {
     background-size: cover;
     background-attachment: fixed;
     margin: 0;
-    height: 100vh;
+    min-height: 100vh; /* Ensure full height */
+    overflow-y: auto; /* Allow scrolling when content overflows */
+}
+
+.bg-dark {
+    margin-top: auto; /* Adjust for centering on smaller screens */
+    margin-bottom: auto;
 }
