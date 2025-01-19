@@ -16,6 +16,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
         if (response.ok) {
             const data = await response.json();
             if (data.success) {
+                alert("successful Login");
                 window.location.href = "./Fakeflix.html"; // Redirect to Fakeflix on success
             } else {
                 alert("Login failed: " + (data.message || "Invalid credentials"));

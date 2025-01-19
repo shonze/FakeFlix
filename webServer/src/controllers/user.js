@@ -10,6 +10,10 @@ const createUser = async (req, res) => {
         if(!req.body.password) return res.status(400).json({ errors: ['Password is required'] });
         if(!req.body.gmail) return res.status(400).json({ errors: ['Gmail is required'] });
 
+        if (req.body.password.length < 8) {
+            return res.status(400).json({ errors: ['Password must be at least 8 characters long'] });
+        }
+
         const newUser = await UserService.createUser(
             req.body.username,
             req.body.password,

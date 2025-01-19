@@ -17,6 +17,10 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     const profilePictureInput = document.getElementById("profilePicture");
 
     // Validate passwords match
+    if (password.length < 8) {
+        alert("Passwords should be at least 8 characters long.");
+        return;
+    }
     if (password !== confirmPassword) {
         alert("Passwords do not match. Please try again.");
         return;
