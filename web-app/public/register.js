@@ -1,3 +1,12 @@
+// Get a reference to the email input field
+const emailField = document.getElementById("email");
+
+// Retrieve the email from localStorage and populate the field
+const storedEmail = localStorage.getItem("email");
+if (storedEmail) {
+  emailField.value = storedEmail;
+}
+
 document.getElementById("registrationForm").addEventListener("submit", async function (event) {
     event.preventDefault(); // Prevent default form submission
 

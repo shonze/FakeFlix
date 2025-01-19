@@ -1,6 +1,6 @@
 /* General Reset */
 body {
-    background-image: url('./homepage.jpg');
+    background-image: url('./starting_Page.jpg');
     background-size: cover;
     background-attachment: fixed;
     margin: 0;
@@ -39,6 +39,7 @@ body {
 .navbar .btn {
     background-color: #e50914;
     color: white;
+    margin-right: 10px;
 }
 
 /* Content Section */
