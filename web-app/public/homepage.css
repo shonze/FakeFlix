@@ -1,0 +1,84 @@
+/* General Reset */
+body {
+    background-image: url('./login2.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    min-height: 100vh; /* Ensure full height */
+    overflow-y: auto; /* Allow scrolling when content overflows */
+}
+
+/* Background Image */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+.background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Navbar */
+.navbar {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 3;
+    padding: 20px;
+}
+.navbar .navbar-brand {
+    color: #e50914;
+    font-size: 2rem;
+    font-weight: bold;
+}
+.navbar .btn {
+    background-color: #e50914;
+    color: white;
+}
+
+/* Content Section */
+.content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20vh; /* Adjusted for spacing */
+}
+.content h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+.content p {
+    font-size: 1.25rem;
+}
+.content .form-inline {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.content .form-inline input {
+    width: 300px;
+    padding: 10px;
+    border: none;
+    border-radius: 2px;
+    margin-right: 10px;
+}
+.content .form-inline button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 2px;
+    background-color: #e50914;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.content .form-inline button:hover {
+    background-color: #d40813;
+}
