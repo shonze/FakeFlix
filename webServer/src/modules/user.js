@@ -30,7 +30,7 @@ const User= new Schema({
         required: false,
         default: null, // Default value: null
     },
-    birthday: {
+    birthdate: {
         type: Date, // The user's date of birth
         required: false,
         default: null, // Default value: null

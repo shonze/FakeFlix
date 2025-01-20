@@ -15,8 +15,8 @@ const createUser = async (req, res) => {
             return res.status(400).json({ errors: ['Password must be at least 8 characters long'] });
         }
 
-        if (Date.parse(req.body.birthday) > Date.now() || Date.parse(req.body.birthday) < Date.parse('1900-01-01')) {
-            return res.status(400).json({ errors: ['Birthday not valid'] });
+        if (Date.parse(req.body.birthdate) > Date.now() || Date.parse(req.body.birthdate) < Date.parse('1900-01-01')) {
+            return res.status(400).json({ errors: ['Birthdate not valid'] });
         }
 
         const newUser = await UserService.createUser(
@@ -25,7 +25,7 @@ const createUser = async (req, res) => {
             req.body.gmail,
             req.body.fullName,
             req.body.photo,
-            req.body.birthday
+            req.body.birthdate
         );
         if (newUser[0] == 404) {
             return res.status(404).json({ errors: newUser[1] });

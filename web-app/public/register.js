@@ -27,7 +27,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     }
 
     if (Date.parse(birthdate) > Date.now() || Date.parse(birthdate) < Date.parse('1900-01-01')) {
-        alert("Birthday not valid");
+        alert("Birthdate not valid");
         return;
     }
 
