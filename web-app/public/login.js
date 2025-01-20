@@ -5,7 +5,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     const password = document.getElementById("password").value;
 
     try {
-        const response = await fetch("http://localhost:3000.com/api/tokens", {
+        const response = await fetch("http://localhost:3000/api/tokens", { // Corrected the URL
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -15,9 +15,13 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 
         if (response.ok) {
             const data = await response.json();
-            if (data.success) {
-                alert("successful Login");
-                window.location.href = "./Fakeflix.html"; // Redirect to Fakeflix on success
+
+            if (data.token) { // Check if a token is returned
+                // Store the token in localStorage or sessionStorage
+                localStorage.setItem("jwtToken", data.token);
+
+                alert("Login successful!");
+                window.location.href = "./homepage.html"; // Redirect to Fakeflix on success
             } else {
                 alert("Login failed: " + (data.message || "Invalid credentials"));
             }
@@ -28,4 +32,3 @@ document.getElementById("loginForm").addEventListener("submit", async function (
         alert("An error occurred: " + error.message);
     }
 });
-

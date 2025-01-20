@@ -4,7 +4,7 @@ const moongoose = require('mongoose');
 /**
  * Creates a User.
  */
-const createUser = async (username, password,gmail, photo, birthday) => {
+const createUser = async (username, password,gmail,fullName, photo, birthday) => {
     const existingUserByUsername = await User.findOne({ username: username });
         
     if (existingUserByUsername) {
@@ -17,7 +17,7 @@ const createUser = async (username, password,gmail, photo, birthday) => {
         return([404,'Gmail already in use']);
     }
 
-    const user = new User({ username: username, password: password,gmail:gmail });
+    const user = new User({ username: username, password: password,gmail:gmail,fullName:fullName});
     if (photo) user.photo = photo;
     if (birthday) user.birthday = birthday;
     return await user.save();

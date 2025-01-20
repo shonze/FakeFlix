@@ -26,6 +26,11 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
         return;
     }
 
+    if (Date.parse(birthdate) > Date.now() || Date.parse(birthdate) < Date.parse('1900-01-01')) {
+        alert("Birthday not valid");
+        return;
+    }
+
     // Create form data for file upload
     const formData = new FormData();
     formData.append("username", username);
@@ -36,19 +41,24 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     }
 
     try {
-        const response = await fetch("http://localhost:3000/api/register", {
+        const response = await fetch("http://localhost:3000/api/users", {
             method: "POST",
             body: formData,
         });
 
         if (response.ok) {
             const data = await response.json();
-            if (data.success) {
+            
+            if (data.token) { // Check if a token is returned
+                // Store the token in localStorage or sessionStorage
+                localStorage.setItem("jwtToken", data.token);
+
                 alert("Registration successful!");
-                window.location.href = "./login.html"; // Redirect to login page
+                window.location.href = "./homepage.html"; // Redirect to Fakeflix on success
             } else {
                 alert("Registration failed: " + (data.message || "Invalid input"));
             }
+
         } else {
             alert("Error: Unable to connect to the server.");
         }

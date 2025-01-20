@@ -17,6 +17,10 @@ const User= new Schema({
         required: true,
         unique: true,
     },
+    fullName: {
+        type: String, // Password for the user account
+        required: true,
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -38,6 +42,10 @@ const User= new Schema({
         items: {
           type: String, // movie name
         }
+    },
+    isAdmin:{
+        type: Boolean, // Defines however is the category promoted
+        default: false,
     }
 });
 
