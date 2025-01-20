@@ -12,8 +12,8 @@ const User= new Schema({
         type: String, // Password for the user account
         required: true,
     },
-    gmail: {
-        type: String, // gmail for the user account
+    email: {
+        type: String, // email for the user account
         required: true,
         unique: true,
     },

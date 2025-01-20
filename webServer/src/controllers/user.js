@@ -8,7 +8,7 @@ const createUser = async (req, res) => {
     try {
         if(!req.body.username) return res.status(400).json({ errors: ['Username is required'] });
         if(!req.body.password) return res.status(400).json({ errors: ['Password is required'] });
-        if(!req.body.gmail) return res.status(400).json({ errors: ['Gmail is required'] });
+        if(!req.body.email) return res.status(400).json({ errors: ['Email is required'] });
         if(!req.body.fullName) return res.status(400).json({ errors: ['Full name is required'] });
 
         if (req.body.password.length < 8) {
@@ -22,7 +22,7 @@ const createUser = async (req, res) => {
         const newUser = await UserService.createUser(
             req.body.username,
             req.body.password,
-            req.body.gmail,
+            req.body.email,
             req.body.fullName,
             req.body.photo,
             req.body.birthdate

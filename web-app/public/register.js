@@ -15,6 +15,8 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     const confirmPassword = document.getElementById("confirmPassword").value;
     const birthdate = document.getElementById("birthdate").value || null;
     const profilePictureInput = document.getElementById("profilePicture");
+    const fullName = document.getElementById("fullName");
+    const email = document.getElementById("email");
 
     // Validate passwords match
     if (password.length < 8) {
@@ -35,6 +37,8 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     const formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
+    formData.append("email", email);
+    formData.append("fullName", fullName);
     if (birthdate) formData.append("birthdate", birthdate);
     if (profilePictureInput.files.length > 0) {
         formData.append("profilePicture", profilePictureInput.files[0]);
