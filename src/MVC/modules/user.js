@@ -12,10 +12,14 @@ const User= new Schema({
         type: String, // Password for the user account
         required: true,
     },
-    gmail: {
-        type: String, // gmail for the user account
+    email: {
+        type: String, // email for the user account
         required: true,
         unique: true,
+    },
+    fullName: {
+        type: String, // Password for the user account
+        required: true,
     },
     createdAt: {
         type: Date,
@@ -26,7 +30,7 @@ const User= new Schema({
         required: false,
         default: null, // Default value: null
     },
-    birthday: {
+    birthdate: {
         type: Date, // The user's date of birth
         required: false,
         default: null, // Default value: null
@@ -38,6 +42,10 @@ const User= new Schema({
         items: {
           type: String, // movie name
         }
+    },
+    isAdmin:{
+        type: Boolean, // Defines however is the category promoted
+        default: false,
     }
 });
 
