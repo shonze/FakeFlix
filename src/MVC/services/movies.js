@@ -6,19 +6,22 @@ const CategoriesModel = require("../modules/category");
 const userServices = require("./user");
 const CategoriesService = require("./category");
 
-const createMovie = async (title, categories, description, length, thumbnail) => {
+const createMovie = async (title, categories, description, length, thumbnail, video) => {
     // Checks if one of the fields are missing
-    if (!title || !categories || !description || !length || !video) {
-        return [400, "One of the required fields are missing"];
+    // Validate incoming data
+    if (!title || !categories || !description || !length || !thumbnail || !video) {
+        return res.status(400).json({ message: "One of the required fields is missing." });
     }
-
+    // Check if categories is an array and not empty
+    if (!Array.isArray(categories) || categories.length === 0) {
+        return res.status(400).json({ message: "Categories must be a non-empty array." });
+    }
     // Creates a new Movie and saves it to the database
     if (!thumbnail) {
         thumbnail = "No Thumbnail";
     }
-
     const Movie = new MoviesModel({ title, categories, description, length, thumbnail , video });
-
+    console.log(Movie);
     // Stores the list of categories to save them in the end
     // We dont want to save the movie if one of the categories is not valid
     const ListOfCategories = [];

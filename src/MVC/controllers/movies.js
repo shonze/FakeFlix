@@ -3,6 +3,7 @@ const MovieService = require("../services/movies");
 // creates a Movie when POST reqeust is sent to /api/movies
 const createMovie = async (req, res) => {
     try {
+        console.log(req.body);
         const Movie_and_Status = await MovieService.createMovie(req.body.title, req.body.categories,
             req.body.description, req.body.length, req.body.thumbnail, req.body.video);
 
