@@ -1,0 +1,13 @@
+body {
+    background-image: url('../../public/login2.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    min-height: 100vh; /* Ensure full height */
+    overflow-y: auto; /* Allow scrolling when content overflows */
+}
+
+.bg-dark {
+    margin-top: auto; /* Adjust for centering on smaller screens */
+    margin-bottom: auto;
+}
