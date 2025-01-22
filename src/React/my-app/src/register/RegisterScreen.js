@@ -56,20 +56,29 @@ const RegisterScreen = () => {
             return;
         }
 
-        const data = new FormData();
-        Object.keys(formData).forEach((key) => {
-            if (formData[key] && key !== 'confirmPassword') {
-                data.append(key, formData[key]);
-            }
-        });
+        // const data = {};
+        // Object.keys(formData).forEach((key) => {
+        //     if (formData[key] && key !== 'confirmPassword') {
+        //         data[key] = formData[key];  // Assign form data to the data object
+        //     }
+        // });
+
+        const data = {
+            fullName: formData.fullName,
+            username: formData.username,
+            email: formData.email,
+            birthdate: formData.birthdate,
+            password: formData.password,
+            profilePicture: formData.profilePicture
+        };
 
         try {
             const response = await fetch('http://localhost:3000/api/users', {
                 method: 'POST',
-                body: data,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
             });
 
-            console.log(data);
             if (response.ok) {
                 const result = await response.json();
                 if (result.token) {

@@ -15,7 +15,7 @@ const authenticateUser = async (req, res) => {
 
         const userId = await UserService.getUserId(username, password);
 
-        const user = await UserServices.getUserById(userId);
+        const user = await UserService.getUserById(userId);
         const isAdmin = user.isAdmin;
 
         if (!userId) {

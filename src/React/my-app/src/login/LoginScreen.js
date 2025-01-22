@@ -26,39 +26,45 @@ const LoginPage = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        const { password, confirmPassword, birthdate } = formData;
+        // e.preventDefault();
+        // const { password, confirmPassword, birthdate } = formData;
 
-        if (password.length < 8) {
-            alert('Passwords should be at least 8 characters long.');
-            return;
-        }
-        if (password !== confirmPassword) {
-            alert('Passwords do not match. Please try again.');
-            return;
-        }
+        // if (password.length < 8) {
+        //     alert('Passwords should be at least 8 characters long.');
+        //     return;
+        // }
+        // if (password !== confirmPassword) {
+        //     alert('Passwords do not match. Please try again.');
+        //     return;
+        // }
 
-        if (birthdate && (
-            Date.parse(birthdate) > Date.now() ||
-            Date.parse(birthdate) < Date.parse('1900-01-01')
-        )) {
-            alert('Birthdate is not valid.');
-            return;
-        }
+        // if (birthdate && (
+        //     Date.parse(birthdate) > Date.now() ||
+        //     Date.parse(birthdate) < Date.parse('1900-01-01')
+        // )) {
+        //     alert('Birthdate is not valid.');
+        //     return;
+        // }
 
-        const data = new FormData();
-        Object.keys(formData).forEach((key) => {
-            if (formData[key] && key !== 'confirmPassword') {
-                data.append(key, formData[key]);
-            }
-        });
+        // const data = new FormData();
+        // Object.keys(formData).forEach((key) => {
+        //     if (formData[key] && key !== 'confirmPassword') {
+        //         data.append(key, formData[key]);
+        //     }
+        // });
+
+        const data = {
+          username: formData.username,
+          password: formData.password
+      };
 
         try {
-            const response = await fetch('http://localhost:3000/api/users', {
+            const response = await fetch('http://localhost:3000/api/tokens', {
                 method: 'POST',
-                body: data,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
             });
-
+            alert('response: ' + response);
             if (response.ok) {
                 const result = await response.json();
                 if (result.token) {
