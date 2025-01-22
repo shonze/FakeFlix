@@ -1,6 +1,7 @@
+import './TopMovie.css';
 import { useState, useEffect } from 'react';
 
-function Movie(id) {
+const TopMovie = (id) => {
     const [movie, setMovie] = useState([])
 
     useEffect(() => {
@@ -15,7 +16,6 @@ function Movie(id) {
                 }
 
                 const data = await response.json();
-
                 setMovie(data);
             } catch (error) {
                 console.error("Error fetching movie:", error);
@@ -25,10 +25,18 @@ function Movie(id) {
     }, [id]);
 
     return (
-        <div className="card">
-            <img src={movie.thumbnail} className="card-img-top" alt="Movie Poster" />
+        <div className="container-fluid p-0 position-relative">
+            <video className="full-movie w-100" autoPlay muted loop>
+                <source src="http://localhost:3000/short.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+
+            <div className="text-overlay position-absolute top-50 start-0 translate-middle-y text-white">
+                <h1 className="display-3">{movie.title}</h1>
+                <p className="lead">{movie.description}</p>
+            </div>
         </div>
     );
 };
 
-export default Movie;
+export default TopMovie;

@@ -4,9 +4,9 @@ import TopMenu from './TopMenu/TopMenu';
 
 function App() {
   return (
-    <div>
+    <div className="bg-dark">
       <TopMenu />
-      <Categorieslst userId="6790b3ec594b4ec368666d12"/>
+      <Categorieslst userId="6790b3ec594b4ec368666d12" />
     </div>
   );
 }
