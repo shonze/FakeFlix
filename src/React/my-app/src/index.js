@@ -4,12 +4,14 @@ import './index.css';
 import AdminScreen from './AdminScreen/AdminScreen';
 
 import RegisterScreen from './register/RegisterScreen';
+import LoginScreen from './login/LoginScreen';
+import StartingScreen from './starting/StartingPage';
 import reportWebVitals from './reportWebVitals.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RegisterScreen />
+    <StartingScreen />
   </React.StrictMode>
 );
 

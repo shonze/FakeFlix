@@ -91,7 +91,7 @@ const RegisterScreen = () => {
                         />
                         <Field
                             label="Username"
-                            name="fullName"
+                            name="username"
                             value={formData.username}
                             onChange={handleInputChange}
                             type="text"
@@ -114,7 +114,7 @@ const RegisterScreen = () => {
                             value={formData.birthdate}
                             onChange={handleInputChange}
                             type="date"
-                            required
+                            not-required
                         />
                     </div>
 

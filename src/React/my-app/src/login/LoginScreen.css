@@ -1,4 +1,4 @@
-.register-container {
+.login-container {
     min-height: 100vh;
     padding: 20px;
     background: url('../../public/login2.jpg') no-repeat center center/cover;
@@ -57,7 +57,7 @@
     color: white; 
 }
 
-.register-btn {
+.login-btn {
     background: rgb(229, 9, 20);
     border: none;
     padding: 12px;
@@ -70,7 +70,7 @@
     transition: background 0.3s ease;
 }
 
-.register-btn:hover {
+.login-btn:hover {
     background: rgb(200, 0, 15); 
 }
 
