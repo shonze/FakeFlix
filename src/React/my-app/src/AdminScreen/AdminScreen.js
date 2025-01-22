@@ -2,175 +2,192 @@ import React, { useEffect, useState } from 'react';
 import './AdminScreen.css';
 
 const AdminScreen = () => {
-    const [movies, setMovies] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [newMovie, setNewMovie] = useState({
-        title: '',
-        categories: [],
-        description: '',
-        length: '',
-        thumbnail: '',
-        video: '',
-    });
-    const [newCategory, setNewCategory] = useState({
-        name: '',
-        promoted: false,
-        description: '',
-    });
-    const [editingCategory, setEditingCategory] = useState(null);
-    const [searchId, setSearchId] = useState('');
-    const [foundMovie, setFoundMovie] = useState(null);
+  const [movies, setMovies] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [newMovie, setNewMovie] = useState({
+      title: '',
+      categories: [],
+      description: '',
+      length: '',
+      thumbnail: '',
+      video: '',
+  });
+  const [newCategory, setNewCategory] = useState({
+      name: '',
+      promoted: false,
+      description: '',
+  });
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [searchId, setSearchId] = useState('');
+  const [foundMovie, setFoundMovie] = useState(null);
 
-    // Fetch movies from the server
-    const fetchMovies = async () => {
-        try {
-            const response = await fetch('http://localhost:8080/api/movies');
-            if (!response.ok) throw new Error('Network response was not ok');
-            const data = await response.json();
-            setMovies(data);
-        } catch (error) {
-            console.error('Error fetching movies:', error);
-        }
-    };
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-    // Fetch categories from the server
-    const fetchCategories = async () => {
-        try {
-            const response = await fetch('http://localhost:8080/api/categories');
-            if (!response.ok) throw new Error('Network response was not ok');
-            const data = await response.json();
-            setCategories(data);
-        } catch (error) {
-            console.error('Error fetching categories:', error);
-        }
-    };
+  const clearMessages = () => {
+      setSuccessMessage('');
+      setErrorMessage('');
+  };
 
-    useEffect(() => {
-        fetchMovies();
-        fetchCategories();
-    }, []);
+  const fetchMovies = async () => {
+      try {
+          const response = await fetch('http://localhost:8080/api/movies');
+          if (!response.ok) throw new Error('Network response was not ok');
+          const data = await response.json();
+          setMovies(data);
+      } catch (error) {
+          console.error('Error fetching movies:', error);
+      }
+  };
 
-    // Handle adding a new movie
-    const handleAddMovie = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('http://localhost:8080/api/movies', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newMovie),
-            });
-            if (!response.ok) throw new Error('Error adding movie');
-            await fetchMovies(); // Refresh movie list
-            setNewMovie({
-                title: '',
-                categories: [],
-                description: '',
-                length: '',
-                thumbnail: '',
-                video: '',
-            }); // Reset form
-        } catch (error) {
-            console.error('Error adding movie:', error);
-        }
-    };
+  const fetchCategories = async () => {
+      try {
+          const response = await fetch('http://localhost:8080/api/categories');
+          if (!response.ok) throw new Error('Network response was not ok');
+          const data = await response.json();
+          setCategories(data);
+      } catch (error) {
+          console.error('Error fetching categories:', error);
+      }
+  };
 
-    // Handle searching for a movie by ID
-    const handleSearchMovie = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`http://localhost:8080/api/movies/${searchId}`);
-            if (!response.ok) throw new Error('Movie not found');
-            const data = await response.json();
-            setFoundMovie(data);
-        } catch (error) {
-            console.error('Error searching for movie:', error);
-            setFoundMovie(null); // Clear found movie on error
-        }
-    };
+  useEffect(() => {
+      fetchMovies();
+      fetchCategories();
+  }, []);
 
-    // Handle deleting a movie
-    const handleDeleteMovie = async (id) => {
-        try {
-            const response = await fetch(`http://localhost:8080/api/movies/${id}`, {
-                method: 'DELETE',
-            });
-            if (!response.ok) throw new Error('Error deleting movie');
-            await fetchMovies(); // Refresh movie list
-            setFoundMovie(null); // Clear found movie
-        } catch (error) {
-            console.error('Error deleting movie:', error);
-        }
-    };
+  const handleAddMovie = async (e) => {
+      e.preventDefault();
+      clearMessages();
+      try {
+          const response = await fetch('http://localhost:8080/api/movies', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(newMovie),
+          });
+          if (!response.ok) throw new Error('Error adding movie');
+          setSuccessMessage('Movie added successfully!');
+          setNewMovie({
+              title: '',
+              categories: [],
+              description: '',
+              length: '',
+              thumbnail: '',
+              video: '',
+          });
+          fetchMovies();
+      } catch (error) {
+          setErrorMessage('Failed to add movie.');
+          console.error(error);
+      }
+  };
 
-    // Handle updating a movie
-    const handleUpdateMovie = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`http://localhost:8080/api/movies/${foundMovie._id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(foundMovie),
-            });
-            if (!response.ok) throw new Error('Error updating movie');
-            await fetchMovies(); // Refresh movie list
-            setFoundMovie(null); // Clear found movie
-        } catch (error) {
-            console.error('Error updating movie:', error);
-        }
-    };
+  const handleSearchMovie = async (e) => {
+      e.preventDefault();
+      clearMessages();
+      try {
+          const response = await fetch(`http://localhost:8080/api/movies/${searchId}`);
+          if (!response.ok) throw new Error('Movie not found');
+          const data = await response.json();
+          setFoundMovie(data);
+      } catch (error) {
+          setErrorMessage('Movie not found.');
+          setFoundMovie(null);
+      }
+  };
 
-    // Handle adding a new category
-    const handleAddCategory = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('http://localhost:8080/api/categories', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newCategory),
-            });
-            if (!response.ok) throw new Error('Error adding category');
-            await fetchCategories(); // Refresh category list
-            setNewCategory({ name: '', promoted: false, description: '' }); // Reset form
-        } catch (error) {
-            console.error('Error adding category:', error);
-        }
-    };
+  const handleDeleteMovie = async (id) => {
+      clearMessages();
+      try {
+          const response = await fetch(`http://localhost:8080/api/movies/${id}`, {
+              method: 'DELETE',
+          });
+          if (!response.ok) throw new Error('Error deleting movie');
+          setSuccessMessage('Movie deleted successfully!');
+          setFoundMovie(null);
+          fetchMovies();
+      } catch (error) {
+          setErrorMessage('Failed to delete movie.');
+          console.error(error);
+      }
+  };
 
-    // Handle deleting a category
-    const handleDeleteCategory = async (id) => {
-        try {
-            const response = await fetch(`http://localhost:8080/api/categories/${id}`, {
-                method: 'DELETE',
-            });
-            if (!response.ok) throw new Error('Error deleting category');
-            await fetchCategories(); // Refresh category list
-        } catch (error) {
-            console.error('Error deleting category:', error);
-        }
-    };
+  const handleUpdateMovie = async (e) => {
+      e.preventDefault();
+      clearMessages();
+      try {
+          const response = await fetch(`http://localhost:8080/api/movies/${foundMovie._id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(foundMovie),
+          });
+          if (!response.ok) throw new Error('Error updating movie');
+          setSuccessMessage('Movie updated successfully!');
+          setFoundMovie(null);
+          fetchMovies();
+      } catch (error) {
+          setErrorMessage('Failed to update movie.');
+          console.error(error);
+      }
+  };
 
-    // Handle updating a category
-    const handleUpdateCategory = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`http://localhost:8080/api/categories/${editingCategory._id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(editingCategory),
-            });
-            if (!response.ok) throw new Error('Error updating category');
-            await fetchCategories(); // Refresh category list
-            setEditingCategory(null); // Reset editing
-            setNewCategory({ name: '', promoted: false, description: '' }); // Reset form
-        } catch (error) {
-            console.error('Error updating category:', error);
-        }
-    };
+  const handleAddCategory = async (e) => {
+      e.preventDefault();
+      clearMessages();
+      try {
+          const response = await fetch('http://localhost:8080/api/categories', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(newCategory),
+          });
+          if (!response.ok) throw new Error('Error adding category');
+          setSuccessMessage('Category added successfully!');
+          setNewCategory({ name: '', promoted: false, description: '' });
+          fetchCategories();
+      } catch (error) {
+          setErrorMessage('Failed to add category.');
+          console.error(error);
+      }
+  };
+
+  const handleDeleteCategory = async (id) => {
+      clearMessages();
+      try {
+          const response = await fetch(`http://localhost:8080/api/categories/${id}`, {
+              method: 'DELETE',
+          });
+          if (!response.ok) throw new Error('Error deleting category');
+          setSuccessMessage('Category deleted successfully!');
+          fetchCategories();
+      } catch (error) {
+          setErrorMessage('Failed to delete category.');
+          console.error(error);
+      }
+  };
+
+  const handleUpdateCategory = async (e) => {
+      e.preventDefault();
+      clearMessages();
+      try {
+          const response = await fetch(`http://localhost:8080/api/categories/${editingCategory._id}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(editingCategory),
+          });
+          if (!response.ok) throw new Error('Error updating category');
+          setSuccessMessage('Category updated successfully!');
+          setEditingCategory(null);
+          setNewCategory({ name: '', promoted: false, description: '' });
+          fetchCategories();
+      } catch (error) {
+          setErrorMessage('Failed to update category.');
+          console.error(error);
+      }
+  };
 
     return (
         <div className="container">
             <h1>Admin Screen</h1>
-
 
             {/* Add Category Form */}
             <form onSubmit={editingCategory ? handleUpdateCategory : handleAddCategory} className="add-category">
@@ -217,17 +234,19 @@ const AdminScreen = () => {
                 </label>
                 <button type="submit">{editingCategory ? 'Update Category' : 'Add Category'}</button>
             </form>
+            {/* Success Message */}
+            {successMessage && <div className="success-message">{successMessage}</div>}
 
             {/* Category List */}
             <h2>Categories</h2>
             <ul>
                 {categories.map((category) => (
                     <li key={category._id}>
-                        {category.name} <h20></h20> 
+                        {category.name} <h8></h8> 
                         <button onClick={() => {
                             setEditingCategory(category);
                             setNewCategory({ name: category.name, promoted: category.promoted, description: category.description });
-                        }}>Edit</button> <h20></h20> 
+                        }}>Edit</button> <h8></h8> 
                         <button className="delete-button" onClick={() => handleDeleteCategory(category._id)}>Delete</button>
                         <h6></h6> 
                     </li>
@@ -306,6 +325,13 @@ const AdminScreen = () => {
                     <button className="delete-button" onClick={() => handleDeleteMovie(foundMovie._id)}>Delete Movie</button>
                     <form onSubmit={handleUpdateMovie} className="update-movie">
                         <h2>Update Movie</h2>
+                        <input
+                            type="text"
+                            placeholder="Movie ID"
+                            value={foundMovie._id}
+                            onChange={(e) => setFoundMovie({ ...foundMovie, id: e.target.value })}
+                            required
+                        />
                         <input
                             type="text"
                             placeholder="Title"

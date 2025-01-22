@@ -2,13 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import AdminScreen from './AdminScreen/AdminScreen';
+import SearchTool from './SearchTool/SearchTool';
 import reportWebVitals from './reportWebVitals.js';
+import App from './SearchTool/App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <AdminScreen />
-  </React.StrictMode>
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

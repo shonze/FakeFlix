@@ -112,9 +112,9 @@ const getMovies = async (userId) => {
     return [200, randomMoviesByCategory];
 };
 
-const updateMovie = async (id, title, description, length, thumbnail, categories) => {
+const updateMovie = async (id, title, description, length, thumbnail, categories, video) => {
     let Movie = await getMovieById(id);
-
+    console.log(Movie);
     // Returns 404 if the Movie is not found
     if (Movie[0] != 200) return Movie;
 
@@ -272,7 +272,7 @@ const deleteMovie = async (id) => {
     client.destroy();
 
 
-    await Movie.deleteOne();
+    await MoviesModel.deleteOne(Movie);
 
     // Save the categories
     for (const category of ListOfObjects) {
