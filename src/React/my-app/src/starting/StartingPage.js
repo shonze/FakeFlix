@@ -1,22 +1,22 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import "./StartingPage.css"; // Custom CSS file for styling
 
 const FakeflixLandingPage = () => {
   const [email, setEmail] = useState("");
+  const navigate = useNavigate(); // Hook for programmatic navigation
 
   const handleGetStarted = () => {
-    if (email) {
-      localStorage.setItem("email", email);
-      window.location.href = "/register.html"; // Redirect to register page
-    }
+    localStorage.setItem("email", email);
+    navigate("/register"); // Navigate to the register page
   };
 
   const handleSignIn = () => {
-    window.location.href = "/login.html"; // Redirect to login page
+    navigate("/login"); // Navigate to the login page
   };
 
   const handleRegister = () => {
-    window.location.href = "/register.html"; // Redirect to register page
+    navigate("/register"); // Navigate to the register page
   };
 
   return (

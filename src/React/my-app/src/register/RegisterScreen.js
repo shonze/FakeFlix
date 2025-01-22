@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Register.css';
 import Field from './Field';
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
 const RegisterScreen = () => {
     const [formData, setFormData] = useState({
@@ -12,6 +13,15 @@ const RegisterScreen = () => {
         confirmPassword: '',
         profilePicture: null,
     });
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) {
+        formData.email = storedEmail;
+    }
+
+    const navigate = useNavigate(); // Hook for programmatic navigation
+    const handleSignIn = () => {
+        navigate("../login"); // Navigate to the login page
+      };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -59,6 +69,7 @@ const RegisterScreen = () => {
                 body: data,
             });
 
+            console.log(data);
             if (response.ok) {
                 const result = await response.json();
                 if (result.token) {
@@ -158,9 +169,20 @@ const RegisterScreen = () => {
                     <div className="login-text">
                         <p>
                             Already have an account?{' '}
-                            <a href="/login" className="login-link">Sign in here</a>
+                            <a
+                            href="/login"
+                            className="login-link"
+                            onClick={(e) => {
+                                e.preventDefault(); // Prevent default navigation
+                                handleSignIn(); // Call the function
+                            }}
+                            >
+                            Sign in here
+                            </a>
                         </p>
                     </div>
+
+
                 </form>
             </div>
         </div>

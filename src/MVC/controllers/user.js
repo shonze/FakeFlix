@@ -6,6 +6,7 @@ require('custom-env').env(process.env.NODE_ENV, './config');
  */
 const createUser = async (req, res) => {
     try {
+        console.log(req.body);
         if(!req.body.username) return res.status(400).json({ errors: ['Username is required'] });
         if(!req.body.password) return res.status(400).json({ errors: ['Password is required'] });
         if(!req.body.email) return res.status(400).json({ errors: ['Email is required'] });

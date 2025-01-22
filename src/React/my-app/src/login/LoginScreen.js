@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./LoginScreen.css";
 import Field from './Field';
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
@@ -13,6 +14,10 @@ const LoginPage = () => {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
+    const navigate = useNavigate(); // Hook for programmatic navigation
+    const handleRegister = () => {
+      navigate("../register"); // Navigate to the register page
+    };
     const handleFileChange = (e) => {
         setFormData((prevData) => ({
             ...prevData,
@@ -100,13 +105,22 @@ const LoginPage = () => {
                 <button type="submit" className="login-btn">
                     Login
                 </button>
-
+                
                 <div className="login-text">
-                    <p>
-                        New to Fakeflix?{' '}
-                        <a href="/login" className="login-link">Register here</a>
-                    </p>
-                </div>
+                        <p>
+                            New to Fakeflix?{' '}
+                            <a
+                              href="/register"
+                              className="login-link"
+                              onClick={(e) => {
+                                  e.preventDefault(); // Prevent default navigation
+                                  handleRegister(); // Call the function
+                              }}
+                            >
+                            Register here
+                            </a>
+                        </p>
+                    </div>
             </form>
         </div>
     </div>

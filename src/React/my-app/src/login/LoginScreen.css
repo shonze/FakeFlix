@@ -89,3 +89,42 @@
 .login-link:hover {
     text-decoration: underline;
 }
+
+
+
+.login-text {
+    color: white;
+    font-size: 16px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login-link {
+    color: rgb(229, 9, 20);
+    text-decoration: none;
+}
+
+.login-link-button:hover {
+    text-decoration: underline;
+}
+.login-text {
+    color: white;
+    font-size: 16px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login-link-button {
+    background: none;
+    border: none;
+    color: red; /* Red text */
+    text-decoration: none; /* No underline */
+    cursor: pointer; /* Pointer cursor for clickable effect */
+    padding: 0;
+    font: inherit; /* Inherit font styling */
+}
+
+/* Remove hover effects entirely */
+.login-link-button:hover {
+    text-decoration: none;
+}
