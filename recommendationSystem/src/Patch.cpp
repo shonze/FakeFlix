@@ -1,4 +1,4 @@
-#include "./header/Patch.h"
+#include "../header/Patch.h"
 
 Patch::Patch(MemoryWriteable* writer, ILoadable* loader)
     : writer_(writer),loader_(loader) {}

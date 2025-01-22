@@ -1,4 +1,4 @@
-#include "./header/Loader.h"
+#include "../header/Loader.h"
 
 // The constractor
 Loader:: Loader(std::string fileName){

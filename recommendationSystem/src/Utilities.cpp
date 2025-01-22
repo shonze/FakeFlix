@@ -1,4 +1,4 @@
-#include "./header/Utilities.h"
+#include "../header/Utilities.h"
 
 bool Utilities::isValid(const std::string& str) {
 

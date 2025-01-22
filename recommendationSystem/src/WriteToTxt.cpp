@@ -1,4 +1,4 @@
-#include "./header/WriteToTxt.h"
+#include "../header/WriteToTxt.h"
 
 
 WriteToTxt::WriteToTxt(const std::string& filename) : filename_(filename) {}

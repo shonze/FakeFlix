@@ -1,4 +1,4 @@
-#include "./header/Recommend.h"
+#include "../header/Recommend.h"
 
 Recommend::Recommend(ILoadable* bloader)
     : loader(bloader) {}

@@ -6,7 +6,7 @@ const CategoriesModel = require("../modules/category");
 const userServices = require("./user");
 const CategoriesService = require("./category");
 
-const createMovie = async (title, categories, description, length, thumbnail) => {
+const createMovie = async (title, categories, description, length, thumbnail,video) => {
     // Checks if one of the fields are missing
     if (!title || !categories || !description || !length || !video) {
         return [400, "One of the required fields are missing"];
