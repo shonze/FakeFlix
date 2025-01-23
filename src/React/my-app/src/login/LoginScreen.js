@@ -56,29 +56,30 @@ const LoginPage = () => {
         const data = {
           username: formData.username,
           password: formData.password
-      };
+        };
+
 
         try {
-            const response = await fetch('http://localhost:3000/api/tokens', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-            alert('response: ' + response);
-            if (response.ok) {
-                const result = await response.json();
-                if (result.token) {
-                    localStorage.setItem('jwtToken', result.token);
-                    window.location.href = '/homepage';
-                } else {
-                    alert('Registration failed: ' + (result.message || 'Invalid input'));
-                }
-            } else {
-                alert('Error: Unable to connect to the server.');
-            }
-        } catch (error) {
-            alert('An error occurred: ' + error.message);
-        }
+          const response = await fetch('http://localhost:3000/api/tokens', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              if (result.token) {
+                  localStorage.setItem('jwtToken', result.token);
+                  window.location.href = '/homepage';
+              } else {
+                  alert('Registration failed: ' + (result.message || 'Invalid input'));
+              }
+          } else {
+              alert('Error: Unable to connect to the server.');
+          }
+      } catch (error) {
+          alert('An error occurred: ' + error.message);
+      }
     };
 
   return (
