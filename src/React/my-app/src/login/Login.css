@@ -81,12 +81,12 @@
     text-align: center;
 }
 
-.login-link {
+.register-link {
     color: rgb(229, 9, 20);
     text-decoration: none;
 }
 
-.login-link:hover {
+.register-link:hover {
     text-decoration: underline;
 }
 
@@ -99,12 +99,12 @@
     text-align: center;
 }
 
-.login-link {
+.register-link {
     color: rgb(229, 9, 20);
     text-decoration: none;
 }
 
-.login-link-button:hover {
+.register-link-button:hover {
     text-decoration: underline;
 }
 .login-text {
@@ -114,7 +114,7 @@
     text-align: center;
 }
 
-.login-link-button {
+.register-link-button {
     background: none;
     border: none;
     color: red; /* Red text */
@@ -125,6 +125,6 @@
 }
 
 /* Remove hover effects entirely */
-.login-link-button:hover {
+.register-link-button:hover {
     text-decoration: none;
 }

@@ -1,23 +1,28 @@
-import React, { useState } from "react";
-import "./LoginScreen.css";
+import React, { useState } from 'react';
+import './Login.css';
 import Field from './Field';
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
-const LoginPage = () => {
+const LoginScreen = () => {
     const [formData, setFormData] = useState({
         username: '',
         password: '',
     });
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) {
+        formData.email = storedEmail;
+    }
+
+    const navigate = useNavigate(); // Hook for programmatic navigation
+    const handleRegister = () => {
+        navigate("../register"); // Navigate to the login page
+      };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const navigate = useNavigate(); // Hook for programmatic navigation
-    const handleRegister = () => {
-      navigate("../register"); // Navigate to the register page
-    };
     const handleFileChange = (e) => {
         setFormData((prevData) => ({
             ...prevData,
@@ -26,85 +31,88 @@ const LoginPage = () => {
     };
 
     const handleSubmit = async (e) => {
+        e.preventDefault();
+        // const { password } = formData; ???
+
         const data = {
-          username: formData.username,
-          password: formData.password
+            username: formData.username,
+            password: formData.password
         };
 
         try {
-          const response = await fetch('http://localhost:3000/api/tokens', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(data),
-          });
+            const response = await fetch('http://localhost:3000/api/tokens', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
 
-          if (response.ok) {
-              const result = await response.json();
-              if (result.token) {
-                  localStorage.setItem('jwtToken', result.token);
-                  window.location.href = '/home';
-              } else {
-                  alert('login failed: ' + (result.message || 'Invalid input'));
-              }
-          } else {
-              alert('Error: Unable to connect to the server.');
-          }
-      } catch (error) {
-          alert('An error occurred: ' + error.message);
-      }
+            if (response.ok) {
+                const result = await response.json();
+                if (result.token) {
+                    localStorage.setItem('jwtToken', result.token);
+                    window.location.href = '/home';
+                } else {
+                    alert('Login failed: ' + (result.message || 'Invalid input'));
+                }
+            } else {
+                alert('Error: Unable to connect to the server.');
+            }
+        } catch (error) {
+            alert('An error occurred: ' + error.message);
+        }
     };
 
-  return (
-    <div className="login-container">
-        <div className="form-container">
-            <h1 className="app-title">Fakeflix</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="form-row">
-                    <Field
-                        label="Username"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleInputChange}
-                        type="text"
-                        required
-                    />
-                </div>
-                
-                <div className="form-row">
-                    <Field  
-                        label="Password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        type="password"
-                        required
-                    />
-                </div>
+    return (
+        <div className="login-container">
+            <div className="form-container">
+                <h1 className="app-title">Fakeflix</h1>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-row">
+                        <Field
+                            label="Username"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleInputChange}
+                            type="text"
+                            required
+                        />
+                    </div>
+                    <div className="form-row">
+                        <Field  
+                            label="Password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            type="password"
+                            required
+                        />
+                    </div>
 
-                <button type="submit" className="login-btn">
-                    Login
-                </button>
-                
-                <div className="login-text">
+                    <button type="submit" className="login-btn">
+                        Login
+                    </button>
+
+                    <div className="login-text">
                         <p>
                             New to Fakeflix?{' '}
                             <a
-                              href="/register"
-                              className="login-link"
-                              onClick={(e) => {
-                                  e.preventDefault(); // Prevent default navigation
-                                  handleRegister(); // Call the function
-                              }}
+                            href="/register"
+                            className="register-link"
+                            onClick={(e) => {
+                                e.preventDefault(); // Prevent default navigation
+                                handleRegister(); // Call the function
+                            }}
                             >
                             Register here
                             </a>
                         </p>
                     </div>
-            </form>
+
+
+                </form>
+            </div>
         </div>
-    </div>
-);
+    );
 };
 
-
-export default LoginPage;
+export default LoginScreen;
