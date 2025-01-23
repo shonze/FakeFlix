@@ -28,6 +28,17 @@ const validateAndGetUser = async (req) => {
 
 const createMovie = async (req, res) => {
     try {
+        let existingUserByUsername;
+
+        // Use the new helper function to validate the token and retrieve the user
+        try {
+            existingUserByUsername = await validateAndGetUser(req);
+        } catch (error) {
+            return res.status(403).json({ errors: error.message });
+        }
+        if (existingUserByUsername.isAdmin == false) { 
+            return res.status(403).json({ errors: 'User is not an admin' });
+        }
         console.log(req.body);
         const Movie_and_Status = await MovieService.createMovie(req.body.title, req.body.categories,
             req.body.description, req.body.length, req.body.thumbnail, req.body.video);
@@ -49,18 +60,14 @@ const createMovie = async (req, res) => {
 
 const getMovies = async (req, res) => {
     try {
-        if (!req.headers.Authorization) {
-            return res.status(403).json({ errors: 'user not logged in' });
-        }
+        let existingUserByUsername;
 
-        const token = req.headers.Authorization.split(" ")[1];
+        // Use the new helper function to validate the token and retrieve the user
         try {
-            const data = jwt.verify(token, process.env.JWT_SECRET);
-            console.log('The logged in user is: ' + data.username);
-        } catch (err) {
-            return res.status(401).send("Invalid Token");
+            existingUserByUsername = await validateAndGetUser(req);
+        } catch (error) {
+            return res.status(403).json({ errors: error.message });
         }
-        const existingUserByUsername = await User.findOne({ username: data.username });
         
 
         const Movie_and_Status = await MovieService.getMovies(existingUserByUsername._id);
@@ -82,6 +89,15 @@ const getMovies = async (req, res) => {
 
 const getMovie = async (req, res) => {
     try {
+        let existingUserByUsername;
+
+        // Use the new helper function to validate the token and retrieve the user
+        try {
+            existingUserByUsername = await validateAndGetUser(req);
+        } catch (error) {
+            return res.status(403).json({ errors: error.message });
+        }
+
         const Movie_and_Status = await MovieService.getMovieById(req.params.id);
 
         // Get the status code from the Movie_and_Status array
@@ -101,6 +117,18 @@ const getMovie = async (req, res) => {
 
 const updateMovie = async (req, res) => {
     try {
+        let existingUserByUsername;
+
+        // Use the new helper function to validate the token and retrieve the user
+        try {
+            existingUserByUsername = await validateAndGetUser(req);
+        } catch (error) {
+            return res.status(403).json({ errors: error.message });
+        }
+        if (existingUserByUsername.isAdmin == false) { 
+            return res.status(403).json({ errors: 'User is not an admin' });
+        }
+
         const Movie_and_Status = await MovieService.updateMovie(req.params.id, req.body.title,
             req.body.description, req.body.length, req.body.thumbnail, req.body.categories, req.body.video);
 
@@ -121,6 +149,18 @@ const updateMovie = async (req, res) => {
 
 const deleteMovie = async (req, res) => {
     try {
+        let existingUserByUsername;
+
+        // Use the new helper function to validate the token and retrieve the user
+        try {
+            existingUserByUsername = await validateAndGetUser(req);
+        } catch (error) {
+            return res.status(403).json({ errors: error.message });
+        }
+        if (existingUserByUsername.isAdmin == false) { 
+            return res.status(403).json({ errors: 'User is not an admin' });
+        }
+
         const Movie_and_Status = await MovieService.deleteMovie(req.params.id);
 
         // Get the status code from the Movie_and_Status array
@@ -140,6 +180,7 @@ const deleteMovie = async (req, res) => {
 
 const searchMovies = async (req, res) => {
     try {
+
         const Movie_and_Status = await MovieService.searchMovies(req.params.query);
 
         // Get the status code from the Movie_and_Status array
@@ -161,18 +202,14 @@ const searchMovies = async (req, res) => {
 const getRecoomendations = async (req, res) => {
 
     try {
-        if (!req.headers.Authorization) {
-            return res.status(403).json({ errors: 'user not logged in' });
-        }
+        let existingUserByUsername;
 
-        const token = req.headers.Authorization.split(" ")[1];
+        // Use the new helper function to validate the token and retrieve the user
         try {
-            const data = jwt.verify(token, process.env.JWT_SECRET);
-            console.log('The logged in user is: ' + data.username);
-        } catch (err) {
-            return res.status(401).send("Invalid Token");
+            existingUserByUsername = await validateAndGetUser(req);
+        } catch (error) {
+            return res.status(403).json({ errors: error.message });
         }
-        const existingUserByUsername = await User.findOne({ username: data.username });
 
         const Movie_and_Status = await MovieService.getRecoomendations(existingUserByUsername._id, req.params.id);
 
@@ -193,19 +230,15 @@ const getRecoomendations = async (req, res) => {
 
 const updateWatched = async (req, res) => {
 
-    try {
-        if (!req.headers.Authorization) {
-            return res.status(403).json({ errors: 'user not logged in' });
-        }
+    try {        
+        let existingUserByUsername;
 
-        const token = req.headers.Authorization.split(" ")[1];
+        // Use the new helper function to validate the token and retrieve the user
         try {
-            const data = jwt.verify(token, process.env.JWT_SECRET);
-            console.log('The logged in user is: ' + data.username);
-        } catch (err) {
-            return res.status(401).send("Invalid Token");
+            existingUserByUsername = await validateAndGetUser(req);
+        } catch (error) {
+            return res.status(403).json({ errors: error.message });
         }
-        const existingUserByUsername = await User.findOne({ username: data.username });
 
         const Movie_and_Status = await MovieService.updateWatched(existingUserByUsername._id, req.params.id);
 
