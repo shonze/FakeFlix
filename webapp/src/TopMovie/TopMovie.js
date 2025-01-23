@@ -1,13 +1,17 @@
 import './TopMovie.css';
 import { useState, useEffect } from 'react';
 
-const TopMovie = (id) => {
+const TopMovie = ({ id }) => {
     const [movie, setMovie] = useState([])
 
     useEffect(() => {
         const fetchMovie = async () => {
             try {
-                const response = await fetch(`http://localhost:3002/api/movies/${id.id}`, {
+                if(!id){
+                    return;
+                }
+
+                const response = await fetch(`http://localhost:3002/api/movies/${id}`, {
                     method: 'GET'
                 });
 

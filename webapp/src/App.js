@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 
 import HomePage from "./Pages/HomePage";
 import CategoryPage from "./Pages/CategoryPage";
+import MovieDescription from "./Pages/MovieDescription"
 
 function App() {
     return (
@@ -10,6 +11,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/category/:id" element={<CategoryPage />} />
+                <Route path="/movie/:id" element={<MovieDescription />}/>
             </Routes>
         </Router>
     );

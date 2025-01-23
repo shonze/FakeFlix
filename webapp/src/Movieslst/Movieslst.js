@@ -1,9 +1,8 @@
 import Movie from '../Movie/Movie';
 
-function CategoryMovielst({ CategoryName, Movieslst }) {
+function Movielst({ Movieslst }) {
     return (
-        <div key={CategoryName} className="sticky-left">
-            <h6 className="text-start text-light">{CategoryName}</h6>
+        <>
             <div className="row">
                 {Movieslst.map((movieId) => (
                     <div key={movieId} className="col-md-3 mb-4">
@@ -11,8 +10,8 @@ function CategoryMovielst({ CategoryName, Movieslst }) {
                     </div>
                 ))}
             </div>
-        </div>
+        </>
     );
 }
 
-export default CategoryMovielst;
+export default Movielst;

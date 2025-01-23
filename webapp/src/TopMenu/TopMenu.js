@@ -22,7 +22,7 @@ const TopMenu = () => {
                     </li>
                 </ul>
             </div>
-            <div className="bg-dark d-flex justify-content-center align-items-center">
+            <div className="d-flex justify-content-center align-items-center">
                 <div className="position-relative">
                     <input type="text"
                         className="form-control rounded-pill search-bar pe-5"

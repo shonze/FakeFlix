@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import CategoryMovieslst from '../CategoryMovieslst/CategoryMovieslst'
+import Movieslst from '../Movieslst/Movieslst'
 import TopMovie from '../TopMovie/TopMovie';
 
-const Categorieslst = (userId) => {
+const Categorieslst = ({ userId }) => {
   const [categoriesMovies, setCategoriesMovies] = useState([]);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const Categorieslst = (userId) => {
         const response = await fetch("http://localhost:3002/api/movies", {
           method: 'GET',
           headers: {
-            'userId': userId.userId
+            'userId': userId
           }
         });
 
@@ -41,7 +41,10 @@ const Categorieslst = (userId) => {
           <div className="container">
             {Object.entries(categoriesMovies).map(([category, movies]) => {
               return movies.length > 0 ? (
-                <CategoryMovieslst key={category} CategoryName={category} Movieslst={movies} />
+                <div key={category} className="sticky-left">
+                  <h6 className="text-start text-light">{category}</h6>
+                  <Movieslst key={category} Movieslst={movies} />
+                </div>
               ) : null;
             })}
           </div>
