@@ -4,7 +4,7 @@ import './index.css';
 import AdminScreen from './AdminScreen/AdminScreen';
 import SearchTool from './SearchTool/SearchTool';
 import reportWebVitals from './reportWebVitals.js';
-import App from './SearchTool/App';
+import App from './App.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

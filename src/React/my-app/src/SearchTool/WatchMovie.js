@@ -51,7 +51,9 @@ const WatchMovie = () => {
                 <div className="movie-info">
                     <h1 className="movie-title">{selectedMovie.title}</h1>
                     <p className="movie-description">
-                        {selectedMovie.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'}
+                        {selectedMovie.description}
+                        <p>    </p>
+                        {selectedMovie.length} minutes
                     </p>
                     <button className="play-button" onClick={handlePlayClick}>Play</button>
                     <div className="category-container">

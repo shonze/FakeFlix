@@ -136,8 +136,12 @@ const updateMovie = async (id, title, description, length, thumbnail, categories
     for (const categoryId of Movie.categories) {
         const Category = await CategoriesModel.findOne({ _id: categoryId });
 
-        // Returns 404 if the category is not found
-        if (!Category) return [404, "One of the categories was not found"];
+        // Remove the category if the category is not found
+        if (!Category){
+            Movie.categories= Movie.categories.filter(category_id => {
+                return category_id.toString() !== categoryId.toString();
+            })
+        }
 
         // Remove the movie from the category list of movies
         Category.movies = Category.movies.filter(movie_id => {
@@ -159,11 +163,8 @@ const updateMovie = async (id, title, description, length, thumbnail, categories
     Movie.video = video;
 
     // Checks if the categories are valid and add the movie to the categories list of movies
-    for (const categoryName of categories) {
-        const Category = await CategoriesModel.findOne({ name: categoryName });
-
-        // Returns 404 if the category is not found
-        if (!Category) return [404, "One of the categories was not found"];
+    for (const categoryId of categories) {
+        const Category = await CategoriesModel.findOne({ _id: categoryId });
 
         // Add the movie to the category list of movies
         Category.movies.push(Movie._id);
