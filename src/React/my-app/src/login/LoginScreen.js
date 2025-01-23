@@ -17,6 +17,10 @@ const LoginScreen = () => {
     const handleRegister = () => {
         navigate("../register"); // Navigate to the login page
       };
+    
+    const handleHome = () => {
+        navigate("../home"); // Navigate to the login page
+      };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -50,7 +54,7 @@ const LoginScreen = () => {
                 const result = await response.json();
                 if (result.token) {
                     localStorage.setItem('jwtToken', result.token);
-                    window.location.href = '/home';
+                    handleHome();
                 } else {
                     alert('Login failed: ' + (result.message || 'Invalid input'));
                 }

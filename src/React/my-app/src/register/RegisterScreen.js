@@ -23,6 +23,10 @@ const RegisterScreen = () => {
         navigate("../login"); // Navigate to the login page
       };
 
+    const handleHome = () => {
+        navigate("../home"); // Navigate to the login page
+      };
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -56,13 +60,6 @@ const RegisterScreen = () => {
             return;
         }
 
-        // const data = {};
-        // Object.keys(formData).forEach((key) => {
-        //     if (formData[key] && key !== 'confirmPassword') {
-        //         data[key] = formData[key];  // Assign form data to the data object
-        //     }
-        // });
-
         const data = {
             fullName: formData.fullName,
             username: formData.username,
@@ -83,7 +80,7 @@ const RegisterScreen = () => {
                 const result = await response.json();
                 if (result.token) {
                     localStorage.setItem('jwtToken', result.token);
-                    window.location.href = '/home';
+                    handleHome();
                 } else {
                     alert('Registration failed: ' + (result.message || 'Invalid input'));
                 }
