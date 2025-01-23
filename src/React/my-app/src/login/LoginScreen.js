@@ -50,16 +50,16 @@ const LoginScreen = () => {
                 body: JSON.stringify(data),
             });
 
+            const result = await response.json();
             if (response.ok) {
-                const result = await response.json();
                 if (result.token) {
                     localStorage.setItem('jwtToken', result.token);
                     handleHome();
                 } else {
-                    alert('Login failed: ' + (result.message || 'Invalid input'));
+                    alert('Login failed: ' + (result.errors || 'Invalid input'));
                 }
             } else {
-                alert('Login failed: ' + (response.message || 'Invalid input'));
+                alert(result.errors);
             }
         } catch (error) {
             alert('An error occurred: ' + error.message);

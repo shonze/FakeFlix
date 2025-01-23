@@ -83,17 +83,16 @@ const RegisterScreen = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
             });
-
+            const result = await response.json();
             if (response.ok) {
-                const result = await response.json();
                 if (result.token) {
                     localStorage.setItem('jwtToken', result.token);
                     handleHome();
                 } else {
-                    alert('Registration failed: ' + (result.message || 'Invalid input'));
+                    alert('Registration failed: ' + (result.errors || 'Invalid input'));
                 }
             } else {
-                alert('Error: Unable to connect to the server.');
+                alert(result.errors);
             }
         } catch (error) {
             alert('An error occurred: ' + error.message);
