@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Register.css';
 import Field from './Field';
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 
 const RegisterScreen = () => {
+    const navigate = useNavigate(); // Hook for programmatic navigation
+
     const [formData, setFormData] = useState({
         fullName: '',
         username: '',
@@ -13,19 +15,25 @@ const RegisterScreen = () => {
         confirmPassword: '',
         profilePicture: null,
     });
-    const storedEmail = localStorage.getItem("email");
-    if (storedEmail) {
-        formData.email = storedEmail;
-    }
 
-    const navigate = useNavigate(); // Hook for programmatic navigation
+    // Load stored email on component mount
+    useEffect(() => {
+        const storedEmail = localStorage.getItem("email");
+        if (storedEmail) {
+            setFormData((prevData) => ({
+                ...prevData,
+                email: storedEmail,
+            }));
+        }
+    }, []);
+
     const handleSignIn = () => {
-        navigate("../login"); // Navigate to the login page
-      };
+        navigate("../login");
+    };
 
     const handleHome = () => {
-        navigate("../home"); // Navigate to the login page
-      };
+        navigate("../home");
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -135,7 +143,6 @@ const RegisterScreen = () => {
                         />
                     </div>
 
-                    
                     <div className="form-row">
                         <Field  
                             label="Password"
@@ -187,8 +194,6 @@ const RegisterScreen = () => {
                             </a>
                         </p>
                     </div>
-
-
                 </form>
             </div>
         </div>
