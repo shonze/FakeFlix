@@ -83,7 +83,7 @@ const RegisterScreen = () => {
                 const result = await response.json();
                 if (result.token) {
                     localStorage.setItem('jwtToken', result.token);
-                    window.location.href = '/homepage';
+                    window.location.href = '/home';
                 } else {
                     alert('Registration failed: ' + (result.message || 'Invalid input'));
                 }

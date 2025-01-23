@@ -42,7 +42,7 @@ const LoginPage = () => {
               const result = await response.json();
               if (result.token) {
                   localStorage.setItem('jwtToken', result.token);
-                  window.location.href = '/homepage';
+                  window.location.href = '/home';
               } else {
                   alert('login failed: ' + (result.message || 'Invalid input'));
               }
