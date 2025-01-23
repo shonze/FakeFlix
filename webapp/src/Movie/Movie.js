@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
+import MovieDescription from '../Pages/MovieDescription'
+
 function Movie({ id }) {
     const [movie, setMovie] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const toggleModal = () => setShowModal(!showModal);
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         const fetchMovie = async () => {
             try {
@@ -28,18 +32,29 @@ function Movie({ id }) {
     return (
         <div
             className="card position-relative overflow-hidden"
-            onClick={() => navigate(`/movie/${movie._id}`)}
+            onClick={() => {
+                // navigate(`/movie/${movie._id}`);
+                toggleModal();
+            }}
             style={{ cursor: "pointer" }}
         >
             <img
                 src={movie.thumbnail}
                 className="card-img-top"
-                alt="Movie Poster"
             />
             <div className="card-body position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white p-2 d-none">
                 <h5 className="card-title">{movie.title}</h5>
                 <p className="card-text">{movie.description}</p>
             </div>
+            {showModal && (
+                <div className="modal fade show d-block" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <MovieDescription movie={movie}/>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

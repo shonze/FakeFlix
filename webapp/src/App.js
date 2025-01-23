@@ -11,7 +11,6 @@ function App() {
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/category/:id" element={<CategoryPage />} />
-                <Route path="/movie/:id" element={<MovieDescription />}/>
             </Routes>
         </Router>
     );
