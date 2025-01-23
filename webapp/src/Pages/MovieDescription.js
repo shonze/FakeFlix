@@ -22,19 +22,25 @@ function HomeDescriptionPage({ movie }) {
 
                 categories = []
 
-                const FindCategories = async () => {
-                    for (categoryId in movie.categories) {
-                        const response = await fetch(`http://localhost:3002/api/categories/${categoryId}`, {
-                            method: 'GET'
-                        });
-
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status} ${response.error}`);
-                        }
-
-                        const data = await response.json();
+                const categoryFetches = movie.categories.map(async (categoryId) => {
+                    console.log(categoryId); 
+                    const response = await fetch(`http://localhost:3002/api/categories/${categoryId}`, {
+                        method: 'GET'
+                    });
+        
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status} ${response.error}`);
                     }
-                }
+        
+                    console.log(response);
+                    return response.json(); // Parse the response
+                });
+        
+                // Wait for all fetches to complete
+                const fetchedCategories = await Promise.all(categoryFetches);
+        
+                // Add all fetched categories to the categories array
+                categories.push(...fetchedCategories);
             } catch (error) {
                 console.error("Error fetching categories:", error);
             }
@@ -56,7 +62,7 @@ function HomeDescriptionPage({ movie }) {
                     <div className="row">
                         <div className="col-6">
                             <p>Runtime: {movie.length}</p>
-                            <p>Genres: {movie.categories.join(' * ')}</p>
+                            <p>Genres: {categories.join(' * ')}</p>
                         </div>
                     </div>
                 </div>
