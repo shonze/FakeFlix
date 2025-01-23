@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login.css';
 import Field from './Field';
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 
 const LoginScreen = () => {
     const [formData, setFormData] = useState({
         username: '',
         password: '',
+        rememberMe: false,
     });
     const storedEmail = localStorage.getItem("email");
     if (storedEmail) {
@@ -21,11 +22,23 @@ const LoginScreen = () => {
     const handleHome = () => {
         navigate("../home"); // Navigate to the login page
       };
+    // Load stored email on component mount
+    useEffect(() => {
+        const storedjwt = localStorage.getItem("jwtToken");
+        const rememberMe = localStorage.getItem("rememberMe");
+        if (storedjwt && rememberMe == 'true') {
+            handleHome();
+        }
+    }, []);
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-    };
+      const { name, type, checked, value } = e.target;
+      setFormData((prevData) => ({
+          ...prevData,
+          [name]: type === 'checkbox' ? checked : value
+      }));
+  };
+  
 
     const handleFileChange = (e) => {
         setFormData((prevData) => ({
@@ -54,6 +67,7 @@ const LoginScreen = () => {
             if (response.ok) {
                 if (result.token) {
                     localStorage.setItem('jwtToken', result.token);
+                    localStorage.setItem('rememberMe', formData.rememberMe);
                     handleHome();
                 } else {
                     alert('Login failed: ' + (result.errors || 'Invalid input'));
@@ -90,6 +104,17 @@ const LoginScreen = () => {
                             type="password"
                             required
                         />
+                    </div>
+                    <div className="form-row">
+                        <label className="remember-me">
+                            <input
+                                type="checkbox"
+                                name="rememberMe"
+                                checked={formData.rememberMe}
+                                onChange={handleInputChange}
+                            />
+                            Remember Me
+                        </label>
                     </div>
 
                     <button type="submit" className="login-btn">

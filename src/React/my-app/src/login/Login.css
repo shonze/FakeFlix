@@ -128,3 +128,16 @@
 .register-link-button:hover {
     text-decoration: none;
 }
+
+/* Add styles for the "Remember Me" checkbox */
+.remember-me {
+    color: rgb(248, 9, 9);
+    font-size: 16px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.remember-me input {
+    margin-right: 8px;
+}
