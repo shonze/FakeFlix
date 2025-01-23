@@ -55,7 +55,7 @@ const LoginScreen = () => {
                     alert('Login failed: ' + (result.message || 'Invalid input'));
                 }
             } else {
-                alert('Error: Unable to connect to the server.');
+                alert('Login failed: ' + (response.message || 'Invalid input'));
             }
         } catch (error) {
             alert('An error occurred: ' + error.message);

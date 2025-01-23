@@ -42,8 +42,8 @@ const FakeflixLandingPage = () => {
             type="email"
             placeholder="Email address"
             value={email}
+            className="custom-input"
             onChange={(e) => setEmail(e.target.value)}
-            className="email-input"
           />
           <button className="btn get-started-btn" onClick={handleGetStarted}>
             Get Started &gt;
