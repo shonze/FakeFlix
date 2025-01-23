@@ -8,7 +8,7 @@ const CategorySearch = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch("http://localhost:3002/api/categories", {
+                const response = await fetch(`http://localhost:3002/api/categories`, {
                     method: 'GET'
                 });
 
@@ -29,10 +29,10 @@ const CategorySearch = () => {
 
     return (
         <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a className={`nav-link dropdown-toggle text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"}`} href="" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Watch By Categories
             </a>
-            <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+            <ul className={`dropdown-menu dropdown-menu-${localStorage.getItem("theme")}`} aria-labelledby="navbarDarkDropdownMenuLink">
                 {categories.map((category) => (
                     <li key={category._id}>
                         <a

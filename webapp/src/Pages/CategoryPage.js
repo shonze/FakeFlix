@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+
 import TopMenu from "../TopMenu/TopMenu";
 import Movielst from "../Movieslst/Movieslst";
 
@@ -52,7 +53,7 @@ function CategoryPage() {
     }
 
     return (
-        <div className="bg-dark min-vh-100">
+        <div className={`bg-${localStorage.getItem("theme")} min-vh-100`}>
             <TopMenu />
             <div>
                 {categoryMoviesChunked.map((movieIds) => (

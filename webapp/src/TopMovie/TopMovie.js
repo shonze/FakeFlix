@@ -38,6 +38,7 @@ const TopMovie = ({ id }) => {
             <div className="text-overlay position-absolute top-50 start-0 translate-middle-y text-white">
                 <h1 className="display-3">{movie.title}</h1>
                 <p className="lead">{movie.description}</p>
+                <button>Play</button>
             </div>
         </div>
     );

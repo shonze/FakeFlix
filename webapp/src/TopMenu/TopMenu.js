@@ -1,12 +1,13 @@
 import React from 'react';
 import './TopMenu.css';
 import CategorySearch from '../CategorySearch/CategorySearch'
+import Theme from '../Theme/Theme';
 
 const TopMenu = () => {
     const homePage = `http://${window.location.hostname}:${window.location.port}`
 
     return (
-        <nav className=".bg-transparent navbar navbar-expand-lg navbar-dark sticky-top">
+        <nav className={`.bg-transparent navbar navbar-expand-lg navbar-${localStorage.getItem("theme")} sticky-top`}>
             <a className="navbar-brand" href={homePage}>MovieTime</a>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
@@ -14,12 +15,16 @@ const TopMenu = () => {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
-                        <a className="nav-link" href={homePage}>Home</a>
+                        <button className={`btn btn-${localStorage.getItem("theme")} bg-transparent border-0`} href={homePage}>Home</button>
                     </li>
                     <CategorySearch />
                     <li className="nav-item">
-                        <a className="nav-link" href={homePage}>Admin</a>
+                        <button className={`btn btn-${localStorage.getItem("theme")} bg-transparent border-0`}>Admin</button>
                     </li>
+                    <li className="nav-item">
+                        <button className={`btn btn-${localStorage.getItem("theme")} bg-transparent border-0`}>LogOut</button>
+                    </li>
+                    <Theme />
                 </ul>
             </div>
             <div className="d-flex justify-content-center align-items-center">

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 
 import MovieDescription from '../Pages/MovieDescription'
 
@@ -7,7 +6,6 @@ function Movie({ id }) {
     const [movie, setMovie] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const toggleModal = () => setShowModal(!showModal);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchMovie = async () => {
@@ -29,6 +27,8 @@ function Movie({ id }) {
         fetchMovie();
     }, [id]);
 
+    const theme = localStorage.getItem("theme");
+
     return (
         <div
             className="card position-relative overflow-hidden"
@@ -41,8 +41,9 @@ function Movie({ id }) {
             <img
                 src={movie.thumbnail}
                 className="card-img-top"
+                alt=""
             />
-            <div className="card-body position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white p-2 d-none">
+            <div className={`card-body position-absolute bottom-0 start-0 w-100 bg-${theme} bg-opacity-75 text-${theme === "dark" ? "white" : "black"} p-2 d-none`}>
                 <h5 className="card-title">{movie.title}</h5>
                 <p className="card-text">{movie.description}</p>
             </div>

@@ -109,7 +109,7 @@ const getMovies = async (userId) => {
     return [200, randomMoviesByCategory];
 };
 
-const updateMovie = async (id, title, description, length, thumbnail, categories) => {
+const updateMovie = async (id, title, description, length, thumbnail, categories,video) => {
     let Movie = await getMovieById(id);
 
     // Returns 404 if the Movie is not found
