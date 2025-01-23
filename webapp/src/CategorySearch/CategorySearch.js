@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const CategorySearch = () => {
     const [categories, setCategories] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -15,6 +17,7 @@ const CategorySearch = () => {
                 }
 
                 const data = await response.json();
+
                 setCategories(data);
             } catch (error) {
                 console.error("Error fetching categories:", error);
@@ -22,17 +25,28 @@ const CategorySearch = () => {
         };
 
         fetchCategories();
-    },);
+    }, []);
 
     return (
         <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a className="nav-link dropdown-toggle" href="" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Watch By Categories
             </a>
             <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                <li><a className="dropdown-item" href="#">Action</a></li>
-                <li><a className="dropdown-item" href="#">Another action</a></li>
-                <li><a className="dropdown-item" href="#">Something else here</a></li>
+                {categories.map((category) => (
+                    <li key={category._id}>
+                        <a
+                            className="dropdown-item"
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault(); 
+                                navigate(`/category/${category._id}`);
+                            }}
+                        >
+                            {category.name}
+                        </a>
+                    </li>
+                ))}
             </ul>
         </li>
     );

@@ -1,14 +1,18 @@
-import './App.css';
-import Categorieslst from './Categorieslst/Categorieslst';
-import TopMenu from './TopMenu/TopMenu';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+
+import HomePage from "./Pages/HomePage";
+import CategoryPage from "./Pages/CategoryPage";
 
 function App() {
-  return (
-    <div className="bg-dark">
-      <TopMenu />
-      <Categorieslst userId="6790b3ec594b4ec368666d12" />
-    </div>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/category/:id" element={<CategoryPage />} />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
