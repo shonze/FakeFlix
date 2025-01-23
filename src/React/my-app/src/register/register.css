@@ -1,3 +1,12 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+}
+
+/* Container Styles */
 .register-container {
     min-height: 100vh;
     padding: 20px;
@@ -13,15 +22,19 @@
     border-radius: 8px;
     max-width: 600px;
     width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* Title */
 .app-title {
     color: rgb(229, 9, 20);
     font-size: 48px;
     margin-bottom: 20px;
     text-align: center;
+    font-weight: bold;
 }
 
+/* Form Row and Column */
 .form-row {
     display: flex;
     gap: 8px; 
@@ -32,31 +45,39 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-right: 8px; 
+    margin-right: 8px;
 }
 
 .form-column:last-child {
-    margin-right: 0; 
+    margin-right: 0;
 }
 
+/* Form Labels */
 .form-label {
     color: white;
     font-size: 18px;
     margin-bottom: 8px;
-    
 }
 
+/* Input Fields */
 .custom-input {
-    padding: 10px; 
-    border: 1px solid #050505; 
-    border-radius: 4px; 
-    font-size: 16px; 
-    width: 100%; 
-    box-sizing: border-box; 
-    background: rgb(64, 64, 64); 
-    color: white; 
+    padding: 10px;
+    border: 1px solid #050505;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    background: rgb(64, 64, 64);
+    color: white;
+    outline: none;
+    transition: border-color 0.3s ease;
 }
 
+.custom-input:focus {
+    border-color: rgb(229, 9, 20);
+}
+
+/* Register Button */
 .register-btn {
     background: rgb(229, 9, 20);
     border: none;
@@ -71,9 +92,10 @@
 }
 
 .register-btn:hover {
-    background: rgb(200, 0, 15); 
+    background: rgb(200, 0, 15);
 }
 
+/* Login Text and Links */
 .login-text {
     color: white;
     font-size: 16px;
@@ -84,31 +106,23 @@
 .login-link {
     color: rgb(229, 9, 20);
     text-decoration: none;
+    cursor: pointer;
 }
 
-.login-link-button:hover {
+.login-link:hover {
     text-decoration: underline;
-}
-.login-text {
-    color: white;
-    font-size: 16px;
-    margin-top: 20px;
-    text-align: center;
 }
 
 .login-link-button {
     background: none;
     border: none;
-    color: red; /* Red text */
-    text-decoration: none; /* No underline */
-    cursor: pointer; /* Pointer cursor for clickable effect */
-    padding: 0;
-    font: inherit; /* Inherit font styling */
-}
-
-/* Remove hover effects entirely */
-.login-link-button:hover {
+    color: rgb(229, 9, 20);
     text-decoration: none;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
 }
 
-  
+.login-link-button:hover {
+    text-decoration: underline;
+}
