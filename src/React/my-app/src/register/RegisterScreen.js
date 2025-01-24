@@ -27,6 +27,27 @@ const RegisterScreen = () => {
         }
     }, []);
 
+    const handleUpload = async () => {
+        const data2 = {
+            profilePicture: formData.profilePicture
+        };
+        if (formData.profilePicture) {
+            console.log('File to upload:', formData.profilePicture);
+            const response2 = await fetch('http://localhost:3000/api/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data2),
+            });
+            const result2 = await response2.json();
+            if (response2.ok) {
+                alert('Profile picture uploaded successfully');
+            } else {
+                alert('Profile picture upload failed: ' + result2.errors);
+            }
+        } else {
+          alert('Please select a file first.');
+        }
+      };
     const handleSignIn = () => {
         navigate("../login");
     };
@@ -49,7 +70,7 @@ const RegisterScreen = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { password, confirmPassword, birthdate } = formData;
+        const { password, confirmPassword, birthdate, profilePicture } = formData;
 
         if (password.length < 8) {
             alert('Passwords should be at least 8 characters long.');
@@ -85,6 +106,7 @@ const RegisterScreen = () => {
             });
             const result = await response.json();
             if (response.ok) {
+                handleUpload();
                 if (result.token) {
                     localStorage.setItem('jwtToken', result.token);
                     handleHome();
