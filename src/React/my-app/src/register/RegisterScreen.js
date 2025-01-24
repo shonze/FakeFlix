@@ -33,7 +33,7 @@ const RegisterScreen = () => {
         };
         if (formData.profilePicture) {
             console.log('File to upload:', formData.profilePicture);
-            const response2 = await fetch('http://localhost:3000/api/upload', {
+            const response2 = await fetch('http://localhost:3000/api/video', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data2),
@@ -42,12 +42,38 @@ const RegisterScreen = () => {
             if (response2.ok) {
                 alert('Profile picture uploaded successfully');
             } else {
-                alert('Profile picture upload failed: ' + result2.errors);
+                alert('Profile picture upload failed: ' + result2.message);
             }
         } else {
           alert('Please select a file first.');
         }
       };
+
+    // const handleUpload = async () => {
+    //     if (formData.profilePicture) {
+    //         const formDataToSend = new FormData();
+    //         formDataToSend.append("profilePicture", formData.profilePicture);
+    
+    //         try {
+    //             const response2 = await fetch('http://localhost:3000/api/video', {
+    //                 method: 'POST',
+    //                 body: formDataToSend, // Use FormData as the body
+    //             });
+    //             const result2 = await response2.json();
+    //             if (response2.ok) {
+    //                 alert('Profile picture uploaded successfully');
+    //             } else {
+    //                 alert('Profile picture upload failed: ' + result2.message);
+    //             }
+    //         } catch (error) {
+    //             console.error('Error uploading profile picture:', error);
+    //             alert('An error occurred while uploading the profile picture.');
+    //         }
+    //     } else {
+    //         alert('Please select a file first.');
+    //     }
+    // };
+
     const handleSignIn = () => {
         navigate("../login");
     };
