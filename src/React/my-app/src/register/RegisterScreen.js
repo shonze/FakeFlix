@@ -160,6 +160,12 @@ const RegisterScreen = () => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!validImageTypes.includes(file.type)) {
+                alert('Please upload a valid image file (JPEG, PNG, GIF, WEBP).');
+                handleRemovePhoto();
+                return;
+            }
             setFormData((prevData) => ({
                 ...prevData,
                 files: file,
