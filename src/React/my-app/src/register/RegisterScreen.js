@@ -83,6 +83,7 @@ const RegisterScreen = () => {
 
     const handlePosting = async () => {
         let path=null;
+        let url=null;
         if (formData.files) {
             const formDataToSend = new FormData();
             formDataToSend.append("files", formData.files);
@@ -93,7 +94,8 @@ const RegisterScreen = () => {
                 });
                 const result2 = await response2.json();
                 if (response2.ok) {
-                    path = result2.files[0].url;
+                    url = result2.files[0].url;
+                    path = result2.files[0].path;
                     alert('Profile picture uploaded successfully');
                 } else {
                     alert('Profile picture upload failed: ' + result2.message);
@@ -109,7 +111,8 @@ const RegisterScreen = () => {
             email: formData.email,
             birthdate: formData.birthdate,
             password: formData.password,
-            photo: path,
+            photoPath: path,
+            photoUrl: url
         };
 
         try {

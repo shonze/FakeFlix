@@ -25,7 +25,8 @@ const createUser = async (req, res) => {
             req.body.password,
             req.body.email,
             req.body.fullName,
-            req.body.photo,
+            req.body.photoPath,
+            req.body.photoUrl,
             req.body.birthdate
         );
         if (newUser[0] == 404) {

@@ -36,8 +36,9 @@ const uploadFile = (req, res) => {
             ? req.files.map(file => ({
                 filename: file.filename,
                 url: `${baseUrl}/uploads/${file.filename}`,
+                path: file.path,
             }))
-            : { filename: req.file.filename, url: `${baseUrl}/uploads/${req.file.filename}` };
+            : { filename: req.file.filename, url: `${baseUrl}/uploads/${req.file.filename}`,path: file.path, };
 
         res.status(200).json({
             message: "Files uploaded successfully",

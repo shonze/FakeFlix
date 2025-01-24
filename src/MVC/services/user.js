@@ -4,7 +4,7 @@ const moongoose = require('mongoose');
 /**
  * Creates a User.
  */
-const createUser = async (username, password,email,fullName, photo, birthdate) => {
+const createUser = async (username, password,email,fullName, photoPath,photoUrl, birthdate) => {
     const existingUserByUsername = await User.findOne({ username: username });
         
     if (existingUserByUsername) {
@@ -18,7 +18,8 @@ const createUser = async (username, password,email,fullName, photo, birthdate) =
     }
 
     const user = new User({ username: username, password: password,email:email,fullName:fullName});
-    if (photo) user.photo = photo;
+    if (photoPath) user.photoPath = photoPath;
+    if (photoUrl) user.photoUrl = photoUrl;
     if (birthdate) user.birthdate = birthdate;
     return await user.save();
 };
