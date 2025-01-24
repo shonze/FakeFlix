@@ -13,7 +13,7 @@ const RegisterScreen = () => {
         birthdate: '',
         password: '',
         confirmPassword: '',
-        profilePicture: null,
+        files: null,
     });
 
     // Load stored email on component mount
@@ -27,52 +27,52 @@ const RegisterScreen = () => {
         }
     }, []);
 
-    const handleUpload = async () => {
-        const data2 = {
-            profilePicture: formData.profilePicture
-        };
-        if (formData.profilePicture) {
-            console.log('File to upload:', formData.profilePicture);
-            const response2 = await fetch('http://localhost:3000/api/video', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data2),
-            });
-            const result2 = await response2.json();
-            if (response2.ok) {
-                alert('Profile picture uploaded successfully');
-            } else {
-                alert('Profile picture upload failed: ' + result2.message);
-            }
-        } else {
-          alert('Please select a file first.');
-        }
-      };
-
     // const handleUpload = async () => {
+    //     const data2 = {
+    //         profilePicture: formData.profilePicture
+    //     };
     //     if (formData.profilePicture) {
-    //         const formDataToSend = new FormData();
-    //         formDataToSend.append("profilePicture", formData.profilePicture);
-    
-    //         try {
-    //             const response2 = await fetch('http://localhost:3000/api/video', {
-    //                 method: 'POST',
-    //                 body: formDataToSend, // Use FormData as the body
-    //             });
-    //             const result2 = await response2.json();
-    //             if (response2.ok) {
-    //                 alert('Profile picture uploaded successfully');
-    //             } else {
-    //                 alert('Profile picture upload failed: ' + result2.message);
-    //             }
-    //         } catch (error) {
-    //             console.error('Error uploading profile picture:', error);
-    //             alert('An error occurred while uploading the profile picture.');
+    //         console.log('File to upload:', formData.profilePicture);
+    //         const response2 = await fetch('http://localhost:3000/api/upload', {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify(data2),
+    //         });
+    //         const result2 = await response2.json();
+    //         if (response2.ok) {
+    //             alert('Profile picture uploaded successfully');
+    //         } else {
+    //             alert('Profile picture upload failed: ' + result2.message);
     //         }
     //     } else {
-    //         alert('Please select a file first.');
+    //       alert('Please select a file first.');
     //     }
-    // };
+    //   };
+
+    const handleUpload = async () => {
+        if (formData.files) {
+            const formDataToSend = new FormData();
+            formDataToSend.append("files", formData.files);
+    
+            try {
+                const response2 = await fetch('http://localhost:3000/api/upload', {
+                    method: 'POST',
+                    body: formDataToSend, // Use FormData as the body
+                });
+                const result2 = await response2.json();
+                if (response2.ok) {
+                    alert('Profile picture uploaded successfully');
+                } else {
+                    alert('Profile picture upload failed: ' + result2.message);
+                }
+            } catch (error) {
+                console.error('Error uploading profile picture:', error);
+                alert('An error occurred while uploading the profile picture.');
+            }
+        } else {
+            alert('Please select a file first.');
+        }
+    };
 
     const handleSignIn = () => {
         navigate("../login");
@@ -90,13 +90,13 @@ const RegisterScreen = () => {
     const handleFileChange = (e) => {
         setFormData((prevData) => ({
             ...prevData,
-            profilePicture: e.target.files[0],
+            files: e.target.files[0],
         }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { password, confirmPassword, birthdate, profilePicture } = formData;
+        const { password, confirmPassword, birthdate } = formData;
 
         if (password.length < 8) {
             alert('Passwords should be at least 8 characters long.');
@@ -121,7 +121,7 @@ const RegisterScreen = () => {
             email: formData.email,
             birthdate: formData.birthdate,
             password: formData.password,
-            profilePicture: formData.profilePicture
+            files: formData.files
         };
 
         try {
@@ -214,7 +214,7 @@ const RegisterScreen = () => {
                             <label className="form-label">Profile Picture (Optional)</label>
                             <input
                                 type="file"
-                                name="profilePicture"
+                                name="files"
                                 className="custom-input"
                                 onChange={handleFileChange}
                                 accept="image/*"

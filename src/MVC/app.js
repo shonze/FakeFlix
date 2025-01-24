@@ -7,7 +7,7 @@ const movies = require('./routes/movies');
 const category = require('./routes/category');
 const user = require('./routes/user');
 const tokens = require('./routes/tokens');
-const video = require('./routes/video');
+
 
 require('custom-env').env(process.env.NODE_ENV, './config');
 
@@ -30,7 +30,15 @@ app.use('/api/categories', category);
 app.use('/api/users', user);
 app.use('/api/tokens', tokens);
 
-app.use('/api/video', video);
+
+
+const uploadRoutes = require("./routes/uploadRoutes");
+
+// Middleware to parse JSON
+app.use(express.json());
+
+// Use upload routes
+app.use("/api/upload", uploadRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
