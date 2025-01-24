@@ -39,6 +39,9 @@ app.use(express.json());
 
 // Use upload routes
 app.use("/api/upload", uploadRoutes);
+const path = require("path");
+// Serve static files from the 'public/uploads' directory
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

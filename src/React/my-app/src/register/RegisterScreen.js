@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useRef} from 'react';
 import './Register.css';
 import Field from './Field';
 import { useNavigate } from "react-router-dom";
 
 const RegisterScreen = () => {
     const navigate = useNavigate(); // Hook for programmatic navigation
+
+    //
+    const fileInputRef = useRef(null);
+    //
 
     const [formData, setFormData] = useState({
         fullName: '',
@@ -15,6 +19,9 @@ const RegisterScreen = () => {
         confirmPassword: '',
         files: null,
     });
+    /////
+    const [preview, setPreview] = useState(null); // State for the image preview
+    ////
 
     // Load stored email on component mount
     useEffect(() => {
@@ -86,7 +93,7 @@ const RegisterScreen = () => {
                 });
                 const result2 = await response2.json();
                 if (response2.ok) {
-                    path = result2.files[0].path;
+                    path = result2.files[0].url;
                     alert('Profile picture uploaded successfully');
                 } else {
                     alert('Profile picture upload failed: ' + result2.message);
@@ -141,12 +148,45 @@ const RegisterScreen = () => {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
+    // const handleFileChange = (e) => {
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         files: e.target.files[0],
+    //     }));
+    // };
     const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setFormData((prevData) => ({
+                ...prevData,
+                files: file,
+            }));
+            setPreview(URL.createObjectURL(file)); // Generate the preview URL
+        } else {
+            setPreview(null); // Clear preview if no file is selected
+        }
+    };
+
+    // this is working
+    // const handleRemovePhoto = () => {
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         files: null, // Clear the selected file
+    //     }));
+    //     setPreview(null); // Clear the image preview
+    // };
+    const handleRemovePhoto = () => {
         setFormData((prevData) => ({
             ...prevData,
-            files: e.target.files[0],
+            files: null, // Clear the selected file
         }));
+        setPreview(null); // Clear the image preview
+    
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ''; // Reset the file input value
+        }
     };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -207,6 +247,11 @@ const RegisterScreen = () => {
         <div className="register-container">
             <div className="form-container">
                 <h1 className="app-title">Fakeflix</h1>
+                {/*preview && (
+                    <div className="image-preview">
+                        <img src={preview} alt="Profile Preview" className="preview-image" />
+                    </div>
+                )*/}
                 <form onSubmit={handleSubmit}>
                     <div className="form-row">
                         <Field  
@@ -274,7 +319,17 @@ const RegisterScreen = () => {
                                 className="custom-input"
                                 onChange={handleFileChange}
                                 accept="image/*"
+                                ref={fileInputRef}
                             />
+                            {preview && (
+                                <div className="image-preview">
+                                    <img src={preview} alt="Profile Preview" className="preview-image" />
+                                    <button className="remove-photo-btn" onClick={handleRemovePhoto}>
+                                        ✖
+                                    </button>
+                                </div>
+                            )}
+
                         </div>
                     </div>
 
