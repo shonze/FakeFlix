@@ -49,11 +49,36 @@ const RegisterScreen = () => {
     //     }
     //   };
 
-    const handleUpload = async () => {
+    // const handleUpload = async () => {
+    //     if (formData.files) {
+    //         const formDataToSend = new FormData();
+    //         formDataToSend.append("files", formData.files);
+    
+    //         try {
+    //             const response2 = await fetch('http://localhost:3000/api/upload', {
+    //                 method: 'POST',
+    //                 body: formDataToSend, // Use FormData as the body
+    //             });
+    //             const result2 = await response2.json();
+    //             if (response2.ok) {
+    //                 alert('Profile picture uploaded successfully' + result2.files[0].path);
+    //             } else {
+    //                 alert('Profile picture upload failed: ' + result2.message);
+    //             }
+    //         } catch (error) {
+    //             console.error('Error uploading profile picture:', error);
+    //             alert('An error occurred while uploading the profile picture.');
+    //         }
+    //     } else {
+    //         alert('Please select a file first.');
+    //     }
+    // };
+
+    const handlePosting = async () => {
+        let path=null;
         if (formData.files) {
             const formDataToSend = new FormData();
             formDataToSend.append("files", formData.files);
-    
             try {
                 const response2 = await fetch('http://localhost:3000/api/upload', {
                     method: 'POST',
@@ -61,6 +86,7 @@ const RegisterScreen = () => {
                 });
                 const result2 = await response2.json();
                 if (response2.ok) {
+                    path = result2.files[0].path;
                     alert('Profile picture uploaded successfully');
                 } else {
                     alert('Profile picture upload failed: ' + result2.message);
@@ -69,8 +95,36 @@ const RegisterScreen = () => {
                 console.error('Error uploading profile picture:', error);
                 alert('An error occurred while uploading the profile picture.');
             }
-        } else {
-            alert('Please select a file first.');
+        }
+        const data = {
+            fullName: formData.fullName,
+            username: formData.username,
+            email: formData.email,
+            birthdate: formData.birthdate,
+            password: formData.password,
+            photo: path,
+        };
+
+        try {
+            const response = await fetch('http://localhost:3000/api/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+            const result = await response.json();
+            if (response.ok) {
+                // handleUpload();
+                if (result.token) {
+                    localStorage.setItem('jwtToken', result.token);
+                    handleHome();
+                } else {
+                    alert('Registration failed: ' + (result.errors || 'Invalid input'));
+                }
+            } else {
+                alert(result.errors);
+            }
+        } catch (error) {
+            alert('An error occurred: ' + error.message);
         }
     };
 
@@ -114,37 +168,39 @@ const RegisterScreen = () => {
             alert('Birthdate is not valid.');
             return;
         }
+        
+        handlePosting();
 
-        const data = {
-            fullName: formData.fullName,
-            username: formData.username,
-            email: formData.email,
-            birthdate: formData.birthdate,
-            password: formData.password,
-            files: formData.files
-        };
+        // const data = {
+        //     fullName: formData.fullName,
+        //     username: formData.username,
+        //     email: formData.email,
+        //     birthdate: formData.birthdate,
+        //     password: formData.password,
+        //     files: formData.files
+        // };
 
-        try {
-            const response = await fetch('http://localhost:3000/api/users', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-            const result = await response.json();
-            if (response.ok) {
-                handleUpload();
-                if (result.token) {
-                    localStorage.setItem('jwtToken', result.token);
-                    handleHome();
-                } else {
-                    alert('Registration failed: ' + (result.errors || 'Invalid input'));
-                }
-            } else {
-                alert(result.errors);
-            }
-        } catch (error) {
-            alert('An error occurred: ' + error.message);
-        }
+        // try {
+        //     const response = await fetch('http://localhost:3000/api/users', {
+        //         method: 'POST',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify(data),
+        //     });
+        //     const result = await response.json();
+        //     if (response.ok) {
+        //         handleUpload();
+        //         if (result.token) {
+        //             localStorage.setItem('jwtToken', result.token);
+        //             handleHome();
+        //         } else {
+        //             alert('Registration failed: ' + (result.errors || 'Invalid input'));
+        //         }
+        //     } else {
+        //         alert(result.errors);
+        //     }
+        // } catch (error) {
+        //     alert('An error occurred: ' + error.message);
+        // }
     };
 
     return (
