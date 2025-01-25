@@ -2,6 +2,7 @@ const CategoryService = require('../services/category');
 const MovieService = require("../services/movies");
 require('custom-env').env(process.env.NODE_ENV, './config');
 const User = require('../modules/user');
+const jwt = require("jsonwebtoken")
 
 const validateAndGetUser = async (req) => {
     if (!req.headers.Authorization) {
@@ -137,7 +138,7 @@ const updateCategory = async (req, res) => {
         if (existingUserByUsername.isAdmin == false) { 
             return res.status(403).json({ errors: 'User is not an admin' });
         }
-        
+
         // If all the update details are missing then its a bad request
         if(!(req.body.name ||
             req.body.promoted ||
