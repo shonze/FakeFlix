@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback  } from 'react';
 import './Login.css';
 import Field from './Field';
 import { useNavigate } from "react-router-dom";
@@ -19,17 +19,30 @@ const LoginScreen = () => {
         navigate("../register"); // Navigate to the login page
       };
     
-    const handleHome = () => {
-        navigate("../home"); // Navigate to the login page
-      };
-    // Load stored email on component mount
-    useEffect(() => {
-        const storedjwt = localStorage.getItem("jwtToken");
-        const rememberMe = localStorage.getItem("rememberMe");
-        if (storedjwt && rememberMe == 'true') {
-            handleHome();
-        }
-    }, []);
+    // const handleHome = () => {
+    //     navigate("../home");
+    //   };
+    // // Load stored email on component mount
+    // useEffect(() => {
+    //     const storedjwt = localStorage.getItem("jwtToken");
+    //     const rememberMe = localStorage.getItem("rememberMe");
+    //     if (storedjwt && rememberMe === 'true') {
+    //         handleHome();
+    //     }
+    // }, []);
+
+
+  const handleHome = useCallback(() => {
+    navigate("../home");
+  }, [navigate]); // Dependency: navigate is stable from React Router
+
+  useEffect(() => {
+    const storedjwt = localStorage.getItem("jwtToken");
+    const rememberMe = localStorage.getItem("rememberMe");
+    if (storedjwt && rememberMe === "true") {
+      handleHome();
+    }
+  }, [handleHome]); // Add handleHome as a dependency
 
     const handleInputChange = (e) => {
       const { name, type, checked, value } = e.target;
@@ -40,12 +53,35 @@ const LoginScreen = () => {
   };
   
 
-    const handleFileChange = (e) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            profilePicture: e.target.files[0],
-        }));
-    };
+    // const handleFileChange = (e) => {
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         profilePicture: e.target.files[0],
+    //     }));
+    // };
+    
+    function showToast(message, type) {
+      // Create a container for the toast messages if it doesn't exist
+      let toastContainer = document.querySelector('.toast-container');
+      if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.className = 'toast-container';
+        document.body.appendChild(toastContainer);
+      }
+  
+      // Create the toast element
+      const toast = document.createElement('div');
+      toast.className = type === 'success' ? 'success-toast' : 'error-toast';
+      toast.textContent = message;
+  
+      // Add the toast to the container
+      toastContainer.appendChild(toast);
+  
+      // Remove the toast after 4 seconds
+      setTimeout(() => {
+        toast.remove();
+      }, 4000);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -70,13 +106,13 @@ const LoginScreen = () => {
                     localStorage.setItem('rememberMe', formData.rememberMe);
                     handleHome();
                 } else {
-                    alert('Login failed: ' + (result.errors || 'Invalid input'));
+                    showToast('Login failed: ' + (result.errors || 'Invalid input'), 'error');
                 }
             } else {
-                alert(result.errors);
+                showToast(result.errors, 'error');
             }
         } catch (error) {
-            alert('An error occurred: ' + error.message);
+            showToast('An error occurred: ' + error.message, 'error');
         }
     };
 
