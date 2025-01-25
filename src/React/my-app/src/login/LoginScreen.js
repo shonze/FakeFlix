@@ -148,6 +148,7 @@ const LoginScreen = () => {
                                 name="rememberMe"
                                 checked={formData.rememberMe}
                                 onChange={handleInputChange}
+                                class="custom-checkbox"
                             />
                             Remember Me
                         </label>

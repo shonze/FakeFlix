@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import AdminScreen from './AdminScreen/AdminScreen';
+// import AdminScreen from './AdminScreen/AdminScreen';
 
-import RegisterScreen from './register/RegisterScreen';
-import LoginScreen from './login/LoginScreen';
-import StartingScreen from './starting/StartingPage';
+// import RegisterScreen from './register/RegisterScreen';
+// import LoginScreen from './login/LoginScreen';
+// import StartingScreen from './starting/StartingPage';
 import App from './starting/App';
 import reportWebVitals from './reportWebVitals.js';
 

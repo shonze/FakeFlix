@@ -131,7 +131,7 @@
 
 /* Add styles for the "Remember Me" checkbox */
 .remember-me {
-    color: rgb(248, 9, 9);
+    color: white;
     font-size: 16px;
     margin-top: 10px;
     display: flex;
@@ -204,3 +204,14 @@
       transform: translateY(-10px);
     }
   }
+
+/* Default checkbox styling (use browser styles) */
+.custom-checkbox {
+    accent-color: red; /* Use the browser's built-in accent-color property */
+}
+
+/* Fallback for older browsers */
+.custom-checkbox:checked {
+    background-color: red; /* Set background red when checked */
+    border-color: initial; /* Retain default border look */
+}
