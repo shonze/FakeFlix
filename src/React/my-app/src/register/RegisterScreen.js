@@ -6,9 +6,7 @@ import { useNavigate } from "react-router-dom";
 const RegisterScreen = () => {
     const navigate = useNavigate(); // Hook for programmatic navigation
 
-    //
     const fileInputRef = useRef(null);
-    //
 
     const [formData, setFormData] = useState({
         fullName: '',
@@ -19,9 +17,8 @@ const RegisterScreen = () => {
         confirmPassword: '',
         files: null,
     });
-    /////
+
     const [preview, setPreview] = useState(null); // State for the image preview
-    ////
 
     // Load stored email on component mount
     useEffect(() => {
@@ -34,77 +31,33 @@ const RegisterScreen = () => {
         }
     }, []);
 
-    // const handleUpload = async () => {
-    //     const data2 = {
-    //         profilePicture: formData.profilePicture
-    //     };
-    //     if (formData.profilePicture) {
-    //         console.log('File to upload:', formData.profilePicture);
-    //         const response2 = await fetch('http://localhost:3000/api/upload', {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify(data2),
-    //         });
-    //         const result2 = await response2.json();
-    //         if (response2.ok) {
-    //             alert('Profile picture uploaded successfully');
-    //         } else {
-    //             alert('Profile picture upload failed: ' + result2.message);
-    //         }
-    //     } else {
-    //       alert('Please select a file first.');
-    //     }
-    //   };
-
-    // const handleUpload = async () => {
-    //     if (formData.files) {
-    //         const formDataToSend = new FormData();
-    //         formDataToSend.append("files", formData.files);
+    function showToast(message, type) {
+        // Create a container for the toast messages if it doesn't exist
+        let toastContainer = document.querySelector('.toast-container');
+        if (!toastContainer) {
+          toastContainer = document.createElement('div');
+          toastContainer.className = 'toast-container';
+          document.body.appendChild(toastContainer);
+        }
     
-    //         try {
-    //             const response2 = await fetch('http://localhost:3000/api/upload', {
-    //                 method: 'POST',
-    //                 body: formDataToSend, // Use FormData as the body
-    //             });
-    //             const result2 = await response2.json();
-    //             if (response2.ok) {
-    //                 alert('Profile picture uploaded successfully' + result2.files[0].path);
-    //             } else {
-    //                 alert('Profile picture upload failed: ' + result2.message);
-    //             }
-    //         } catch (error) {
-    //             console.error('Error uploading profile picture:', error);
-    //             alert('An error occurred while uploading the profile picture.');
-    //         }
-    //     } else {
-    //         alert('Please select a file first.');
-    //     }
-    // };
+        // Create the toast element
+        const toast = document.createElement('div');
+        toast.className = type === 'success' ? 'success-toast' : 'error-toast';
+        toast.textContent = message;
+    
+        // Add the toast to the container
+        toastContainer.appendChild(toast);
+    
+        // Remove the toast after 4 seconds
+        setTimeout(() => {
+          toast.remove();
+        }, 4000);
+      }
 
     const handlePosting = async () => {
         let path=null;
         let url=null;
-        if (formData.files) {
-            const formDataToSend = new FormData();
-            formDataToSend.append("files", formData.files);
-            try {
-                const response2 = await fetch('http://localhost:3000/api/upload', {
-                    method: 'POST',
-                    body: formDataToSend, // Use FormData as the body
-                });
-                const result2 = await response2.json();
-                if (response2.ok) {
-                    url = result2.files[0].url;
-                    path = result2.files[0].path;
-                    alert('Profile picture uploaded successfully');
-                } else {
-                    alert('Profile picture upload failed: ' + result2.message);
-                }
-            } catch (error) {
-                console.error('Error uploading profile picture:', error);
-                alert('An error occurred while uploading the profile picture.');
-            }
-        }
+
         const data = {
             fullName: formData.fullName,
             username: formData.username,
@@ -123,18 +76,41 @@ const RegisterScreen = () => {
             });
             const result = await response.json();
             if (response.ok) {
-                // handleUpload();
+
                 if (result.token) {
                     localStorage.setItem('jwtToken', result.token);
+
+                    if (formData.files) {
+                        const formDataToSend = new FormData();
+                        formDataToSend.append("files", formData.files);
+                        try {
+                            const response2 = await fetch('http://localhost:3000/api/upload', {
+                                method: 'POST',
+                                body: formDataToSend, // Use FormData as the body
+                            });
+                            const result2 = await response2.json();
+                            if (response2.ok) {
+                                url = result2.files[0].url;
+                                path = result2.files[0].path;
+                                showToast('Profile picture uploaded successfully', 'success');
+                            } else {
+                                showToast('Profile picture upload failed: ' + result2.message, 'error');
+                            }
+                        } catch (error) {
+                            console.error('Error uploading profile picture:', error);
+                            showToast('An error occurred while uploading the profile picture.', 'error');
+                        }
+                    }
+                    showToast('Account created successfully', 'success');
                     handleHome();
                 } else {
-                    alert('Registration failed: ' + (result.errors || 'Invalid input'));
+                    showToast('Registration failed: ' + (result.errors || 'Invalid input'), 'error');
                 }
             } else {
-                alert(result.errors);
+                showToast(result.errors, 'error');
             }
         } catch (error) {
-            alert('An error occurred: ' + error.message);
+            showToast('An error occurred: ' + error.message, 'error');
         }
     };
 
@@ -151,18 +127,12 @@ const RegisterScreen = () => {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    // const handleFileChange = (e) => {
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         files: e.target.files[0],
-    //     }));
-    // };
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
             if (!validImageTypes.includes(file.type)) {
-                alert('Please upload a valid image file (JPEG, PNG, GIF, WEBP).');
+                showToast('Please upload a valid image file (JPEG, PNG, GIF, WEBP).', 'error');
                 handleRemovePhoto();
                 return;
             }
@@ -176,14 +146,6 @@ const RegisterScreen = () => {
         }
     };
 
-    // this is working
-    // const handleRemovePhoto = () => {
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         files: null, // Clear the selected file
-    //     }));
-    //     setPreview(null); // Clear the image preview
-    // };
     const handleRemovePhoto = () => {
         setFormData((prevData) => ({
             ...prevData,
@@ -202,11 +164,11 @@ const RegisterScreen = () => {
         const { password, confirmPassword, birthdate } = formData;
 
         if (password.length < 8) {
-            alert('Passwords should be at least 8 characters long.');
+            showToast('Passwords should be at least 8 characters long.', 'error');
             return;
         }
         if (password !== confirmPassword) {
-            alert('Passwords do not match. Please try again.');
+            showToast('Passwords do not match. Please try again.', 'error');
             return;
         }
 
@@ -214,53 +176,17 @@ const RegisterScreen = () => {
             Date.parse(birthdate) > Date.now() ||
             Date.parse(birthdate) < Date.parse('1900-01-01')
         )) {
-            alert('Birthdate is not valid.');
+            showToast('Birthdate is not valid.', 'error');
             return;
         }
         
         handlePosting();
-
-        // const data = {
-        //     fullName: formData.fullName,
-        //     username: formData.username,
-        //     email: formData.email,
-        //     birthdate: formData.birthdate,
-        //     password: formData.password,
-        //     files: formData.files
-        // };
-
-        // try {
-        //     const response = await fetch('http://localhost:3000/api/users', {
-        //         method: 'POST',
-        //         headers: { 'Content-Type': 'application/json' },
-        //         body: JSON.stringify(data),
-        //     });
-        //     const result = await response.json();
-        //     if (response.ok) {
-        //         handleUpload();
-        //         if (result.token) {
-        //             localStorage.setItem('jwtToken', result.token);
-        //             handleHome();
-        //         } else {
-        //             alert('Registration failed: ' + (result.errors || 'Invalid input'));
-        //         }
-        //     } else {
-        //         alert(result.errors);
-        //     }
-        // } catch (error) {
-        //     alert('An error occurred: ' + error.message);
-        // }
     };
 
     return (
         <div className="register-container">
             <div className="form-container">
                 <h1 className="app-title">Fakeflix</h1>
-                {/*preview && (
-                    <div className="image-preview">
-                        <img src={preview} alt="Profile Preview" className="preview-image" />
-                    </div>
-                )*/}
                 <form onSubmit={handleSubmit}>
                     <div className="form-row">
                         <Field  

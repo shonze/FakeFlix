@@ -189,3 +189,68 @@ body {
 .remove-photo-btn:hover {
     background-color: #ffcccc; /* Change background color on hover */
 }
+
+/* Toast Container */
+/* Toast Container */
+.toast-container {
+    position: fixed; /* Keep it fixed for global positioning */
+    top: 10px; /* Adjust as needed to place above the title */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center alignment */
+    z-index: 9999; /* Ensure it appears above other elements */
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Stack items vertically */
+    gap: 10px; /* Add space between toasts */
+  }
+  
+  
+  /* Success Toast */
+  .success-toast {
+    color: #fff; 
+    background-color: #2ecc71; 
+    border: 1px solid #27ae60; 
+    border-radius: 5px;
+    padding: 12px 20px;
+    margin: 0; /* Remove margin to avoid double-spacing with gap */
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 4s ease-in-out;
+  }
+  
+  /* Error Toast */
+  .error-toast {
+    color: #fff; 
+    background-color: #e50914; 
+    border: 1px solid #b20710; 
+    border-radius: 5px;
+    padding: 12px 20px;
+    margin: 0; /* Remove margin to avoid double-spacing with gap */
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 4s ease-in-out;
+  }
+  
+  /* Fade In Out Animation */
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    10% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
+  
