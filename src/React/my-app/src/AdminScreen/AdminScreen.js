@@ -23,6 +23,7 @@ const AdminScreen = () => {
 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  
 
   const [selectedCategories, setSelectedCategories] = useState([]); // Selected categories
 
@@ -66,7 +67,7 @@ const AdminScreen = () => {
             body: JSON.stringify(movieToAdd),
         });
         if (!response.ok) throw new Error('Error adding movie');
-        setSuccessMessage('Movie added successfully!');
+        showToast('Movie added successfully!', 'success');
         setNewMovie({
             title: '',
             categories: [],
@@ -77,7 +78,7 @@ const AdminScreen = () => {
         });
         setSelectedCategories([]); // Reset selected categories
     } catch (error) {
-        setErrorMessage('Failed to add movie.');
+        showToast('Error: Unable to add the movie.', 'error');
         console.error(error);
     }
   };
@@ -104,8 +105,9 @@ const AdminScreen = () => {
       setFoundMovie({
         ...data,
       });
+      showToast('Found Movie', 'success');
     } catch (error) {
-      setErrorMessage('Movie not found.');
+      showToast('Error: Unable to find the movie.', 'error');
       setFoundMovie(null);
     }
   };
@@ -117,10 +119,10 @@ const AdminScreen = () => {
               method: 'DELETE',
           });
           if (!response.ok) throw new Error('Error deleting movie');
-          setSuccessMessage('Movie deleted successfully!');
+          showToast('Movie deleted successfully.', 'success');
           setFoundMovie(null);
       } catch (error) {
-          setErrorMessage('Failed to delete movie.');
+          showToast('Error: Unable to delete the movie.', 'error');
           console.error(error);
       }
   };
@@ -135,10 +137,10 @@ const AdminScreen = () => {
               body: JSON.stringify(foundMovie),
           });
           if (!response.ok) throw new Error('Error updating movie');
-          setSuccessMessage('Movie updated successfully!');
+          showToast('Movie updated successfully.', 'success');
           setFoundMovie(null);
       } catch (error) {
-          setErrorMessage('Failed to update movie.');
+          showToast('Error: Couldnt update movie', 'error');
           console.error(error);
       }
   };
@@ -153,11 +155,11 @@ const AdminScreen = () => {
               body: JSON.stringify(newCategory),
           });
           if (!response.ok) throw new Error('Error adding category');
-          setSuccessMessage('Category added successfully!');
+          showToast('Category added successfully.', 'success');
           setNewCategory({ name: '', promoted: false, description: '' });
           fetchCategories();
       } catch (error) {
-          setErrorMessage('Failed to add category.');
+          showToast('Error: Couldnt add category', 'error');
           console.error(error);
       }
   };
@@ -169,10 +171,10 @@ const AdminScreen = () => {
               method: 'DELETE',
           });
           if (!response.ok) throw new Error('Error deleting category');
-          setSuccessMessage('Category deleted successfully!');
+          showToast('Category deleted successfully.', 'success');
           fetchCategories();
       } catch (error) {
-          setErrorMessage('Failed to delete category.');
+          showToast('Error: Couldnt delete category', 'error');
           console.error(error);
       }
   };
@@ -187,17 +189,42 @@ const AdminScreen = () => {
               body: JSON.stringify(editingCategory),
           });
           if (!response.ok) throw new Error('Error updating category');
-          setSuccessMessage('Category updated successfully!');
+          showToast('Category updated successfully.', 'success');
           setEditingCategory(null);
           setNewCategory({ name: '', promoted: false, description: '' });
           fetchCategories();
       } catch (error) {
-          setErrorMessage('Failed to update category.');
+          showToast('Error: Couldnt update category', 'error');
           console.error(error);
       }
   };
 
-    return (
+
+  function showToast(message, type) {
+    // Create a container for the toast messages if it doesn't exist
+    let toastContainer = document.querySelector('.toast-container');
+    if (!toastContainer) {
+      toastContainer = document.createElement('div');
+      toastContainer.className = 'toast-container';
+      document.body.appendChild(toastContainer);
+    }
+  
+    // Create the toast element
+    const toast = document.createElement('div');
+    toast.className = type === 'success' ? 'success-toast' : 'error-toast';
+    toast.textContent = message;
+  
+    // Add the toast to the container
+    toastContainer.appendChild(toast);
+  
+    // Remove the toast after 4 seconds
+    setTimeout(() => {
+      toast.remove();
+    }, 4000);
+  }
+
+
+  return (
         <div className="container">
           <button className="back-button" onClick={handleBackClick}>
             &#8592; Back
@@ -228,40 +255,9 @@ const AdminScreen = () => {
                 onChange={(e) => setNewCategory({ ...newCategory, promoted: e.target.checked })}
               />
             </label>
+            <p></p>
             <button type="submit">Add Category</button>
           </form>
-
-          {/* Separate Editing Form (when a category is being edited) */}
-          {editingCategory && (
-            <form onSubmit={handleUpdateCategory} className="edit-category">
-              <h2>Edit Category</h2>
-              <input
-                type="text"
-                placeholder="Category Name"
-                value={editingCategory.name}
-                onChange={(e) => setEditingCategory({ ...editingCategory, name: e.target.value })}
-                required
-              />
-              <input
-                type="text"
-                placeholder="Description"
-                value={editingCategory.description}
-                onChange={(e) => setEditingCategory({ ...editingCategory, description: e.target.value })}
-              />
-              <label>
-                Promoted:
-                <input
-                  type="checkbox"
-                  checked={editingCategory.promoted}
-                  onChange={(e) => setEditingCategory({ ...editingCategory, promoted: e.target.checked })}
-                />
-              </label>
-              <button type="submit">Update Category</button>
-              <button type="button" onClick={() => setEditingCategory(null)}>Cancel</button>
-            </form>
-            )}
-            {/* Success Message */}
-            {successMessage && <div className="success-message">{successMessage}</div>}
 
             {/* Category List */}
             <h2>Categories</h2>
@@ -271,9 +267,40 @@ const AdminScreen = () => {
                         {category.name} <h6></h6> 
                         <button onClick={() => {
                             setEditingCategory(category);
-                        }}>Edit</button> <p>  </p>
+                        }}>Edit</button> <p1> </p1>
                         <button className="delete-button" onClick={() => handleDeleteCategory(category._id)}>Delete</button>
-                        <h6></h6> 
+                        <h6></h6>
+
+                        {/* Separate Editing Form (when a category is being edited) */}
+                        {editingCategory && editingCategory._id === category._id && (
+                          <form onSubmit={handleUpdateCategory} className="edit-category">
+                            <h2>Edit Category</h2>
+                            <input
+                              type="text"
+                              placeholder="Category Name"
+                              value={editingCategory.name}
+                              onChange={(e) => setEditingCategory({ ...editingCategory, name: e.target.value })}
+                              required
+                            />
+                            <input
+                              type="text"
+                              placeholder="Description"
+                              value={editingCategory.description}
+                              onChange={(e) => setEditingCategory({ ...editingCategory, description: e.target.value })}
+                            />
+                            <label>
+                              Promoted:
+                              <input
+                                type="checkbox"
+                                checked={editingCategory.promoted}
+                                onChange={(e) => setEditingCategory({ ...editingCategory, promoted: e.target.checked })}
+                              />
+                            </label>
+                            <button type="submit">Update Category</button>
+                            <p1>  </p1>
+                            <button type="button" onClick={() => setEditingCategory(null)}>Cancel</button>
+                          </form>
+                          )}
                     </li>
                 ))}
             </ul>
@@ -343,6 +370,7 @@ const AdminScreen = () => {
                 />
                 <button type="submit">Search</button>
               </form>
+            
 
             {/* Display Found Movie */}
             {foundMovie && (
@@ -414,9 +442,15 @@ const AdminScreen = () => {
                       required
                   />
                   <button type="submit">Update Movie</button>
-              </form>
-            </div>
-          )}
+                  <p1>  </p1>
+                  <button className="delete-button" onClick={() => handleDeleteMovie(foundMovie._id)}>Delete Movie</button>
+                </form>
+              </div>
+            )}
+            {/* Error Message */}
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            {/* Success Message */}
+            {successMessage && <div className="success-message">{successMessage}</div>}  
         </div>
     );
 };

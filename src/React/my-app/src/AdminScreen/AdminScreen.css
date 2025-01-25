@@ -76,7 +76,7 @@ button:hover {
 .delete-button {
   background-color: #e50914;
   color: #ffffff;
-  padding: 3px 6px;
+  padding: 5px 6px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -148,5 +148,63 @@ button:hover {
 .checkbox-item {
   margin: 5px 0;
   font-size: 16px;
+}
+
+/* Toast Container */
+.toast-container {
+  position: fixed;
+  top: 20px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  z-index: 9999;
+}
+
+/* Success Toast */
+.success-toast {
+  color: #fff; /* White text */
+  background-color: #2ecc71; /* Netflix-friendly green */
+  border: 1px solid #27ae60; /* Darker green border */
+  border-radius: 5px;
+  padding: 12px 20px;
+  margin: 10px 0;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeInOut 4s ease-in-out;
+}
+
+/* Error Toast */
+.error-toast {
+  color: #fff; /* White text */
+  background-color: #e50914; /* Netflix red */
+  border: 1px solid #b20710; /* Darker red border */
+  border-radius: 5px;
+  padding: 12px 20px;
+  margin: 10px 0;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeInOut 4s ease-in-out;
+}
+
+/* Fade-in-out animation */
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
 }
 
