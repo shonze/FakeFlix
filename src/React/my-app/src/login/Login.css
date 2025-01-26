@@ -1,4 +1,4 @@
-.login-container {
+/* .login-container {
     min-height: 100vh;
     padding: 20px;
     background: url('../../public/login2.jpg') no-repeat center center/cover;
@@ -20,7 +20,40 @@
     font-size: 48px;
     margin-bottom: 20px;
     text-align: center;
+} */
+
+/* Login Container Styles */
+.login-container {
+    min-height: 100vh;
+    padding: 20px;
+    background: url('../../public/login2.jpg') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; /* Allows content to stack vertically */
+    overflow-y: auto; /* Enables vertical scrolling if content overflows */
+    box-sizing: border-box; /* Ensures padding doesn't cause overflow */
 }
+
+/* Form Container */
+.form-container {
+    padding: 20px;
+    background: rgba(32, 32, 32, 0.9);
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+    box-sizing: border-box; /* Adds consistent box model behavior */
+}
+
+/* App Title */
+.app-title {
+    color: rgb(229, 9, 20);
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Additional unchanged styles for form rows, labels, inputs, buttons, etc., follow the same pattern. */
 
 .form-row {
     display: flex;

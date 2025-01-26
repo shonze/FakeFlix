@@ -1,9 +1,27 @@
+/* 
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+}
+
+.register-container {
+    min-height: 100vh;
+    padding: 20px;
+    background: url('../../public/login2.jpg') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+
 /* General Styles */
 body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     background-color: #121212;
+    overflow-y: auto; /* Ensures vertical scrolling */
 }
 
 /* Container Styles */
@@ -14,6 +32,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column; /* Allows content to grow vertically */
+    box-sizing: border-box; /* Ensures padding doesn't overflow */
 }
 
 .form-container {
