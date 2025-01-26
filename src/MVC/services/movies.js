@@ -6,19 +6,22 @@ const CategoriesModel = require("../modules/category");
 const userServices = require("./user");
 const CategoriesService = require("./category");
 
-const createMovie = async (title, categories, description, length, thumbnail) => {
+const createMovie = async (title, categories, description, length, thumbnail, video) => {
     // Checks if one of the fields are missing
-    if (!title || !categories || !description || !length || !video) {
-        return [400, "One of the required fields are missing"];
+    // Validate incoming data
+    if (!title || !categories || !description || !length || !thumbnail || !video) {
+        return res.status(400).json({ message: "One of the required fields is missing." });
     }
-
+    // Check if categories is an array and not empty
+    if (!Array.isArray(categories) || categories.length === 0) {
+        return res.status(400).json({ message: "Categories must be a non-empty array." });
+    }
     // Creates a new Movie and saves it to the database
     if (!thumbnail) {
         thumbnail = "No Thumbnail";
     }
-
     const Movie = new MoviesModel({ title, categories, description, length, thumbnail , video });
-
+    console.log(Movie);
     // Stores the list of categories to save them in the end
     // We dont want to save the movie if one of the categories is not valid
     const ListOfCategories = [];
@@ -109,9 +112,9 @@ const getMovies = async (userId) => {
     return [200, randomMoviesByCategory];
 };
 
-const updateMovie = async (id, title, description, length, thumbnail, categories) => {
+const updateMovie = async (id, title, description, length, thumbnail, categories, video) => {
     let Movie = await getMovieById(id);
-
+    console.log(Movie);
     // Returns 404 if the Movie is not found
     if (Movie[0] != 200) return Movie;
 
@@ -133,8 +136,12 @@ const updateMovie = async (id, title, description, length, thumbnail, categories
     for (const categoryId of Movie.categories) {
         const Category = await CategoriesModel.findOne({ _id: categoryId });
 
-        // Returns 404 if the category is not found
-        if (!Category) return [404, "One of the categories was not found"];
+        // Remove the category if the category is not found
+        if (!Category){
+            Movie.categories= Movie.categories.filter(category_id => {
+                return category_id.toString() !== categoryId.toString();
+            })
+        }
 
         // Remove the movie from the category list of movies
         Category.movies = Category.movies.filter(movie_id => {
@@ -156,11 +163,8 @@ const updateMovie = async (id, title, description, length, thumbnail, categories
     Movie.video = video;
 
     // Checks if the categories are valid and add the movie to the categories list of movies
-    for (const categoryName of categories) {
-        const Category = await CategoriesModel.findOne({ name: categoryName });
-
-        // Returns 404 if the category is not found
-        if (!Category) return [404, "One of the categories was not found"];
+    for (const categoryId of categories) {
+        const Category = await CategoriesModel.findOne({ _id: categoryId });
 
         // Add the movie to the category list of movies
         Category.movies.push(Movie._id);
@@ -269,7 +273,7 @@ const deleteMovie = async (id) => {
     client.destroy();
 
 
-    await Movie.deleteOne();
+    await MoviesModel.deleteOne(Movie);
 
     // Save the categories
     for (const category of ListOfObjects) {

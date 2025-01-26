@@ -32,8 +32,8 @@ const getCategories = async () => { return await Category.find({}); };
 const updateCategory = async (id, name, promoted, description, createdAt, movies) => {
     const category = await getCategoryById(id);
     if (!category) return null;
-    if (name) category.name = name;
-    if (promoted) category.promoted = promoted;
+    if (name) category.name = name
+    if (!(promoted == undefined)) category.promoted = promoted;
     if (description) category.description = description;
     if (createdAt) category.createdAt = createdAt;
     if (movies) category.movies = movies;
