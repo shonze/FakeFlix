@@ -12,8 +12,14 @@ function HomeDescriptionPage({ movie }) {
     const fetchRecommandation = async () => {
       // Fetch recommended movies
       try {
+        const token = localStorage.getItem('jwtToken');
+
         const response = await fetch(`http://localhost:3002/api/movies/${movie._id}/recommend/`, {
           method: 'GET',
+          headers: {
+            'Authorization': 'Bearer' + token,
+            'Content-Type': 'application/json'
+          }
         });
 
         if (!response.ok) {
@@ -29,10 +35,16 @@ function HomeDescriptionPage({ movie }) {
     const fetchCategories = async () => {
       // Fetch categories
       try {
+        const token = localStorage.getItem('jwtToken');
+
         const categories = await Promise.all(
           movie.categories.map(async (categoryId) => {
             const response = await fetch(`http://localhost:3002/api/categories/${categoryId}`, {
-              method: 'GET'
+              method: 'GET',
+              headers: {
+                'Authorization': 'Bearer' + token,
+                'Content-Type': 'application/json'
+              }
             });
 
             if (!response.ok) {

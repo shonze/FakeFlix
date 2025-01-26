@@ -9,10 +9,14 @@ const Categorieslst = ({ userId }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        const token = localStorage.getItem('jwtToken');
+
         const response = await fetch(`http://localhost:3002/api/movies`, {
           method: 'GET',
           headers: {
-            'userId': userId
+            'userId': userId,
+            'Authorization': 'Bearer' + token,
+            'Content-Type': 'application/json'
           }
         });
 

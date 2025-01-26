@@ -10,8 +10,14 @@ function Movie({ id }) {
     useEffect(() => {
         const fetchMovie = async () => {
             try {
+                const token = localStorage.getItem('jwtToken');
+
                 const response = await fetch(`http://localhost:3002/api/movies/${id}`, {
-                    method: 'GET'
+                    method: 'GET',
+                    headers:{
+                        'Authorization': 'Bearer' + token ,
+                        'Content-Type': 'application/json'
+                    }
                 });
 
                 if (!response.ok) {
@@ -31,7 +37,7 @@ function Movie({ id }) {
 
     return (
         <div
-            className="card position-relative overflow-hidden"
+            className="w-full h-full"
             onClick={() => {
                 // navigate(`/movie/${movie._id}`);
                 toggleModal();
@@ -43,10 +49,7 @@ function Movie({ id }) {
                 className="w-full h-full object-cover"
                 alt=""
             />
-            <div className={`card-body position-absolute bottom-0 start-0 w-100 bg-${theme} bg-opacity-75 text-${theme === "dark" ? "white" : "black"} p-2 d-none`}>
-                <h5 className="card-title">{movie.title}</h5>
-                <p className="card-text">{movie.description}</p>
-            </div>
+
             {showModal && (
                 <div className="modal fade show d-block" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="modal-dialog">

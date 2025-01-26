@@ -8,8 +8,14 @@ const CategorySearch = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
+                const token = localStorage.getItem('jwtToken');
+
                 const response = await fetch(`http://localhost:3002/api/categories`, {
-                    method: 'GET'
+                    method: 'GET',
+                    headers:{
+                        'Authorization': 'Bearer' + token ,
+                        'Content-Type': 'application/json'
+                    }
                 });
 
                 if (!response.ok) {

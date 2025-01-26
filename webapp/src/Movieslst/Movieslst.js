@@ -15,6 +15,8 @@ function Movielst({ Movieslst }) {
 
                 // Check if total content width exceeds container width
                 const isContentOverflowing = scrollWidth > clientWidth;
+
+                console.log(`${scrollWidth} ${clientWidth}`);
                 setIsScrollable(isContentOverflowing);
 
                 // Update arrow visibility
