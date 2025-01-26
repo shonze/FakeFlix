@@ -13,7 +13,7 @@ const SearchScreen = () => {
             const token = localStorage.getItem('jwtToken');
             const response = await fetch(`http://localhost:8080/api/movies/search/${movieQuery}`,{
                 headers: {
-                    'Authorization': `Bearer'+ 'token`,
+                    'Authorization': 'Bearer '+ token,
                     'Content-Type': 'application/json' }
             });
             if (!response.ok) throw new Error('Failed to fetch movies');

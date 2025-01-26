@@ -10,11 +10,11 @@ const Categorieslst = () => {
     const fetchCategories = async () => {
       try {
         const token = localStorage.getItem('jwtToken');
-
+        console.log(token)
         const response = await fetch(`http://localhost:8080/api/movies`, {
           method: 'GET',
           headers: {
-            'Authorization': 'Bearer' + token,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
           }
         });
@@ -31,7 +31,7 @@ const Categorieslst = () => {
     };
 
     fetchCategories();
-  });
+  },[]);
 
   const AllReturnedMovies = Object.values(categoriesMovies).flat();
 

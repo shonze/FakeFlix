@@ -15,7 +15,7 @@ function Movie({ id }) {
                 const response = await fetch(`http://localhost:8080/api/movies/${id}`, {
                     method: 'GET',
                     headers:{
-                        'Authorization': 'Bearer' + token ,
+                        'Authorization': 'Bearer ' + token ,
                         'Content-Type': 'application/json'
                     }
                 });

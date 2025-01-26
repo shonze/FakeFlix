@@ -8,8 +8,8 @@ const validateAndGetUser = async (req) => {
     if (!req.headers.authorization) {
         throw new Error('User not logged in');
     }
-
     const token = req.headers.authorization.split(" ")[1];
+    console.log(token)
     let data;
 
     try {

@@ -18,8 +18,6 @@ const TopMovie = ({ id }) => {
                 rect.bottom,
                 window.innerHeight
               ) - Math.max(rect.top, 0);
-        
-              console.log(`${visibleHeight} ${rect.height}`)
 
               // Check if less than half of the video is visible
               const isHalfVisible = visibleHeight >= (rect.height * 3.5 / 6);
@@ -50,7 +48,7 @@ const TopMovie = ({ id }) => {
                 const response = await fetch(`http://localhost:8080/api/movies/${id}`, {
                     method: 'GET',
                     headers:{
-                        'Authorization': 'Bearer' + token ,
+                        'Authorization': 'Bearer ' + token ,
                         'Content-Type': 'application/json'
                     }
                 });

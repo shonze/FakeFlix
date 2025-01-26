@@ -27,7 +27,7 @@ function CategoryPage() {
                 const response = await fetch(`http://localhost:3002/api/categories/${id}`, {
                     method: 'GET',
                     headers:{
-                        'Authorization': 'Bearer' + token ,
+                        'Authorization': 'Bearer ' + token ,
                         'Content-Type': 'application/json'
                     }
                 });

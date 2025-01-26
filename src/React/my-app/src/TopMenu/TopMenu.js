@@ -7,6 +7,7 @@ import Theme from '../Theme/Theme';
 
 const TopMenu = () => {
     const [isTop, setIsTop] = useState(true);
+    const [isAdmin,setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,6 +27,12 @@ const TopMenu = () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []); // Empty dependency array means this runs once on mount
+
+    useEffect( () => {
+        // const token = localStorage.getItem('jwtToken')
+        // const data = jwt.verify(token,"SECRET-balls");
+        // setIsAdmin(data.isAdmin);
+    },[]);
 
     const homePage = `http://${window.location.hostname}:${window.location.port}`
 
@@ -47,12 +54,14 @@ const TopMenu = () => {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav ml-auto">
                     <CategorySearch />
+                    {isAdmin ? (
                     <li className="nav-item">
                         <button 
                         className={`btn btn-${localStorage.getItem("theme")} bg-transparent border-0`}
                         onClick={() => {navigate('../admin')}}
                         >Admin</button>
                     </li>
+                    ) : null }
                     <li className="nav-item">
                         <button 
                         className={`btn btn-${localStorage.getItem("theme")} bg-transparent border-0`}

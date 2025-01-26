@@ -17,7 +17,7 @@ const WatchMovie = () => {
                 const token = localStorage.getItem('jwtToken');
                 const response = await fetch(`http://localhost:8080/api/categories/${categoryID}`,{
                     headers: {
-                        'Authorization': `Bearer'+ 'token`,
+                        'Authorization': 'Bearer '+ token,
                         'Content-Type': 'application/json' }
                 });
                 if (!response.ok) throw new Error('Failed to bring categories');
