@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-
+import './Movie.css';
 import MovieDescription from '../Pages/MovieDescription'
 
 function Movie({ id }) {
@@ -40,7 +40,7 @@ function Movie({ id }) {
         >
             <img
                 src={movie.thumbnail}
-                className="card-img-top"
+                className="w-full h-full object-cover"
                 alt=""
             />
             <div className={`card-body position-absolute bottom-0 start-0 w-100 bg-${theme} bg-opacity-75 text-${theme === "dark" ? "white" : "black"} p-2 d-none`}>
@@ -51,7 +51,7 @@ function Movie({ id }) {
                 <div className="modal fade show d-block" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="modal-dialog">
                         <div className="modal-content">
-                            <MovieDescription movie={movie}/>
+                            <MovieDescription movie={movie} />
                         </div>
                     </div>
                 </div>

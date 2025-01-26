@@ -1,14 +1,44 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import './TopMenu.css';
 import CategorySearch from '../CategorySearch/CategorySearch'
 import Theme from '../Theme/Theme';
 
 const TopMenu = () => {
+    const [isTop, setIsTop] = useState(true);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const isTop =
+                (Math.round(window.scrollY)) ===
+                0;
+
+            setIsTop(isTop);
+        };
+
+        // Add scroll event listener
+        window.addEventListener('scroll', handleScroll);
+
+        // Cleanup function to remove event listener
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []); // Empty dependency array means this runs once on mount
+
     const homePage = `http://${window.location.hostname}:${window.location.port}`
 
     return (
-        <nav className={`.bg-transparent navbar navbar-expand-lg navbar-${localStorage.getItem("theme")} sticky-top`}>
-            <a className="navbar-brand" href={homePage}>MovieTime</a>
+        <nav
+            className={`navbar navbar-expand-lg navbar-${localStorage.getItem("theme")} sticky-top ${isTop ? "bg-transparent" : `bg-${localStorage.getItem("theme")}`
+                }`}
+            style={{
+                transition: 'background-color 0.7s ease-in-out',
+                backgroundColor: isTop
+                    ? 'transparent'
+                    : (localStorage.getItem("theme") === 'dark' ? '#000' : '#fff')
+            }}
+        >
+            <a className="navbar-brand" href={homePage}>Fakeflix</a>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>

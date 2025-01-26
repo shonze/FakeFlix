@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Movieslst from '../Movieslst/Movieslst'
 import TopMovie from '../TopMovie/TopMovie';
+import './Categorieslst.css';
 
 const Categorieslst = ({ userId }) => {
   const [categoriesMovies, setCategoriesMovies] = useState([]);
@@ -34,9 +35,9 @@ const Categorieslst = ({ userId }) => {
   const RandomMovieId = AllReturnedMovies[~~(Math.random() * AllReturnedMovies.length)];
 
   return (
-    <>
+    <div className="container-fluid">
       <TopMovie id={RandomMovieId} />
-      <div className="container my-5">
+      <div className="container">
         {Object.keys(categoriesMovies).length > 0 ? (
           <div className="container">
             {Object.entries(categoriesMovies).map(([category, movies]) => {
@@ -52,7 +53,7 @@ const Categorieslst = ({ userId }) => {
           <p>No Movies Exists Yet, Come Back Later!!!</p>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
