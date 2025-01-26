@@ -1,5 +1,5 @@
 import React, { useState, useEffect , useRef} from 'react';
-import './Register.css';
+import './register.css';
 import Field from './Field';
 import { useNavigate } from "react-router-dom";
 
