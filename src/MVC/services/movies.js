@@ -6,21 +6,18 @@ const CategoriesModel = require("../modules/category");
 const userServices = require("./user");
 const CategoriesService = require("./category");
 
-const createMovie = async (title, categories, description, length, thumbnail, video) => {
+const createMovie = async (title, categories, description, length, thumbnail, thumbnailName, video,videoName) => {
     // Checks if one of the fields are missing
     // Validate incoming data
-    if (!title || !categories || !description || !length || !thumbnail || !video) {
+    if (!title || !categories || !description || !length || !thumbnail || !thumbnailName || !video || !videoName) {
         return res.status(400).json({ message: "One of the required fields is missing." });
     }
     // Check if categories is an array and not empty
     if (!Array.isArray(categories) || categories.length === 0) {
         return res.status(400).json({ message: "Categories must be a non-empty array." });
     }
-    // Creates a new Movie and saves it to the database
-    if (!thumbnail) {
-        thumbnail = "No Thumbnail";
-    }
-    const Movie = new MoviesModel({ title, categories, description, length, thumbnail , video });
+
+    const Movie = new MoviesModel({ title, categories, description, length, thumbnail , thumbnailName , video , videoName});
     console.log(Movie);
     // Stores the list of categories to save them in the end
     // We dont want to save the movie if one of the categories is not valid
@@ -186,7 +183,7 @@ const updateMovie = async (id, title, description, length, thumbnail, categories
 
     return [204, Movie];
 };
-
+const { deleteFileService } = require("./file");
 const deleteMovie = async (id) => {
     let Movie = await getMovieById(id);
 
@@ -280,6 +277,8 @@ const deleteMovie = async (id) => {
         await category.save();
     }
 
+    deleteFileService(Movie.videoName)
+    deleteFileService(Movie.thumbnailName)
     return [204, Movie];
 };
 
