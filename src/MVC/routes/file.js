@@ -37,7 +37,7 @@ const upload = multer({
 // Single or multiple file uploads
 router.post("/", upload.array("files", 10), uploadFile); // Up to 10 files
 
-router.route('/:filePath(*)')
+router.route('/:fileName')
     .delete(FileController.deleteFile);
 
 module.exports = router;

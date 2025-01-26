@@ -11,9 +11,9 @@ const uploadFile = (req, res) => {
             ? req.files.map(file => ({
                 filename: file.filename,
                 url: `${baseUrl}/uploads/${file.filename}`,
-                path: file.path,
+                name: file.filename,
             }))
-            : { filename: req.file.filename, url: `${baseUrl}/uploads/${req.file.filename}`,path: file.path, };
+            : { filename: req.file.filename, url: `${baseUrl}/uploads/${req.file.filename}`,name: file.filename, };
 
         res.status(200).json({
             message: "Files uploaded successfully",
@@ -29,14 +29,13 @@ const { deleteFileService } = require("../services/file");
 
 // Controller to delete a file
 const deleteFile = async (req, res) => {
-    const filePath = "/" + req.params[0];
-
-    console.log("filePath: ")
-    console.log(req.params.filePath)
-    console.log("params: ")
-    console.log(req.params[0])
+    const filename = req.params.fileName
+    
+    console.log (filename)
+    console.log("params:")
+    console.log(req.params)
     try {
-        const result = await deleteFileService(filePath);
+        const result = await deleteFileService(filename);
         res.status(200).json({ message: result });
     } catch (error) {
         res.status(500).json({ error: "Failed to delete the file", details: error.message });

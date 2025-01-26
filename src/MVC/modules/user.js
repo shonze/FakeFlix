@@ -25,7 +25,7 @@ const User= new Schema({
         type: Date,
         default: Date.now
     },
-    photoPath: {
+    photoName: {
         type: String, // URL or path to the user's photo
         required: false,
         default: null, // Default value: null

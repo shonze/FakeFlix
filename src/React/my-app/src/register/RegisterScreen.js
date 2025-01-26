@@ -54,9 +54,9 @@ const RegisterScreen = () => {
         }, 4000);
       }
 
-    const deletePhoto = async (path) => {
+    const deletePhoto = async (name) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/file/${path}`, {
+            const response = await fetch(`http://localhost:3000/api/file/${name}`, {
                 method: 'DELETE',
             });
             if (response.ok) {
@@ -71,7 +71,7 @@ const RegisterScreen = () => {
     }
 
     const handlePosting = async () => {
-        let path=null;
+        let name=null;
         let url=null;
 
         
@@ -86,7 +86,7 @@ const RegisterScreen = () => {
                 const result2 = await response2.json();
                 if (response2.ok) {
                     url = result2.files[0].url;
-                    path = result2.files[0].path;
+                    name = result2.files[0].name;
                     showToast('Profile picture uploaded successfully', 'success');
                 } else {
                     showToast('Profile picture upload failed: ' + result2.message, 'error');
@@ -103,7 +103,7 @@ const RegisterScreen = () => {
             email: formData.email,
             birthdate: formData.birthdate,
             password: formData.password,
-            photoPath: path,
+            photoName: name,
             photoUrl: url
         };
 
@@ -121,15 +121,15 @@ const RegisterScreen = () => {
                     handleHome();
                 } else {
                     showToast('Registration failed: ' + (result.errors || 'Invalid input'), 'error');
-                    deletePhoto(path);
+                    deletePhoto(name);
                 }
             } else {
                 showToast(result.errors, 'error');
-                deletePhoto(path);
+                deletePhoto(name);
             }
         } catch (error) {
             showToast('An error occurred: ' + error.message, 'error');
-            deletePhoto(path);
+            deletePhoto(name);
         }
     };
 
