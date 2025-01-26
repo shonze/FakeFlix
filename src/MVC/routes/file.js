@@ -1,7 +1,8 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const { uploadFile } = require("../controllers/uploadController");
+const { uploadFile } = require("../controllers/file");
+const FileController = require('../controllers/file');
 
 const router = express.Router();
 
@@ -35,5 +36,8 @@ const upload = multer({
 
 // Single or multiple file uploads
 router.post("/", upload.array("files", 10), uploadFile); // Up to 10 files
+
+router.route('/:filePath(*)')
+    .delete(FileController.deleteFile);
 
 module.exports = router;

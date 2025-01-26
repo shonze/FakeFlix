@@ -32,13 +32,13 @@ app.use('/api/tokens', tokens);
 
 
 
-const uploadRoutes = require("./routes/uploadRoutes");
+const fileRoutes = require("./routes/file");
 
 // Middleware to parse JSON
 app.use(express.json());
 
 // Use upload routes
-app.use("/api/upload", uploadRoutes);
+app.use("/api/file", fileRoutes);
 const path = require("path");
 // Serve static files from the 'public/uploads' directory
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));

@@ -54,9 +54,48 @@ const RegisterScreen = () => {
         }, 4000);
       }
 
+    const deletePhoto = async (path) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/file/${path}`, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                showToast('Profile picture deleted successfully', 'success');
+            } else {
+                showToast('Profile picture deletion failed', 'error');
+            }
+        } catch (error) {
+            console.error('Error deleting profile picture:', error);
+            showToast('An error occurred while deleting the profile picture.', 'error');
+        }
+    }
+
     const handlePosting = async () => {
         let path=null;
         let url=null;
+
+        
+        if (formData.files) {
+            const formDataToSend = new FormData();
+            formDataToSend.append("files", formData.files);
+            try {
+                const response2 = await fetch('http://localhost:3000/api/file', {
+                    method: 'POST',
+                    body: formDataToSend, // Use FormData as the body
+                });
+                const result2 = await response2.json();
+                if (response2.ok) {
+                    url = result2.files[0].url;
+                    path = result2.files[0].path;
+                    showToast('Profile picture uploaded successfully', 'success');
+                } else {
+                    showToast('Profile picture upload failed: ' + result2.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error uploading profile picture:', error);
+                showToast('An error occurred while uploading the profile picture.', 'error');
+            }
+        }
 
         const data = {
             fullName: formData.fullName,
@@ -76,41 +115,21 @@ const RegisterScreen = () => {
             });
             const result = await response.json();
             if (response.ok) {
-
                 if (result.token) {
                     localStorage.setItem('jwtToken', result.token);
-
-                    if (formData.files) {
-                        const formDataToSend = new FormData();
-                        formDataToSend.append("files", formData.files);
-                        try {
-                            const response2 = await fetch('http://localhost:3000/api/upload', {
-                                method: 'POST',
-                                body: formDataToSend, // Use FormData as the body
-                            });
-                            const result2 = await response2.json();
-                            if (response2.ok) {
-                                url = result2.files[0].url;
-                                path = result2.files[0].path;
-                                showToast('Profile picture uploaded successfully', 'success');
-                            } else {
-                                showToast('Profile picture upload failed: ' + result2.message, 'error');
-                            }
-                        } catch (error) {
-                            console.error('Error uploading profile picture:', error);
-                            showToast('An error occurred while uploading the profile picture.', 'error');
-                        }
-                    }
                     showToast('Account created successfully', 'success');
                     handleHome();
                 } else {
                     showToast('Registration failed: ' + (result.errors || 'Invalid input'), 'error');
+                    deletePhoto(path);
                 }
             } else {
                 showToast(result.errors, 'error');
+                deletePhoto(path);
             }
         } catch (error) {
             showToast('An error occurred: ' + error.message, 'error');
+            deletePhoto(path);
         }
     };
 
