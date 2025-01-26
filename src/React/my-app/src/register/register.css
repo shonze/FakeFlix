@@ -1,0 +1,276 @@
+/* 
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+}
+
+.register-container {
+    min-height: 100vh;
+    padding: 20px;
+    background: url('../../public/login2.jpg') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    overflow-y: auto; /* Ensures vertical scrolling */
+}
+
+/* Container Styles */
+.register-container {
+    min-height: 100vh;
+    padding: 20px;
+    background: url('../../public/login2.jpg') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; /* Allows content to grow vertically */
+    box-sizing: border-box; /* Ensures padding doesn't overflow */
+}
+
+.form-container {
+    padding: 20px;
+    background: rgba(32, 32, 32, 0.9);
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Title */
+.app-title {
+    color: rgb(229, 9, 20);
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Form Row and Column */
+.form-row {
+    display: flex;
+    gap: 8px; 
+    margin-bottom: 8px;
+}
+
+.form-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-right: 8px;
+}
+
+.form-column:last-child {
+    margin-right: 0;
+}
+
+/* Form Labels */
+.form-label {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+/* Input Fields */
+.custom-input {
+    padding: 10px;
+    border: 1px solid #050505;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    background: rgb(64, 64, 64);
+    color: white;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.custom-input:focus {
+    border-color: rgb(229, 9, 20);
+}
+
+/* Register Button */
+.register-btn {
+    background: rgb(229, 9, 20);
+    border: none;
+    padding: 12px;
+    font-size: 20px;
+    border-radius: 4px;
+    width: 100%;
+    margin-top: 10px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.register-btn:hover {
+    background: rgb(200, 0, 15);
+}
+
+/* Login Text and Links */
+.login-text {
+    color: white;
+    font-size: 16px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login-link {
+    color: rgb(229, 9, 20);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
+.login-link-button {
+    background: none;
+    border: none;
+    color: rgb(229, 9, 20);
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+}
+
+.login-link-button:hover {
+    text-decoration: underline;
+}
+
+
+/* .image-preview {
+    margin-top: 10px;
+}
+
+.preview-image {
+    max-width: 100px;
+    max-height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+} */
+
+/* .image-preview {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+
+.preview-image {
+    width: 80px;
+    height: 80px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 2px solid #ccc; 
+}
+ */
+
+ .image-preview {
+    position: relative; /* Enable positioning of the "X" button */
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+}
+
+.remove-photo-btn {
+    position: absolute; /* Position it over the preview */
+    top: 5px;
+    right: 5px; /* Adjust position to overlap the corner of the circle */
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 3px 7px;
+    font-size: 12px;
+    color: #ff0000; /* Red color for the "X" */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional shadow for better visibility */
+    transition: background-color 0.2s;
+}
+
+.remove-photo-btn:hover {
+    background-color: #ffcccc; /* Change background color on hover */
+}
+
+/* Toast Container */
+/* Toast Container */
+.toast-container {
+    position: fixed; /* Keep it fixed for global positioning */
+    top: 10px; /* Adjust as needed to place above the title */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center alignment */
+    z-index: 9999; /* Ensure it appears above other elements */
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Stack items vertically */
+    gap: 10px; /* Add space between toasts */
+  }
+  
+  
+  /* Success Toast */
+  .success-toast {
+    color: #fff; 
+    background-color: #2ecc71; 
+    border: 1px solid #27ae60; 
+    border-radius: 5px;
+    padding: 12px 20px;
+    margin: 0; /* Remove margin to avoid double-spacing with gap */
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 4s ease-in-out;
+  }
+  
+  /* Error Toast */
+  .error-toast {
+    color: #fff; 
+    background-color: #e50914; 
+    border: 1px solid #b20710; 
+    border-radius: 5px;
+    padding: 12px 20px;
+    margin: 0; /* Remove margin to avoid double-spacing with gap */
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 4s ease-in-out;
+  }
+  
+  /* Fade In Out Animation */
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    10% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
+  

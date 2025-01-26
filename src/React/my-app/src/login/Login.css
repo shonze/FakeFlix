@@ -1,0 +1,250 @@
+/* .login-container {
+    min-height: 100vh;
+    padding: 20px;
+    background: url('../../public/login2.jpg') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-container {
+    padding: 20px;
+    background: rgba(32, 32, 32, 0.9);
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+}
+
+.app-title {
+    color: rgb(229, 9, 20);
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-align: center;
+} */
+
+/* Login Container Styles */
+.login-container {
+    min-height: 100vh;
+    padding: 20px;
+    background: url('../../public/login2.jpg') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; /* Allows content to stack vertically */
+    overflow-y: auto; /* Enables vertical scrolling if content overflows */
+    box-sizing: border-box; /* Ensures padding doesn't cause overflow */
+}
+
+/* Form Container */
+.form-container {
+    padding: 20px;
+    background: rgba(32, 32, 32, 0.9);
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+    box-sizing: border-box; /* Adds consistent box model behavior */
+}
+
+/* App Title */
+.app-title {
+    color: rgb(229, 9, 20);
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Additional unchanged styles for form rows, labels, inputs, buttons, etc., follow the same pattern. */
+
+.form-row {
+    display: flex;
+    gap: 8px; 
+    margin-bottom: 8px;
+}
+
+.form-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-right: 8px; 
+}
+
+.form-column:last-child {
+    margin-right: 0; 
+}
+
+.form-label {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 8px;
+    
+}
+
+.custom-input {
+    padding: 10px; 
+    border: 1px solid #050505; 
+    border-radius: 4px; 
+    font-size: 16px; 
+    width: 100%; 
+    box-sizing: border-box; 
+    background: rgb(64, 64, 64); 
+    color: white; 
+}
+
+.login-btn {
+    background: rgb(229, 9, 20);
+    border: none;
+    padding: 12px;
+    font-size: 20px;
+    border-radius: 4px;
+    width: 100%;
+    margin-top: 10px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+    background: rgb(200, 0, 15); 
+}
+
+.login-text {
+    color: white;
+    font-size: 16px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.register-link {
+    color: rgb(229, 9, 20);
+    text-decoration: none;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}
+
+
+
+.login-text {
+    color: white;
+    font-size: 16px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.register-link {
+    color: rgb(229, 9, 20);
+    text-decoration: none;
+}
+
+.register-link-button:hover {
+    text-decoration: underline;
+}
+.login-text {
+    color: white;
+    font-size: 16px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.register-link-button {
+    background: none;
+    border: none;
+    color: red; /* Red text */
+    text-decoration: none; /* No underline */
+    cursor: pointer; /* Pointer cursor for clickable effect */
+    padding: 0;
+    font: inherit; /* Inherit font styling */
+}
+
+/* Remove hover effects entirely */
+.register-link-button:hover {
+    text-decoration: none;
+}
+
+/* Add styles for the "Remember Me" checkbox */
+.remember-me {
+    color: white;
+    font-size: 16px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.remember-me input {
+    margin-right: 8px;
+}
+
+/* Toast Container */
+.toast-container {
+    position: fixed; /* Keep it fixed for global positioning */
+    top: 10px; /* Adjust as needed to place above the title */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center alignment */
+    z-index: 9999; /* Ensure it appears above other elements */
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Stack items vertically */
+    gap: 10px; /* Add space between toasts */
+  }
+  
+  
+  /* Success Toast */
+  .success-toast {
+    color: #fff; 
+    background-color: #2ecc71; 
+    border: 1px solid #27ae60; 
+    border-radius: 5px;
+    padding: 12px 20px;
+    margin: 0; /* Remove margin to avoid double-spacing with gap */
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 4s ease-in-out;
+  }
+  
+  /* Error Toast */
+  .error-toast {
+    color: #fff; 
+    background-color: #e50914; 
+    border: 1px solid #b20710; 
+    border-radius: 5px;
+    padding: 12px 20px;
+    margin: 0; /* Remove margin to avoid double-spacing with gap */
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 4s ease-in-out;
+  }
+  
+  /* Fade In Out Animation */
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    10% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
+
+/* Default checkbox styling (use browser styles) */
+.custom-checkbox {
+    accent-color: red; /* Use the browser's built-in accent-color property */
+}
+
+/* Fallback for older browsers */
+.custom-checkbox:checked {
+    background-color: red; /* Set background red when checked */
+    border-color: initial; /* Retain default border look */
+}

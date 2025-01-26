@@ -17,11 +17,13 @@ COPY . .
 # Accept three arguments during the build process
 ARG CONNECTION_STRING
 ARG PORT
+ARG JWT_SECRET
 ARG CPP_PORT
 
 # Create a .env.local file with the passed arguments
 RUN echo "CONNECTION_STRING=$CONNECTION_STRING" > ./config/.env.local && \
     echo "PORT=$PORT" >> ./config/.env.local && \
+    echo "JWT_SECRET"="$JWT_SECRET" >> ./config/.env.local && \
     echo "CPP_PORT=$CPP_PORT" >> ./config/.env.local
 
 # Expose the port your app runs on
