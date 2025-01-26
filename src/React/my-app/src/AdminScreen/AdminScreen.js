@@ -40,7 +40,13 @@ const AdminScreen = () => {
 
   const fetchCategories = async () => {
       try {
-          const response = await fetch('http://localhost:8080/api/categories');
+          const token = localStorage.getItem('jwtToken');
+          const response = await fetch('http://localhost:8080/api/categories', {
+              headers: {
+                  'Authorization': `Bearer'+ 'token`,
+                  'Content-Type': 'application/json'
+              }
+          });
           if (!response.ok) throw new Error('Network response was not ok');
           const data = await response.json();
           setCategories(data);
@@ -61,9 +67,12 @@ const AdminScreen = () => {
             ...newMovie,
             categories: selectedCategories, // Add this line to set categories
         };
+        const token = localStorage.getItem('jwtToken');
         const response = await fetch('http://localhost:8080/api/movies', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Authorization': `Bearer'+ 'token`,
+              'Content-Type': 'application/json' },
             body: JSON.stringify(movieToAdd),
         });
         if (!response.ok) throw new Error('Error adding movie');
@@ -98,7 +107,12 @@ const AdminScreen = () => {
     e.preventDefault();
     clearMessages();
     try {
-      const response = await fetch(`http://localhost:8080/api/movies/${searchId}`);
+      const token = localStorage.getItem('jwtToken');
+      const response = await fetch(`http://localhost:8080/api/movies/${searchId}`,{
+        headers: {
+          'Authorization': `Bearer'+ 'token`,
+          'Content-Type': 'application/json'},
+      });
       if (!response.ok) throw new Error('Movie not found');
       const data = await response.json();
       // Ensure categories is an array, defaulting to empty if null
@@ -115,8 +129,12 @@ const AdminScreen = () => {
   const handleDeleteMovie = async (id) => {
       clearMessages();
       try {
+          const token = localStorage.getItem('jwtToken');
           const response = await fetch(`http://localhost:8080/api/movies/${id}`, {
               method: 'DELETE',
+              headers: {
+                'Authorization': `Bearer'+ 'token`,
+                'Content-Type': 'application/json' },
           });
           if (!response.ok) throw new Error('Error deleting movie');
           showToast('Movie deleted successfully.', 'success');
@@ -131,16 +149,18 @@ const AdminScreen = () => {
       e.preventDefault();
       clearMessages();
       try {
+          const token = localStorage.getItem('jwtToken');
           const response = await fetch(`http://localhost:8080/api/movies/${foundMovie._id}`, {
               method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
+              headers: {
+                'Authorization': `Bearer'+ 'token`,
+                'Content-Type': 'application/json' },
               body: JSON.stringify(foundMovie),
           });
           if (!response.ok) throw new Error('Error updating movie');
           showToast('Movie updated successfully.', 'success');
           setFoundMovie(null);
       } catch (error) {
-          showToast('Error: Couldnt update movie', 'error');
           console.error(error);
       }
   };
@@ -149,9 +169,12 @@ const AdminScreen = () => {
       e.preventDefault();
       clearMessages();
       try {
+          const token = localStorage.getItem('jwtToken');
           const response = await fetch('http://localhost:8080/api/categories', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: {
+                'Authorization': `Bearer'+ 'token`,
+                'Content-Type': 'application/json' },
               body: JSON.stringify(newCategory),
           });
           if (!response.ok) throw new Error('Error adding category');
@@ -167,8 +190,12 @@ const AdminScreen = () => {
   const handleDeleteCategory = async (id) => {
       clearMessages();
       try {
+          const token = localStorage.getItem('jwtToken');
           const response = await fetch(`http://localhost:8080/api/categories/${id}`, {
               method: 'DELETE',
+              headers: {
+                'Authorization': `Bearer'+ 'token`,
+                'Content-Type': 'application/json' },
           });
           if (!response.ok) throw new Error('Error deleting category');
           showToast('Category deleted successfully.', 'success');
@@ -183,9 +210,12 @@ const AdminScreen = () => {
       e.preventDefault();
       clearMessages();
       try {
+          const token = localStorage.getItem('jwtToken');
           const response = await fetch(`http://localhost:8080/api/categories/${editingCategory._id}`, {
               method: 'PATCH',
-              headers: { 'Content-Type': 'application/json' },
+              headers: {
+                'Authorization': `Bearer'+ 'token`,
+                'Content-Type': 'application/json' },
               body: JSON.stringify(editingCategory),
           });
           if (!response.ok) throw new Error('Error updating category');

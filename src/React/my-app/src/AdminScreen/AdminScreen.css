@@ -153,19 +153,20 @@ button:hover {
 /* Toast Container */
 .toast-container {
   position: fixed;
-  top: 20px; /* Adjust as needed */
-  right: 20px; /* Adjust as needed */
-  z-index: 9999;
+  top: 20px; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  z-index: 9999; 
 }
 
 /* Success Toast */
 .success-toast {
-  color: #fff; /* White text */
-  background-color: #2ecc71; /* Netflix-friendly green */
-  border: 1px solid #27ae60; /* Darker green border */
+  color: #fff; 
+  background-color: #2ecc71; 
+  border: 1px solid #27ae60; 
   border-radius: 5px;
   padding: 12px 20px;
-  margin: 10px 0;
+  margin: 0; /* Remove margin to avoid double-spacing with gap */
   font-size: 18px;
   font-weight: bold;
   font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -175,12 +176,12 @@ button:hover {
 
 /* Error Toast */
 .error-toast {
-  color: #fff; /* White text */
-  background-color: #e50914; /* Netflix red */
-  border: 1px solid #b20710; /* Darker red border */
+  color: #fff; 
+  background-color: #e50914; 
+  border: 1px solid #b20710; 
   border-radius: 5px;
   padding: 12px 20px;
-  margin: 10px 0;
+  margin: 0; /* Remove margin to avoid double-spacing with gap */
   font-size: 18px;
   font-weight: bold;
   font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -188,7 +189,7 @@ button:hover {
   animation: fadeInOut 4s ease-in-out;
 }
 
-/* Fade-in-out animation */
+/* Fade In Out Animation */
 @keyframes fadeInOut {
   0% {
     opacity: 0;

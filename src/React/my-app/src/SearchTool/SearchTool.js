@@ -10,7 +10,12 @@ const SearchScreen = () => {
     const handleMovieSearch = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/api/movies/search/${movieQuery}`);
+            const token = localStorage.getItem('jwtToken');
+            const response = await fetch(`http://localhost:8080/api/movies/search/${movieQuery}`,{
+                headers: {
+                    'Authorization': `Bearer'+ 'token`,
+                    'Content-Type': 'application/json' }
+            });
             if (!response.ok) throw new Error('Failed to fetch movies');
             const data = await response.json();
             setMovies(data);
