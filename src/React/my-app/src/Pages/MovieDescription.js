@@ -14,7 +14,7 @@ function HomeDescriptionPage({ movie }) {
       try {
         const token = localStorage.getItem('jwtToken');
 
-        const response = await fetch(`http://localhost:3002/api/movies/${movie._id}/recommend/`, {
+        const response = await fetch(`http://localhost:8080/api/movies/${movie._id}/recommend/`, {
           method: 'GET',
           headers: {
             'Authorization': 'Bearer' + token,
@@ -39,7 +39,7 @@ function HomeDescriptionPage({ movie }) {
 
         const categories = await Promise.all(
           movie.categories.map(async (categoryId) => {
-            const response = await fetch(`http://localhost:3002/api/categories/${categoryId}`, {
+            const response = await fetch(`http://localhost:8080/api/categories/${categoryId}`, {
               method: 'GET',
               headers: {
                 'Authorization': 'Bearer' + token,
