@@ -1,12 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 import Movielst from "../Movieslst/Movieslst.js";
 
 function HomeDescriptionPage({ movie }) {
   const [recommendedMovies, setRecommendedMovies] = useState([]);
   const [categories, setCategories] = useState([]);
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecommandation = async () => {
@@ -86,7 +87,10 @@ function HomeDescriptionPage({ movie }) {
             alt={movie.title}
           />
         </div>
-        <button className="absolute right-20 top-20 bg-red-600 text-black px-8 py-3 text-lg rounded-full hover:bg-red-700 transition-colors duration-300 flex items-center justify-center gap-3 shadow-lg">
+        <button 
+        className="absolute right-20 top-20 bg-red-600 text-black px-8 py-3 text-lg rounded-full hover:bg-red-700 transition-colors duration-300 flex items-center justify-center gap-3 shadow-lg"
+        onClick={()=>{navigate('../watch-movie')}}
+        >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
             <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
           </svg>

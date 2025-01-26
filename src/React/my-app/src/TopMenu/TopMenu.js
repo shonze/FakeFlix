@@ -46,15 +46,18 @@ const TopMenu = () => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav ml-auto">
-                    <li className="nav-item">
-                        <button className={`btn btn-${localStorage.getItem("theme")} bg-transparent border-0`} href={homePage}>Home</button>
-                    </li>
                     <CategorySearch />
                     <li className="nav-item">
-                        <button className={`btn btn-${localStorage.getItem("theme")} bg-transparent border-0`}>Admin</button>
+                        <button 
+                        className={`btn btn-${localStorage.getItem("theme")} bg-transparent border-0`}
+                        onClick={() => {navigate('../admin')}}
+                        >Admin</button>
                     </li>
                     <li className="nav-item">
-                        <button className={`btn btn-${localStorage.getItem("theme")} bg-transparent border-0`}>LogOut</button>
+                        <button 
+                        className={`btn btn-${localStorage.getItem("theme")} bg-transparent border-0`}
+                        onClick={() => {navigate('..')}}
+                        >LogOut</button>
                     </li>
                     <Theme />
                 </ul>
@@ -64,7 +67,7 @@ const TopMenu = () => {
                     <button
                         className="btn position-absolute top-50 end-0 translate-middle-y bg-white border rounded-circle shadow"
                         type="button"
-                        onClick={() => navigate(`/category/`)}
+                        onClick={() => navigate(`/search`)}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

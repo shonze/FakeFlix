@@ -20,9 +20,9 @@ function HomePage() {
     }, []);
 
     return (
-        <div className={`bg-${theme} min-vh-100`}>
+        <div className={`bg-${theme} min-vh-100`} >
             <TopMenu />
-            <Categorieslst userId="6790b3ec594b4ec368666d12" />
+            <Categorieslst />
         </div>
     );
 }

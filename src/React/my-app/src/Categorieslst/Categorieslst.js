@@ -3,7 +3,7 @@ import Movieslst from '../Movieslst/Movieslst'
 import TopMovie from '../TopMovie/TopMovie';
 import './Categorieslst.css';
 
-const Categorieslst = ({ userId }) => {
+const Categorieslst = () => {
   const [categoriesMovies, setCategoriesMovies] = useState([]);
 
   useEffect(() => {
@@ -14,7 +14,6 @@ const Categorieslst = ({ userId }) => {
         const response = await fetch(`http://localhost:8080/api/movies`, {
           method: 'GET',
           headers: {
-            'userId': userId,
             'Authorization': 'Bearer' + token,
             'Content-Type': 'application/json'
           }
@@ -32,7 +31,7 @@ const Categorieslst = ({ userId }) => {
     };
 
     fetchCategories();
-  }, [userId]);
+  });
 
   const AllReturnedMovies = Object.values(categoriesMovies).flat();
 
