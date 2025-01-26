@@ -1,4 +1,4 @@
-#include "./header/Help.h"
+#include "../header/Help.h"
 
 // Constructor implementation
 Help::Help(){}

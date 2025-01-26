@@ -4,4 +4,5 @@ src/MVC/node_modules
 src/React/my-app/node_modules
 curl.exe
 .env.local
-src/MVC/config 
+src/MVC/config
+*.mp4

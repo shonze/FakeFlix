@@ -1,4 +1,4 @@
-#include "./header/RecommendAlgorithm.h"
+#include "../header/RecommendAlgorithm.h"
 
 RecommendAlgorithm::RecommendAlgorithm(const std::string& userId,const std::string& movieId,
                                        std::map<std::string, std::vector<std::string>> movieMap)

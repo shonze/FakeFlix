@@ -1,4 +1,4 @@
-#include "./header/Delete.h"
+#include "../header/Delete.h"
 
 Delete::Delete(MemoryWriteable* writer, ILoadable* loader,std::string filename)
     : writer_(writer),loader_(loader),filename_(filename) {}

@@ -1,4 +1,4 @@
-#include "./header/Server.h"
+#include "../header/Server.h"
 
 Server::Server(int port) {
     const int server_port=port;

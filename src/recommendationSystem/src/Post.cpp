@@ -1,4 +1,4 @@
-#include "./header/Post.h"
+#include "../header/Post.h"
 
 Post::Post(MemoryWriteable* writer, ILoadable* loader)
     : writer_(writer),loader_(loader) {}
