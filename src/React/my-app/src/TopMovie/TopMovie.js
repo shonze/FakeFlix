@@ -47,7 +47,7 @@ const TopMovie = ({ id }) => {
                 }
                 const token = localStorage.getItem('jwtToken');
 
-                const response = await fetch(`http://localhost:3002/api/movies/${id}`, {
+                const response = await fetch(`http://localhost:8080/api/movies/${id}`, {
                     method: 'GET',
                     headers:{
                         'Authorization': 'Bearer' + token ,

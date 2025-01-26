@@ -11,7 +11,7 @@ const Categorieslst = ({ userId }) => {
       try {
         const token = localStorage.getItem('jwtToken');
 
-        const response = await fetch(`http://localhost:3002/api/movies`, {
+        const response = await fetch(`http://localhost:8080/api/movies`, {
           method: 'GET',
           headers: {
             'userId': userId,
