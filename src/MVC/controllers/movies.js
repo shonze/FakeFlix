@@ -15,6 +15,7 @@ const validateAndGetUser = async (req) => {
     try {
         data = jwt.verify(token, process.env.JWT_SECRET);
         console.log('The logged in user is: ' + data.username);
+        console.log('The logged in user is: ' + data.isAdmin);
     } catch (err) {
         throw new Error('Invalid Token');
     }

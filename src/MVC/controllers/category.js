@@ -5,11 +5,11 @@ const User = require('../modules/user');
 const jwt = require("jsonwebtoken")
 
 const validateAndGetUser = async (req) => {
-    if (!req.headers.Authorization) {
+    if (!req.headers.authorization) {
         throw new Error('User not logged in');
     }
 
-    const token = req.headers.Authorization.split(" ")[1];
+    const token = req.headers.authorization.split(" ")[1];
     let data;
 
     try {
