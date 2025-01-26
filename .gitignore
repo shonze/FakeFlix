@@ -1,6 +1,7 @@
 .vscode
 config
 src/MVC/node_modules
+src/React/my-app/node_modules
 curl.exe
 .env.local
 src/MVC/config
