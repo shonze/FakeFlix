@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import './Movie.css';
-import MovieDescription from '../Pages/MovieDescription'
+import MovieDescription from '../Pages/MovieDescription';
 
 function Movie({ id }) {
-    const [movie, setMovie] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const toggleModal = () => setShowModal(!showModal);
+    const [movie, setMovie] = useState({});
+    const [isHovered, setIsHovered] = useState(false); // State to track hover
 
     useEffect(() => {
         const fetchMovie = async () => {
@@ -21,7 +20,7 @@ function Movie({ id }) {
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status} ${response.error}`);
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
@@ -33,30 +32,25 @@ function Movie({ id }) {
         fetchMovie();
     }, [id]);
 
-    const theme = localStorage.getItem("theme");
-
     return (
         <div
             className="thumbnail"
-            onClick={() => {
-                // navigate(`/movie/${movie._id}`);
-                toggleModal();
-            }}
             style={{ cursor: "pointer" }}
+            onMouseEnter={() => setIsHovered(true)} // Set hover state to true
+            onMouseLeave={() => setIsHovered(false)} // Set hover state to false
         >
             <div className="cube">
                 <div className="cube-face front">
                     <img src={movie.thumbnail} alt="photo" />
                 </div>
+                {isHovered && ( // Conditionally render the MovieDescription on hover
+                    <div className="cube-face back">
+                        <MovieDescription movie={movie} />
+                    </div>
+                )}
             </div>
-
-            {showModal && (
-                <div className="modal fade show d-block center-container">
-                    <MovieDescription movie={movie} />
-                </div>
-            )}
         </div>
     );
-};
+}
 
 export default Movie;

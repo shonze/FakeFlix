@@ -1,8 +1,7 @@
-import React, { useParams, useNavigate, useState, useEffect } from "react";
+import React, {useState, useEffect } from "react";
+import { useNavigate , useParams} from "react-router-dom";
 import TopMenu from "../TopMenu/TopMenu";
 import Movielst from "../Movieslst/Movieslst";
-import "../TopMenu/TopMenu.css";
-import "../Movieslst/Movieslst.css";
 import './CategoryPage.css'; // Import the CSS file
 
 const chunkArray = (array, chunkSize) => {

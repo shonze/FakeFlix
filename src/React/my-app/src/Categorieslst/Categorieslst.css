@@ -12,9 +12,10 @@
 }
 
 .custom-container {
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   margin-top: 41vh;
+  padding: 1vw;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -29,7 +30,7 @@
 
 /* Text Styling */
 .text-center {
-  text-align: center;
+  text-align: left;
   font-size: 2.2rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
@@ -62,11 +63,11 @@
   /* Optional: Makes the text all caps */
   letter-spacing: 2px;
   /* Adds spacing for a refined look */
-  text-align: center;
+  text-align: left;
   /* Centers the heading */
   margin: 20px 0;
   /* Adds spacing above and below */
-  border-bottom: 2px solid #4caf50;
+  border-bottom: 2px solid #d49c4d;
   /* Underline with a nice accent color */
   padding-bottom: 10px;
   /* Space between text and underline */

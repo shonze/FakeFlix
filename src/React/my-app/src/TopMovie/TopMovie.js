@@ -71,7 +71,7 @@ const TopMovie = ({ id }) => {
     return (
         <div className="video-container">
             <video ref={videoRef} className="full-movie" autoPlay={isVisible} muted loop>
-                <source src="http://localhost:3000/short.mp4" type="video/mp4" />
+                <source src="http://localhost:3000/homeVideo.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
             <div className="text-overlay position-absolute top-50 start-0 translate-middle-y text-white">

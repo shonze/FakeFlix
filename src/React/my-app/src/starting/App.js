@@ -7,7 +7,7 @@ import SearchScreen from '../SearchTool/SearchTool';
 import WatchMovie from '../SearchTool/WatchMovie';
 import AdminScreen from '../AdminScreen/AdminScreen'; 
 import HomePage from '../Pages/HomePage'; 
-import CategorySearch from '../CategorySearch/CategorySearch';
+import CategoryPage from '../Pages/CategoryPage';
 import NotFoundPage from '../Pages/NotFoundPage';
 
 const App = () => {
@@ -21,7 +21,7 @@ const App = () => {
                 <Route path="/search" element={<SearchScreen />} />
                 <Route path = "/admin" element = {<AdminScreen />} />
                 <Route path="/watch-movie" element={<WatchMovie />} /> 
-                <Route path="/category/:id" element={<CategorySearch />} />
+                <Route path="/category/:id" element={<CategoryPage />} />
                 <Route path="/404" element={<NotFoundPage />} />
             </Routes>
         </Router>
