@@ -45,7 +45,7 @@ function CategoryPage() {
             try {
                 const token = localStorage.getItem('jwtToken');
 
-                const response = await fetch(`http://localhost:3002/api/categories/${id}`, {
+                const response = await fetch(`http://localhost:8080/api/categories/${id}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + token,
