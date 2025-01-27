@@ -15,7 +15,7 @@ const Theme = () => {
     }   
 
     return (
-        <button id={theme} onClick={handleClick} className={`btn btn-${localStorage.getItem('theme')} bg-transparent border-0`}>{theme}</button>
+        <button id={theme} onClick={handleClick} className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"}  bg-transparent border-0`}>{theme}</button>
     );
 }
 

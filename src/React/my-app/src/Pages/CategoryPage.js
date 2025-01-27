@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import TopMenu from "../TopMenu/TopMenu";
@@ -18,6 +18,27 @@ function CategoryPage() {
 
     const [category, setCategory] = useState(null);
     const [categoryMoviesChunked, setCategoryMoviesChunked] = useState([]);
+    const navigate = useNavigate();
+
+    // Checks if the user is permited to enter the screen
+    useEffect(() => {
+        const checkValidation = async () => {
+            const token = localStorage.getItem('jwtToken');
+
+            const response = await fetch('http://localhost:8080/api/tokens/validate', {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'requiredAdmin': false
+                }
+            });
+            if (!response.ok) {
+                 navigate('/404');
+            }
+        };
+
+        checkValidation();
+    }, []);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -26,8 +47,8 @@ function CategoryPage() {
 
                 const response = await fetch(`http://localhost:3002/api/categories/${id}`, {
                     method: 'GET',
-                    headers:{
-                        'Authorization': 'Bearer' + token ,
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
                         'Content-Type': 'application/json'
                     }
                 });
@@ -48,7 +69,7 @@ function CategoryPage() {
         };
 
         fetchCategories();
-    });
+    }, []);
 
     if (!category) {
         return <h2>Category not found</h2>;

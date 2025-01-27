@@ -1,42 +1,18 @@
 const CategoryService = require('../services/category');
 const MovieService = require("../services/movies");
 require('custom-env').env(process.env.NODE_ENV, './config');
-const User = require('../modules/user');
-const jwt = require("jsonwebtoken")
+const UserService = require('../services/user');
 
-const validateAndGetUser = async (req) => {
-    if (!req.headers.authorization) {
-        throw new Error('User not logged in');
-    }
-
-    const token = req.headers.authorization.split(" ")[1];
-    let data;
-
-    try {
-        data = jwt.verify(token, process.env.JWT_SECRET);
-        console.log('The logged in user is: ' + data.username);
-    } catch (err) {
-        throw new Error('Invalid Token');
-    }
-
-    const existingUserByUsername = await User.findOne({ username: data.username });
-    if (!existingUserByUsername) {
-        throw new Error('User not found');
-    }
-
-    return existingUserByUsername;
-};
 /**
  * Creates a new category.
  */
 const createCategory = async (req, res) => {
     try {
-        
         let existingUserByUsername;
 
         // Use the new helper function to validate the token and retrieve the user
         try {
-            existingUserByUsername = await validateAndGetUser(req);
+            existingUserByUsername = await UserService.validateAndGetUser(req);
         } catch (error) {
             return res.status(403).json({ errors: error.message });
         }
@@ -100,7 +76,7 @@ const deleteCategory = async (req, res) => {
 
         // Use the new helper function to validate the token and retrieve the user
         try {
-            existingUserByUsername = await validateAndGetUser(req);
+            existingUserByUsername = await UserService.validateAndGetUser(req);
         } catch (error) {
             return res.status(403).json({ errors: error.message });
         }
@@ -131,7 +107,7 @@ const updateCategory = async (req, res) => {
 
         // Use the new helper function to validate the token and retrieve the user
         try {
-            existingUserByUsername = await validateAndGetUser(req);
+            existingUserByUsername = await UserService.validateAndGetUser(req);
         } catch (error) {
             return res.status(403).json({ errors: error.message });
         }
