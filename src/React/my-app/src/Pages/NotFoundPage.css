@@ -5,7 +5,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f9;
+    background-image: url('../../public/duck.gif');
   }
   
   .not-found-container {
@@ -14,18 +14,19 @@
     padding: 50px 40px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     text-align: center;
+    background-image: url('../../public/duck.gif');
   }
   
   .not-found-title {
     font-size: 80px;
-    color: #ff6f61;
+    color: #e50914;
     margin-bottom: 20px;
     font-weight: bold;
   }
   
   .not-found-message {
     font-size: 20px;
-    color: #333;
+    color: #000;
     margin-bottom: 30px;
   }
   
@@ -33,7 +34,7 @@
     font-size: 18px;
     text-decoration: none;
     color: #fff;
-    background-color: #007bff;
+    background-color: #e50914;
     padding: 12px 24px;
     border-radius: 5px;
     transition: background-color 0.3s ease;

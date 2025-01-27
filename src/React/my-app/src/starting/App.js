@@ -22,7 +22,7 @@ const App = () => {
                 <Route path = "/admin" element = {<AdminScreen />} />
                 <Route path="/watch-movie" element={<WatchMovie />} /> 
                 <Route path="/category/:id" element={<CategoryPage />} />
-                <Route path="/404" element={<NotFoundPage />} />
+                <Route path="/*" element={<NotFoundPage />} />
             </Routes>
         </Router>
     );
