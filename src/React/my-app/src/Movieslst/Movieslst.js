@@ -6,6 +6,8 @@ function Movielst({ Movieslst }) {
     const scrollContainerRef = useRef(null);
     const [isLeftArrowVisible, setIsLeftArrowVisible] = useState(false);
     const [isRightArrowVisible, setIsRightArrowVisible] = useState(true);
+    const [totalScrolls, setTotalScrolls] = useState(0);
+    const [currentScrollIndex, setCurrentScrollIndex] = useState(0);
 
     useEffect(() => {
         const checkScrollability = () => {
@@ -14,6 +16,11 @@ function Movielst({ Movieslst }) {
 
                 // Check if total content width exceeds container width
                 const isContentOverflowing = scrollWidth > clientWidth;
+
+                const scrollAmount = clientWidth * 0.8; // Scroll by 80% of container width
+                const totalChunks = Math.ceil(Movieslst.length * 250 / scrollAmount);
+
+                setTotalScrolls(totalChunks);
 
                 // Update arrow visibility
                 setIsLeftArrowVisible(false);
@@ -46,6 +53,10 @@ function Movielst({ Movieslst }) {
                 behavior: 'smooth'
             });
 
+            const currentChunk = Math.round(newScrollPosition / scrollAmount);
+
+            setCurrentScrollIndex(currentChunk);
+
             // Update arrow visibility
             setIsLeftArrowVisible(newScrollPosition > 0);
             setIsRightArrowVisible(
@@ -56,6 +67,15 @@ function Movielst({ Movieslst }) {
 
     return (
         <div className="position-relative">
+            <div className="dot-indicator">
+                {Array.from({ length: totalScrolls }).map((_, index) => (
+                    <div
+                        key={index}
+                        className={`dot ${index === currentScrollIndex ? "active" : ""}`}
+                    />
+                ))}
+            </div>
+
             {isLeftArrowVisible && (
                 <button
                     onClick={() => scroll('left')}

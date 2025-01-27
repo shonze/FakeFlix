@@ -13,21 +13,24 @@ function HomePage() {
     // Checks if the user is permited to enter the screen
     useEffect(() => {
         const checkValidation = async () => {
-            const token = localStorage.getItem('jwtToken');
+            try {
+                const token = localStorage.getItem('jwtToken');
 
-            const response = await fetch('http://localhost:8080/api/tokens/validate', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + token,
-                    'Content-Type': 'application/json'
+                const response = await fetch('http://localhost:8080/api/tokens/validate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!response.ok) {
+                    navigate('/404');
                 }
-            });
-            if (!response.ok) {
+                const isAdmin = await response.json();
+                setIsAdmin(isAdmin);
+            } catch (error) {
                 navigate('/404');
-            }
-            const isAdmin = await response.json();
-            console.log(isAdmin)
-            setIsAdmin(isAdmin);
+            };
         };
 
         checkValidation();

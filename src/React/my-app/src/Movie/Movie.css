@@ -2,7 +2,7 @@
     position: relative;
     width: 250px;
     /* Cube size */
-    height: 150px;
+    height: 130px;
     /* Cube size */
     perspective: 1000px;
 }
