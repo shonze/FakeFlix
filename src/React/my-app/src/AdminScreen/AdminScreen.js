@@ -352,6 +352,97 @@ const AdminScreen = () => {
   const handleUpdateMovie = async (e) => {
       e.preventDefault();
       clearMessages();
+      var thumbnailUrl;
+      var thumbnailName;
+      var videoUrl;
+      var videoName;
+
+      try {
+        const formData = new FormData();
+        // if (newFiles.thumbnail) formData.append('thumbnail', newFiles.thumbnail);
+        // if (newFiles.video) formData.append('video', newFiles.video);
+        formData.append('files', newFiles.thumbnail);
+  
+        // const response = await fetch('http://localhost:8080/api/file', {
+        //   method: 'POST',
+        //   body: formData,
+        // });
+        try {
+          const response2 = await fetch('http://localhost:8080/api/file', {
+            method: 'POST',
+            body: formData,
+          });
+          const result2 = await response2.json();
+          if (response2.ok) {
+              thumbnailUrl = result2.files[0].url;
+              thumbnailName = result2.files[0].name;
+              showToast('Movie added successfully!', 'success');
+          } else {
+              showToast('thumbnail upload failed: ' + result2.message, 'error');
+          }
+      } catch (error) {
+          console.error('Error uploading thumbnail:', error);
+          showToast('An error occurred while uploading the thumbnail.', 'error');
+      }
+        // Reset form
+        setFiles({
+          thumbnail: null,
+          video: null,
+        });
+        setPreviewVideo(null);
+        handleRemoveFile('thumbnail')
+      } catch (error) {
+        showToast('Error: Unable to add the movie.', 'error');
+        console.error(error);
+      }
+  
+      try {
+        const formData = new FormData();
+        // if (newFiles.thumbnail) formData.append('thumbnail', newFiles.thumbnail);
+        // if (newFiles.video) formData.append('video', newFiles.video);
+        formData.append('files', newFiles.video);
+  
+        // const response = await fetch('http://localhost:8080/api/file', {
+        //   method: 'POST',
+        //   body: formData,
+        // });
+        try {
+          const response = await fetch('http://localhost:8080/api/file', {
+            method: 'POST',
+            body: formData,
+          });
+          const result = await response.json();
+          if (response.ok) {
+              videoUrl = result.files[0].url;
+              videoName = result.files[0].name;
+              showToast('Movie added successfully!', 'success');
+          } else {
+              showToast('video upload failed: ' + result.message, 'error');
+          }
+        } catch (error) {
+            console.error('Error uploading video:', error);
+            showToast('An error occurred while uploading the video.', 'error');
+        }
+        // Reset form
+        setFiles({
+          thumbnail: null,
+          video: null,
+        });
+        setPreviewVideo(null);
+        handleRemoveFile('video')
+      } catch (error) {
+        showToast('Error: Unable to add the movie.', 'error');
+        console.error(error);
+      }
+
+      var oldt = foundMovie.thumbnailName
+      var oldv = foundMovie.videoName
+
+      foundMovie.append("thumbnailUrl",thumbnailUrl)
+      foundMovie.append("thumbnailName",thumbnailName)
+      foundMovie.append("videoUrl",videoUrl)
+      foundMovie.append("videoName",videoName)
+
       try {
           const token = localStorage.getItem('jwtToken');
           const response = await fetch(`http://localhost:8080/api/movies/${foundMovie._id}`, {
@@ -361,9 +452,17 @@ const AdminScreen = () => {
                 'Content-Type': 'application/json' },
               body: JSON.stringify(foundMovie),
           });
-          if (!response.ok) throw new Error('Error updating movie');
+          if (!response.ok) {
+            deletePhoto(videoName)
+            deletePhoto(thumbnailName)
+            throw new Error('Error updating movie');
+          } 
           showToast('Movie updated successfully.', 'success');
+          deletePhoto(oldt)
+          deletePhoto(oldv)
           setFoundMovie(null);
+
+
       } catch (error) {
           console.error(error);
       }
@@ -696,19 +795,49 @@ const AdminScreen = () => {
                         onChange={(e) => setFoundMovie({ ...foundMovie, length: e.target.value })}
                         required
                     />
+                    <label className="form-label">Thumbnail</label>
                     <input
-                        type="text"
-                        placeholder="Thumbnail URL"
-                        value={foundMovie.thumbnail}
-                        onChange={(e) => setFoundMovie({ ...foundMovie, thumbnail: e.target.value })}
+                      type="file"
+                      className="custom-input"
+                      onChange={(e) => handleFileChange(e, 'thumbnail')}
+                      accept="image/*"
+                      ref={fileInputThumbnailRef}
+                      required
                     />
+                    {previewThumbnail && (
+                      <div className="image-preview">
+                        <img src={previewThumbnail} alt="Thumbnail Preview" />
+                        <button
+                          type="button"
+                          className="remove-photo-btn"
+                          onClick={() => handleRemoveFile('thumbnail')}
+                        >
+                          ✖
+                        </button>
+                      </div>
+                    )}
+
+                    <label className="form-label">Video</label>
                     <input
-                        type="text"
-                        placeholder="Video URL"
-                        value={foundMovie.video}
-                        onChange={(e) => setFoundMovie({ ...foundMovie, video: e.target.value })}
-                        required
+                      type="file"
+                      className="custom-input"
+                      onChange={(e) => handleFileChange(e, 'video')}
+                      accept="video/*"
+                      ref={fileInputVideoRef}
+                      required
                     />
+                    {previewVideo && (
+                      <div className="video-preview">
+                        <video src={previewVideo} controls width="300" />
+                        <button
+                          type="button"
+                          className="remove-photo-btn"
+                          onClick={() => handleRemoveFile('video')}
+                        >
+                          ✖
+                        </button>
+                      </div>
+                    )}
                     <button type="submit">Update Movie</button>
                     <p1>  </p1>
                     <button className="delete-button" onClick={() => handleDeleteMovie(foundMovie._id)}>Delete Movie</button>
