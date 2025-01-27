@@ -1,0 +1,7 @@
+.home-bg-light {
+    background: radial-gradient(circle, #ffffff, lightblue);
+}
+
+.home-bg-dark {
+    background: radial-gradient(circle,darkblue, #000000);
+}

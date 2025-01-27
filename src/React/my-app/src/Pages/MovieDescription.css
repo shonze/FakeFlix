@@ -29,6 +29,8 @@
 }
 
 .parent-container {
+    border: 3px solid #000;
+
     position: relative;
 
     width: 700px;

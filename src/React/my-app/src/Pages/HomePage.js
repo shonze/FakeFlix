@@ -1,6 +1,6 @@
 import Categorieslst from '../Categorieslst/Categorieslst';
 import TopMenu from '../TopMenu/TopMenu';
-import '../App.css';
+import './HomePage.css';
 
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -46,7 +46,7 @@ function HomePage() {
     }, []);
 
     return (
-        <div className={`bg-${theme} min-vh-100`} >
+        <div className={`home-bg-${theme} min-vh-100`} >
             <TopMenu admin={isAdmin} />
             <Categorieslst />
         </div>
