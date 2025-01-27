@@ -1,9 +1,9 @@
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-
+import React, { useParams, useNavigate, useState, useEffect } from "react";
 import TopMenu from "../TopMenu/TopMenu";
 import Movielst from "../Movieslst/Movieslst";
+import "../TopMenu/TopMenu.css";
+import "../Movieslst/Movieslst.css";
+import './CategoryPage.css'; // Import the CSS file
 
 const chunkArray = (array, chunkSize) => {
     const chunks = [];
@@ -15,12 +15,11 @@ const chunkArray = (array, chunkSize) => {
 
 function CategoryPage() {
     const { id } = useParams();
-
     const [category, setCategory] = useState(null);
     const [categoryMoviesChunked, setCategoryMoviesChunked] = useState([]);
     const navigate = useNavigate();
 
-    // Checks if the user is permited to enter the screen
+    // Checks if the user is permitted to enter the screen
     useEffect(() => {
         const checkValidation = async () => {
             const token = localStorage.getItem('jwtToken');
@@ -33,12 +32,12 @@ function CategoryPage() {
                 }
             });
             if (!response.ok) {
-                 navigate('/404');
+                navigate('/404');
             }
         };
 
         checkValidation();
-    }, []);
+    }, [navigate]);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -60,8 +59,8 @@ function CategoryPage() {
                 const data = await response.json();
                 setCategory(data);
 
-                if (category != null) {
-                    setCategoryMoviesChunked(chunkArray(category.movies, 4));
+                if (data.movies) {
+                    setCategoryMoviesChunked(chunkArray(data.movies, 4));
                 }
             } catch (error) {
                 console.error("Error fetching categories:", error);
@@ -69,7 +68,7 @@ function CategoryPage() {
         };
 
         fetchCategories();
-    }, []);
+    }, [id]);
 
     if (!category) {
         return <h2>Category not found</h2>;
@@ -80,11 +79,11 @@ function CategoryPage() {
     }
 
     return (
-        <div className={`bg-${localStorage.getItem("theme")} min-vh-100`}>
+        <div className={category.name}>
             <TopMenu />
-            <div>
-                {categoryMoviesChunked.map((movieIds) => (
-                    <div key={movieIds[0]} className="col-md-3 mb-4">
+            <div className="row">
+                {categoryMoviesChunked.map((movieIds, index) => (
+                    <div key={index} className="col-md-3 mb-4">
                         <Movielst Movieslst={movieIds} />
                     </div>
                 ))}
@@ -93,4 +92,4 @@ function CategoryPage() {
     );
 };
 
-export default CategoryPage
+export default CategoryPage;

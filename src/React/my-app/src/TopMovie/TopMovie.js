@@ -1,24 +1,20 @@
 import './TopMovie.css';
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 const TopMovie = ({ id }) => {
-    const [movie, setMovie] = useState([])
+    const [movie, setMovie] = useState({});
     const videoRef = useRef(null);
     const [isVisible, setIsVisible] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
         const handleScroll = () => {
-            // Get video element's position
             const videoElement = videoRef.current;
             if (!videoElement) return;
 
             const rect = videoElement.getBoundingClientRect();
-
-            const visibleHeight = Math.min(
-                rect.bottom,
-                window.innerHeight
-            ) - Math.max(rect.top, 0);
+            const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
 
             // Check if less than half of the video is visible
             const isHalfVisible = visibleHeight >= (rect.height * 3.5 / 6);
@@ -27,12 +23,13 @@ const TopMovie = ({ id }) => {
                 videoElement.pause();
                 setIsVisible(false);
             } else {
-                videoElement.play();
+                videoElement.play().catch(error => {
+                    console.error("Playback failed:", error);
+                });
                 setIsVisible(true);
             }
         };
 
-        // Add scroll event listener
         window.addEventListener('scroll', handleScroll);
         window.addEventListener('resize', handleScroll);
 
@@ -41,9 +38,7 @@ const TopMovie = ({ id }) => {
 
         const fetchMovie = async () => {
             try {
-                if (!id) {
-                    return;
-                }
+                if (!id) return;
                 const token = localStorage.getItem('jwtToken');
 
                 const response = await fetch(`http://localhost:8080/api/movies/${id}`, {
@@ -55,7 +50,7 @@ const TopMovie = ({ id }) => {
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status} ${response.error}`);
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
@@ -64,13 +59,19 @@ const TopMovie = ({ id }) => {
                 console.error("Error fetching movie:", error);
             }
         };
+
         fetchMovie();
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', handleScroll);
+        };
     }, [id]);
 
     return (
         <div className="video-container">
             <video ref={videoRef} className="full-movie" autoPlay={isVisible} muted loop>
-                <source src="http://localhost:3000/short.mp4" type="video/mp4" />
+                <source src="http://localhost:3000/homeVideo.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
             <div className="text-overlay position-absolute top-50 start-0 translate-middle-y text-white">

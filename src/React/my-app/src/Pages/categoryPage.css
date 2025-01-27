@@ -1,0 +1,98 @@
+/* CategoryPage.css */
+
+/* Set a minimum height for the page */
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+/* Background styling */
+.bg-light {
+    background-color: #f8f9fa;
+}
+
+.bg-dark {
+    background-color: #343a40;
+}
+
+.bg-primary {
+    background-color: #007bff;
+}
+
+/* Styling for the top menu */
+.top-menu {
+    background-color: #007bff;
+    padding: 10px 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-menu h1 {
+    margin: 0;
+}
+
+/* Movie list styling */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+
+.col-md-3 {
+    padding: 0 15px;
+    margin-bottom: 30px; /* Spacing between rows */
+}
+
+/* Movie card styling */
+.movie-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.movie-card:hover {
+    transform: scale(1.05); /* Scale effect on hover */
+}
+
+.movie-card img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+}
+
+.movie-card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.movie-card-description {
+    padding: 10px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* Handling empty state messages */
+h2 {
+    text-align: center;
+    color: #333;
+    margin-top: 20px;
+}
+
+/* Styling for buttons */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
