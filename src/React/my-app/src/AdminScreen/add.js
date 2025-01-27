@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './AdminScreen.css';
 
 const AdminScreen = () => {
-  const [newMovie, setNewMovie] = useState({
+  const [newFiles, setFiles] = useState({
     thumbnail: null,
     video: null,
   });
@@ -13,11 +13,11 @@ const AdminScreen = () => {
   const fileInputThumbnailRef = useRef(null);
   const fileInputVideoRef = useRef(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleBackClick = () => {
-    navigate('/home');
-  };
+  // const handleBackClick = () => {
+  //   navigate('/home');
+  // };
 
   const handleFileChange = (e, type) => {
     const file = e.target.files[0];
@@ -29,7 +29,7 @@ const AdminScreen = () => {
           handleRemoveFile('thumbnail');
           return;
         }
-        setNewMovie((prevData) => ({ ...prevData, thumbnail: file }));
+        setFiles((prevData) => ({ ...prevData, thumbnail: file }));
         setPreviewThumbnail(URL.createObjectURL(file));
       } else if (type === 'video') {
         const validVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
@@ -38,7 +38,7 @@ const AdminScreen = () => {
           handleRemoveFile('video');
           return;
         }
-        setNewMovie((prevData) => ({ ...prevData, video: file }));
+        setFiles((prevData) => ({ ...prevData, video: file }));
         setPreviewVideo(URL.createObjectURL(file));
       }
     }
@@ -46,11 +46,11 @@ const AdminScreen = () => {
 
   const handleRemoveFile = (type) => {
     if (type === 'thumbnail') {
-      setNewMovie((prevData) => ({ ...prevData, thumbnail: null }));
+      setFiles((prevData) => ({ ...prevData, thumbnail: null }));
       setPreviewThumbnail(null);
       if (fileInputThumbnailRef.current) fileInputThumbnailRef.current.value = '';
     } else if (type === 'video') {
-      setNewMovie((prevData) => ({ ...prevData, video: null }));
+      setFiles((prevData) => ({ ...prevData, video: null }));
       setPreviewVideo(null);
       if (fileInputVideoRef.current) fileInputVideoRef.current.value = '';
     }
@@ -60,9 +60,9 @@ const AdminScreen = () => {
     e.preventDefault();
     try {
       const formData = new FormData();
-      // if (newMovie.thumbnail) formData.append('thumbnail', newMovie.thumbnail);
-      // if (newMovie.video) formData.append('video', newMovie.video);
-      formData.append('files', newMovie.video);
+      // if (newFiles.thumbnail) formData.append('thumbnail', newFiles.thumbnail);
+      // if (newFiles.video) formData.append('video', newFiles.video);
+      formData.append('files', newFiles.video);
 
       const token = localStorage.getItem('jwtToken');
       const response = await fetch('http://localhost:8080/api/file', {
@@ -77,7 +77,7 @@ const AdminScreen = () => {
       showToast('Movie added successfully!', 'success');
 
       // Reset form
-      setNewMovie({
+      setFiles({
         thumbnail: null,
         video: null,
       });
@@ -90,9 +90,9 @@ const AdminScreen = () => {
 
   try {
       const formData = new FormData();
-      // if (newMovie.thumbnail) formData.append('thumbnail', newMovie.thumbnail);
-      // if (newMovie.video) formData.append('video', newMovie.video);
-      formData.append('files', newMovie.thumbnail);
+      // if (newFiles.thumbnail) formData.append('thumbnail', newFiles.thumbnail);
+      // if (newFiles.video) formData.append('video', newFiles.video);
+      formData.append('files', newFiles.thumbnail);
 
       const token = localStorage.getItem('jwtToken');
       const response = await fetch('http://localhost:8080/api/file', {
@@ -107,7 +107,7 @@ const AdminScreen = () => {
       showToast('Movie added successfully!', 'success');
 
       // Reset form
-      setNewMovie({
+      setFiles({
         thumbnail: null,
         video: null,
       });
