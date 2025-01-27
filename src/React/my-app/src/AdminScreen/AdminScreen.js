@@ -41,7 +41,7 @@ const AdminScreen = () => {
       try {
           const token = localStorage.getItem('jwtToken');
           const response = await fetch('http://localhost:8080/api/categories', {
-              headers: {
+            headers: {
                   'Authorization': 'Bearer '+ token,
                   'Content-Type': 'application/json'
               }
@@ -59,6 +59,7 @@ const AdminScreen = () => {
         const token = localStorage.getItem('jwtToken');
   
         const response = await fetch('http://localhost:8080/api/tokens/validate', {
+          method: 'POST',
           headers: {
             'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json',
@@ -70,11 +71,12 @@ const AdminScreen = () => {
         }
       };
       checkValidation();
-  }, []);
-
-  useEffect(() => {
       fetchCategories();
   }, []);
+
+  // useEffect(() => {
+  //     fetchCategories();
+  // }, []);
 
   const [newFiles, setFiles] = useState({
       thumbnail: null,
