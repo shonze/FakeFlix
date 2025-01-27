@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Movielst from "../Movieslst/Movieslst.js";
+import './MovieDescription.css';
 
 function HomeDescriptionPage({ movie }) {
   const [recommendedMovies, setRecommendedMovies] = useState([]);
@@ -18,7 +19,7 @@ function HomeDescriptionPage({ movie }) {
         const response = await fetch(`http://localhost:8080/api/movies/${movie._id}/recommend/`, {
           method: 'GET',
           headers: {
-            'Authorization': 'Bearer' + token,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
           }
         });
@@ -43,7 +44,7 @@ function HomeDescriptionPage({ movie }) {
             const response = await fetch(`http://localhost:8080/api/categories/${categoryId}`, {
               method: 'GET',
               headers: {
-                'Authorization': 'Bearer' + token,
+                'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/json'
               }
             });
@@ -78,40 +79,34 @@ function HomeDescriptionPage({ movie }) {
   }, [movie._id, movie.categories]);
 
   return (
-    <div className={`container-fluid mx-auto bg-${theme} text-${theme === "dark" ? "light" : "dark"}`}>
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="relative">
-          <img
-            src={movie.thumbnail}
-            className="full-movie"
-            alt={movie.title}
-          />
+    <div className={`parent-container ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"}`}>
+      <div className="relative grid md-grid-cols-2 gap-6">
+        <div className="half-top-container">
+          <img src={movie.thumbnail} className="full-thumbnail" alt={movie.title} />
         </div>
-        <button 
-        className="absolute right-20 top-20 bg-red-600 text-black px-8 py-3 text-lg rounded-full hover:bg-red-700 transition-colors duration-300 flex items-center justify-center gap-3 shadow-lg"
-        onClick={()=>{navigate('../watch-movie')}}
+        <button
+          className="play-button"
+          onClick={() => { navigate('../watch-movie') }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
             <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
           </svg>
           Play
         </button>
-        <div className="flex flex-col md:flex-row gap-8">
-          <div className="flex-1">
-            <h2 className="text-3xl font-bold mb-4">{movie.title}</h2>
-            <p className="mb-4">{movie.description}</p>
+        <div className="details">
+          <div className="details-left">
+            <h2 className="title">{movie.title}</h2>
+            <p className="description">{movie.description}</p>
           </div>
-          <div className="flex-1 bg-gray-100 p-4 rounded-lg">
-            <div className="mb-4 flex items-start">
+          <div className="details-right">
+            <div className="runtime">
               <strong>Runtime:</strong> {movie.length}
             </div>
-            <div className="flex items-start">
+            <div className="genres">
               <strong>Genres:</strong>
-              <div className="flex flex-wrap gap-2 mt-2">
+              <div className="genres-list">
                 {categories.map((category) => (
-                  <span key={category._id} className={`bg-blue-600 px-2 py-1 rounded-full text-sm`}>
-                    {category.name}
-                  </span>
+                  <span key={category._id} className="genre">{category.name}</span>
                 ))}
               </div>
             </div>
@@ -120,11 +115,11 @@ function HomeDescriptionPage({ movie }) {
       </div>
 
       {recommendedMovies.length > 0 ? (
-        <div className="mt-8">
-          <h3 className="text-2xl font-bold mb-4">Recommended Movies</h3>
+        <div className="recommended">
+          <h3 className="recommended-title">Recommended Movies</h3>
           <Movielst Movieslst={recommendedMovies} />
-        </div>) : null
-      }
+        </div>
+      ) : null}
     </div>
   );
 };
