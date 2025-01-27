@@ -294,3 +294,19 @@ button:hover {
   background: #fff;
   color: #d9534f;
 }
+
+
+.admin-screen {
+  background-image: url('../../public/welcomeAdmin.jpg');
+  background-size: cover; /* Cover the entire area */
+  background-position: center; /* Center the image */
+  background-attachment: fixed; /* Keep it fixed while scrolling */
+  min-height: 100vh; /* Ensure full height */
+  overflow: hidden; /* Disable scrolling */
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #141414;
+  color: #ffffff;
+}
