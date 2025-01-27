@@ -108,8 +108,8 @@ const getMovies = async (userId) => {
 
     return [200, randomMoviesByCategory];
 };
-
-const updateMovie = async (id, title, description, length, thumbnail, categories, video) => {
+const { deleteFileService } = require("../services/file");
+const updateMovie = async (id, title, description, length, thumbnail,thumbnailName, categories, videoName) => {
     let Movie = await getMovieById(id);
     console.log(Movie);
     // Returns 404 if the Movie is not found
@@ -119,7 +119,7 @@ const updateMovie = async (id, title, description, length, thumbnail, categories
     Movie = Movie[1];
 
     // Checks if one of the fields are missing
-    if (!title || !categories || !description || !length || !video) {
+    if (!id || !title || !categories || !description || !length || !video || !thumbnailName || !videoName) {
         return [400, "One of the required fields are missing"];
     }
 
@@ -148,9 +148,8 @@ const updateMovie = async (id, title, description, length, thumbnail, categories
         ListOfCategories.push(Category);
     }
 
-    if (!thumbnail) {
-        thumbnail = "No Thumbnail";
-    }
+    deleteFileService(Movie.thumbnailName)
+    deleteFileService(Movie.videoName)
     // Update the movie fields
     Movie.title = title;
     Movie.description = description;
@@ -158,6 +157,8 @@ const updateMovie = async (id, title, description, length, thumbnail, categories
     Movie.thumbnail = thumbnail;
     Movie.categories = categories;
     Movie.video = video;
+    Movie.thumbnailName = thumbnailName;
+    Movie.videoName = videoName;
 
     // Checks if the categories are valid and add the movie to the categories list of movies
     for (const categoryId of categories) {
@@ -183,7 +184,7 @@ const updateMovie = async (id, title, description, length, thumbnail, categories
 
     return [204, Movie];
 };
-const { deleteFileService } = require("./file");
+
 const deleteMovie = async (id) => {
     let Movie = await getMovieById(id);
 
