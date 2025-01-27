@@ -53,25 +53,25 @@ const AdminScreen = () => {
           console.error('Error fetching categories:', error);
       }
   };
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // useEffect(() => {
-  //     const checkValidation = async () => {
-  //       const token = localStorage.getItem('jwtToken');
+
+  useEffect(() => {
+      const checkValidation = async () => {
+        const token = localStorage.getItem('jwtToken');
   
-  //       const response = await fetch('http://localhost:8080/api/tokens/validate', {
-  //         headers: {
-  //           'Authorization': 'Bearer ' + token,
-  //           'Content-Type': 'application/json',
-  //           'requiredAdmin': true
-  //         }
-  //       });
-  //       if (!response.ok) {
-  //          navigate('/404');
-  //       }
-  //     };
-  //     checkValidation();
-  // }, []);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        const response = await fetch('http://localhost:8080/api/tokens/validate', {
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json',
+            'requiredAdmin': true
+          }
+        });
+        if (!response.ok) {
+           navigate('/404');
+        }
+      };
+      checkValidation();
+  }, []);
+
   useEffect(() => {
       fetchCategories();
   }, []);
