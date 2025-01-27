@@ -1,32 +1,7 @@
 const MovieService = require("../services/movies");
-require('custom-env').env(process.env.NODE_ENV, './config');
-const User = require('../modules/user');
-const jwt = require("jsonwebtoken")
+const UserService = require('../services/user');
+
 // creates a Movie when POST reqeust is sent to /api/movies
-
-const validateAndGetUser = async (req) => {
-    if (!req.headers.authorization) {
-        throw new Error('User not logged in');
-    }
-    const token = req.headers.authorization.split(" ")[1];
-    console.log(token)
-    let data;
-
-    try {
-        data = jwt.verify(token, process.env.JWT_SECRET);
-        console.log('The logged in user is: ' + data.username);
-        console.log('The logged in user is: ' + data.isAdmin);
-    } catch (err) {
-        throw new Error('Invalid Token');
-    }
-
-    const existingUserByUsername = await User.findOne({ username: data.username });
-    if (!existingUserByUsername) {
-        throw new Error('User not found');
-    }
-
-    return existingUserByUsername;
-};
 
 const createMovie = async (req, res) => {
     try {
@@ -34,7 +9,7 @@ const createMovie = async (req, res) => {
 
         // Use the new helper function to validate the token and retrieve the user
         try {
-            existingUserByUsername = await validateAndGetUser(req);
+            existingUserByUsername = await UserService.validateAndGetUser(req);
         } catch (error) {
             return res.status(403).json({ errors: error.message });
         }
@@ -66,7 +41,7 @@ const getMovies = async (req, res) => {
 
         // Use the new helper function to validate the token and retrieve the user
         try {
-            existingUserByUsername = await validateAndGetUser(req);
+            existingUserByUsername = await UserService.validateAndGetUser(req);
         } catch (error) {
             return res.status(403).json({ errors: error.message });
         }
@@ -95,7 +70,7 @@ const getMovie = async (req, res) => {
 
         // Use the new helper function to validate the token and retrieve the user
         try {
-            existingUserByUsername = await validateAndGetUser(req);
+            existingUserByUsername = await UserService.validateAndGetUser(req);
         } catch (error) {
             return res.status(403).json({ errors: error.message });
         }
@@ -123,7 +98,7 @@ const updateMovie = async (req, res) => {
 
         // Use the new helper function to validate the token and retrieve the user
         try {
-            existingUserByUsername = await validateAndGetUser(req);
+            existingUserByUsername = await UserService.validateAndGetUser(req);
         } catch (error) {
             return res.status(403).json({ errors: error.message });
         }
@@ -155,7 +130,7 @@ const deleteMovie = async (req, res) => {
 
         // Use the new helper function to validate the token and retrieve the user
         try {
-            existingUserByUsername = await validateAndGetUser(req);
+            existingUserByUsername = await UserService.validateAndGetUser(req);
         } catch (error) {
             return res.status(403).json({ errors: error.message });
         }
@@ -208,7 +183,7 @@ const getRecoomendations = async (req, res) => {
 
         // Use the new helper function to validate the token and retrieve the user
         try {
-            existingUserByUsername = await validateAndGetUser(req);
+            existingUserByUsername = await UserService.validateAndGetUser(req);
         } catch (error) {
             return res.status(403).json({ errors: error.message });
         }
@@ -237,7 +212,7 @@ const updateWatched = async (req, res) => {
 
         // Use the new helper function to validate the token and retrieve the user
         try {
-            existingUserByUsername = await validateAndGetUser(req);
+            existingUserByUsername = await UserService.validateAndGetUser(req);
         } catch (error) {
             return res.status(403).json({ errors: error.message });
         }

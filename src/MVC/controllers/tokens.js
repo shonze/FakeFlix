@@ -6,8 +6,8 @@ require('custom-env').env(process.env.NODE_ENV, './config');
  */
 const authenticateUser = async (req, res) => {
     try {
-        const username= req.body.username;
-        const password= req.body.password;
+        const username = req.body.username;
+        const password = req.body.password;
 
         if (!username || !password) {
             return res.status(400).json({ errors: ['Username and password are required'] });
@@ -34,4 +34,28 @@ const authenticateUser = async (req, res) => {
     }
 };
 
-module.exports = { authenticateUser};
+const validateUser = async (req, res) => {
+    try {
+        let existingUserByUsername;
+
+        // Use the new helper function to validate the token and retrieve the user
+        try {
+            existingUserByUsername = await UserService.validateAndGetUser(req);
+        } catch (error) {
+            return res.status(403).json({ errors: error.message });
+        }
+
+        if (req.headers.requireAdmin) {
+            if (!existingUserByUsername.isAdmin) {
+                return res.status(403).json({ errors: ['Not an admin!'] });
+            }
+        }
+
+        return res.status(204).json();
+        // In case the Category ID is not valid
+    } catch (error) {
+        return res.status(500).json({ errors: ['Error occured'] });
+    }
+};
+
+module.exports = { authenticateUser, validateUser };

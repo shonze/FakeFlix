@@ -8,7 +8,6 @@ const category = require('./routes/category');
 const user = require('./routes/user');
 const tokens = require('./routes/tokens');
 
-
 require('custom-env').env(process.env.NODE_ENV, './config');
 
 mongoose.connect(process.env.CONNECTION_STRING, {

@@ -8,6 +8,7 @@ import WatchMovie from '../SearchTool/WatchMovie';
 import AdminScreen from '../AdminScreen/AdminScreen'; 
 import HomePage from '../Pages/HomePage'; 
 import CategorySearch from '../CategorySearch/CategorySearch';
+import NotFoundPage from '../Pages/NotFoundPage';
 
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
                 <Route path = "/admin" element = {<AdminScreen />} />
                 <Route path="/watch-movie" element={<WatchMovie />} /> 
                 <Route path="/category/:id" element={<CategorySearch />} />
+                <Route path="/404" element={<NotFoundPage />} />
             </Routes>
         </Router>
     );
