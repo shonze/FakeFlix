@@ -85,7 +85,7 @@ const AdminScreen = () => {
     video: null,
 });
 
-  const [previewThumbnail, setPreviewThumbnail] = useState(null); // For thumbnail preview
+  const [previewThumbnail, setPreviewThumbnail] = useState(null); 
   const [previewVideo, setPreviewVideo] = useState(null); // For video preview
   const fileInputThumbnailRef = useRef(null);
   const fileInputVideoRef = useRef(null);
