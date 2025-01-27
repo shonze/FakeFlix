@@ -7,7 +7,7 @@ import SearchScreen from '../SearchTool/SearchTool';
 import WatchMovie from '../SearchTool/WatchMovie';
 import AdminScreen from '../AdminScreen/AdminScreen'; 
 import HomePage from '../Pages/HomePage'; 
-import CategorySearch from '../CategorySearch/CategorySearch';
+import CategorySearch from '../Pages/CategoryPage';
 import NotFoundPage from '../Pages/NotFoundPage';
 
 const App = () => {

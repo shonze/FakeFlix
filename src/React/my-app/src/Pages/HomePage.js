@@ -38,10 +38,7 @@ function HomePage() {
 
     useEffect(() => {
         const handleStorageChange = (event) => {
-            const button = event.explicitOriginalTarget
-            if (button.id === "dark" || button.id === "light") {
-                setTheme(button.id);  // Update theme from localStorage change
-            }
+            setTheme(localStorage.getItem("theme"));
         };
 
         // Listen for changes to localStorage (triggered by other windows/tabs)

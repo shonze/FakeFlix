@@ -1,9 +1,10 @@
-import React, { useParams, useNavigate, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import TopMenu from "../TopMenu/TopMenu";
 import Movielst from "../Movieslst/Movieslst";
 import "../TopMenu/TopMenu.css";
-import "../Movieslst/Movieslst.css";
-import './CategoryPage.css'; // Import the CSS file
+import "../Movieslst/Movielst.css";
+import './categoryPage.css'; // Import the CSS file
 
 const chunkArray = (array, chunkSize) => {
     const chunks = [];
@@ -17,6 +18,7 @@ function CategoryPage() {
     const { id } = useParams();
     const [category, setCategory] = useState(null);
     const [categoryMoviesChunked, setCategoryMoviesChunked] = useState([]);
+    const [theme,setTheme] = useState(localStorage.getItem("theme"));
     const navigate = useNavigate();
 
     // Checks if the user is permitted to enter the screen
@@ -70,6 +72,15 @@ function CategoryPage() {
         fetchCategories();
     }, [id]);
 
+    useEffect(() => {
+        const handleStorageChange = (event) => {
+            setTheme(localStorage.getItem("theme"));
+        };
+
+        // Listen for changes to localStorage (triggered by other windows/tabs)
+        window.addEventListener("storage", handleStorageChange);
+    }, []);
+
     if (!category) {
         return <h2>Category not found</h2>;
     }
@@ -79,11 +90,11 @@ function CategoryPage() {
     }
 
     return (
-        <div className={category.name}>
+        <div className={`bg-${theme}`}>
             <TopMenu />
-            <div className="row">
+            <div className={`movies-row bg-${theme}`}>
                 {categoryMoviesChunked.map((movieIds, index) => (
-                    <div key={index} className="col-md-3 mb-4">
+                    <div key={index} className="movie-card">
                         <Movielst Movieslst={movieIds} />
                     </div>
                 ))}
