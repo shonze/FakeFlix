@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 
 function HomePage() {
     const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
-
+    const [isAdmin,setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
     // Checks if the user is permited to enter the screen
@@ -28,6 +28,23 @@ function HomePage() {
         };
 
         checkValidation();
+
+        const checkIfAdmin = async () => {
+            const token = localStorage.getItem('jwtToken');
+
+            const response = await fetch('http://localhost:8080/api/tokens/validate', {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'requiredAdmin': true
+                }
+            });
+            if (!response.ok) {
+                setIsAdmin(true);
+            }
+        };
+
+        checkIfAdmin();
     }, []);
 
     useEffect(() => {
@@ -44,7 +61,7 @@ function HomePage() {
 
     return (
         <div className={`bg-${theme} min-vh-100`} >
-            <TopMenu /> 
+            <TopMenu admin={isAdmin}/> 
             <Categorieslst />
         </div>
     );

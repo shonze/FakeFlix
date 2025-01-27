@@ -5,7 +5,7 @@ import './TopMenu.css';
 import CategorySearch from '../CategorySearch/CategorySearch'
 import Theme from '../Theme/Theme';
 
-const TopMenu = () => {
+const TopMenu = ({ admin }) => {
     const [isTop, setIsTop] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
@@ -29,10 +29,8 @@ const TopMenu = () => {
     }, []); // Empty dependency array means this runs once on mount
 
     useEffect(() => {
-        // const token = localStorage.getItem('jwtToken')
-        // const data = jwt.verify(token,"SECRET-balls");
-        // setIsAdmin(data.isAdmin);
-    }, []);
+        setIsAdmin(admin);
+    }, [admin]);
 
     const homePage = `http://${window.location.hostname}:${window.location.port}/home`
 
