@@ -35,17 +35,17 @@ const authenticateUser = async (req, res) => {
 };
 
 const validateUser = async (req, res) => {
+    console.log("entered")
     try {
         let existingUserByUsername;
-
         // Use the new helper function to validate the token and retrieve the user
         try {
             existingUserByUsername = await UserService.validateAndGetUser(req);
         } catch (error) {
             return res.status(403).json({ errors: error.message });
         }
-
-        if (req.headers.requireAdmin) {
+        console.log(req.headers.requireAdmin)
+        if (req.headers.requireAdmin == 'true') {
             if (!existingUserByUsername.isAdmin) {
                 return res.status(403).json({ errors: ['Not an admin!'] });
             }

@@ -70,4 +70,4 @@ const validateAndGetUser = async (req) => {
     return existingUserByUsername;
 };
 
-module.exports = { createUser, getUserById, getUserId, getUsers };
+module.exports = { createUser, getUserById, getUserId, getUsers, validateAndGetUser };

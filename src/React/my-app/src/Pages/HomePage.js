@@ -22,6 +22,7 @@ function HomePage() {
                     'requiredAdmin': false
                 }
             });
+            console.log(response)
             if (!response.ok) {
                  navigate('/404');
             }
