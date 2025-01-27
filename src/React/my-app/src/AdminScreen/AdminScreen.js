@@ -361,7 +361,7 @@ const AdminScreen = () => {
       var thumbnailName;
       var videoUrl;
       var videoName;
-      if (selectedCategories.length == 0 ) {
+      if (foundMovie.categories.length == 0 ) {
         showToast('at least one category is needed', 'error');
         return
     }
