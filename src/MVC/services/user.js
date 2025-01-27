@@ -1,6 +1,7 @@
 const User = require('../modules/user');
 const moongoose = require('mongoose');
-
+require('custom-env').env(process.env.NODE_ENV, './config');
+const jwt = require("jsonwebtoken");
 /**
  * Creates a User.
  */
@@ -46,4 +47,27 @@ const getUserId = async (username, password) => {
     return user.id;
 };
 
-module.exports = { createUser, getUserById, getUserId, getUsers };
+const validateAndGetUser = async (req) => {
+    if (!req.headers.authorization) {
+        throw new Error('User not logged in');
+    }
+
+    const token = req.headers.authorization.split(" ")[1];
+    let data;
+
+    try {
+        data = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('The logged in user is: ' + data.username);
+    } catch (err) {
+        throw new Error('Invalid Token');
+    }
+
+    const existingUserByUsername = await User.findOne({ username: data.username });
+    if (!existingUserByUsername) {
+        throw new Error('User not found');
+    }
+
+    return existingUserByUsername;
+};
+
+module.exports = { createUser, getUserById, getUserId, getUsers, validateAndGetUser };

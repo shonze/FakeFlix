@@ -6,7 +6,6 @@ function Movielst({ Movieslst }) {
     const scrollContainerRef = useRef(null);
     const [isLeftArrowVisible, setIsLeftArrowVisible] = useState(false);
     const [isRightArrowVisible, setIsRightArrowVisible] = useState(true);
-    const [isScrollable, setIsScrollable] = useState(false);
 
     useEffect(() => {
         const checkScrollability = () => {
@@ -15,9 +14,6 @@ function Movielst({ Movieslst }) {
 
                 // Check if total content width exceeds container width
                 const isContentOverflowing = scrollWidth > clientWidth;
-
-                console.log(`${scrollWidth} ${clientWidth}`);
-                setIsScrollable(isContentOverflowing);
 
                 // Update arrow visibility
                 setIsLeftArrowVisible(false);
@@ -57,23 +53,6 @@ function Movielst({ Movieslst }) {
             );
         }
     };
-
-    // If not enough items, render normally without scrolling
-    if (!isScrollable) {
-        return (
-            <div className="d-flex">
-                {Movieslst.map((movieId) => (
-                    <div
-                        key={movieId}
-                        className="flex-shrink-0 me-3"
-                        style={{ minWidth: '200px' }}
-                    >
-                        <Movie id={movieId} />
-                    </div>
-                ))}
-            </div>
-        );
-    }
 
     return (
         <div className="position-relative">

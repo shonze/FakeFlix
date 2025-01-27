@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import './SearchTool.css';
 
 const SearchScreen = () => {
@@ -7,14 +8,35 @@ const SearchScreen = () => {
     const [movies, setMovies] = useState([]);
     const navigate = useNavigate();
 
+    // Checks if the user is permited to enter the screen
+    useEffect(() => {
+        const checkValidation = async () => {
+            const token = localStorage.getItem('jwtToken');
+
+            const response = await fetch('http://localhost:8080/api/tokens/validate', {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'requiredAdmin': false
+                }
+            });
+            if (!response.ok) {
+                navigate('/404');
+            }
+        };
+
+        checkValidation();
+    }, []);
+
     const handleMovieSearch = async (e) => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('jwtToken');
-            const response = await fetch(`http://localhost:8080/api/movies/search/${movieQuery}`,{
+            const response = await fetch(`http://localhost:8080/api/movies/search/${movieQuery}`, {
                 headers: {
-                    'Authorization': `Bearer'+ 'token`,
-                    'Content-Type': 'application/json' }
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                }
             });
             if (!response.ok) throw new Error('Failed to fetch movies');
             const data = await response.json();
@@ -51,7 +73,7 @@ const SearchScreen = () => {
                             <ul>
                                 {movies.map((movie) => (
                                     <li key={movie._id} onClick={() => handleMovieClick(movie)}>
-                                        <strong>{movie.title}</strong> <img src={movie.thumbnail} className=''/>
+                                        <strong>{movie.title}</strong> <img src={movie.thumbnail} className='' />
                                     </li>
                                 ))}
                             </ul>

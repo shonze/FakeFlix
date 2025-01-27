@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import './WatchMovie.css';
 
 const WatchMovie = () => {
@@ -7,6 +7,27 @@ const WatchMovie = () => {
     const selectedMovie = location.state?.movie;
     const [isPlaying, setIsPlaying] = useState(false);
     const [categories, setCategories] = useState([]); // State to hold category names
+    const navigate = useNavigate();
+
+    // Checks if the user is permited to enter the screen
+    useEffect(() => {
+        const checkValidation = async () => {
+            const token = localStorage.getItem('jwtToken');
+
+            const response = await fetch('http://localhost:8080/api/tokens/validate', {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'requiredAdmin': false
+                }
+            });
+            if (!response.ok) {
+                navigate('/404');
+            }
+        };
+
+        checkValidation();
+    }, []);
 
     // Function to bring categories based on selected movie
     const bringCategories = async () => {
@@ -15,10 +36,11 @@ const WatchMovie = () => {
             // Assuming selectedMovie.categories is an array of category IDs
             const categoryPromises = selectedMovie.categories.map(async (categoryID) => {
                 const token = localStorage.getItem('jwtToken');
-                const response = await fetch(`http://localhost:8080/api/categories/${categoryID}`,{
+                const response = await fetch(`http://localhost:8080/api/categories/${categoryID}`, {
                     headers: {
-                        'Authorization': `Bearer'+ 'token`,
-                        'Content-Type': 'application/json' }
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    }
                 });
                 if (!response.ok) throw new Error('Failed to bring categories');
                 const data = await response.json();

@@ -14,8 +14,8 @@ function Movie({ id }) {
 
                 const response = await fetch(`http://localhost:8080/api/movies/${id}`, {
                     method: 'GET',
-                    headers:{
-                        'Authorization': 'Bearer' + token ,
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
                         'Content-Type': 'application/json'
                     }
                 });
@@ -37,26 +37,22 @@ function Movie({ id }) {
 
     return (
         <div
-            className="w-full h-full"
+            className="thumbnail"
             onClick={() => {
                 // navigate(`/movie/${movie._id}`);
                 toggleModal();
             }}
             style={{ cursor: "pointer" }}
         >
-            <img
-                src={movie.thumbnail}
-                className="w-full h-full object-cover"
-                alt=""
-            />
+            <div className="cube">
+                <div className="cube-face front">
+                    <img src={movie.thumbnail} alt="photo" />
+                </div>
+            </div>
 
             {showModal && (
-                <div className="modal fade show d-block" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <MovieDescription movie={movie} />
-                        </div>
-                    </div>
+                <div className="modal fade show d-block center-container">
+                    <MovieDescription movie={movie} />
                 </div>
             )}
         </div>

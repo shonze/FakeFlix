@@ -1,4 +1,30 @@
-.thumbnail {
-    width: 48;
-    height: 64;
+.cube {
+    position: relative;
+    width: 250px;
+    /* Cube size */
+    height: 150px;
+    /* Cube size */
+    perspective: 1000px;
+}
+
+.cube-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.cube-face img {
+    width: 100%;
+    /* Scale image to cube face size */
+    height: 100%;
+    /* Stretch to fit the face */
+    object-fit: cover;
+    /* Ensure aspect ratio is preserved */
+}
+
+.center-container {
+    top: 30vh;
+    left: 50vh;
+    z-index: 10;
 }

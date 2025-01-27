@@ -1,0 +1,169 @@
+.half-top-container {
+    position: relative;
+    /* Fix the element to the screen */
+    top: 0;
+    /* Align it to the top of the screen */
+    left: 0;
+    /* Start from the left edge */
+    width: 450px;
+    /* Full width of the viewport */
+    height: 300px;
+    /* Half the viewport height */
+    display: flex;
+    /* Center the image inside */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* Crop any overflowing content */
+    z-index: 10;
+    /* Ensure it stays on top */
+}
+
+.full-thumbnail {
+    width: 100%;
+    /* Make the image fit the width */
+    height: 100%;
+    /* Make the image fit the height */
+    object-fit: cover;
+    /* Ensure the image scales without distortion */
+}
+
+.parent-container {
+    position: relative;
+
+    width: 700px;
+    /* Set width to 100cm */
+    height: 300px;
+
+    justify-content: center;
+    /* Horizontally center */
+    align-items: center;
+    /* Ensure stacking context is created for child elements */
+}
+
+/* Global Styles */
+.parent-container {
+    font-family: 'Arial', sans-serif;
+}
+
+.bg-dark {
+    background-color: #333;
+}
+
+.bg-light {
+    background-color: #fff;
+}
+
+.text-light {
+    color: #fff;
+}
+
+.text-dark {
+    color: #333;
+}
+
+/* Grid layout */
+.relative {
+    position: relative;
+}
+
+.grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.md-grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.gap-6 {
+    gap: 1.5rem;
+}
+
+/* Play Button */
+.play-button {
+    position: absolute;
+    top: 100px;
+    right: 75px;
+    background-color: #ef4444;
+    color: black;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    z-index: 10;
+}
+
+.play-button:hover {
+    background-color: #dc2626;
+}
+
+.play-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Details Section */
+.details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.details-left {
+    flex: 1;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.description {
+    margin-bottom: 1rem;
+}
+
+.details-right {
+    flex: 1;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.runtime {
+    margin-bottom: 1rem;
+}
+
+.genres {
+    margin-top: 1rem;
+}
+
+.genres-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.genre {
+    background-color: #2563eb;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    color: white;
+    font-size: 14px;
+}
+
+/* Recommended Movies Section */
+.recommended {
+    margin-top: 2rem;
+}
+
+.recommended-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}

@@ -6,3 +6,7 @@
 .search-bar:focus {
     width: 250px;
 }
+
+.navbar {
+    position: relative;
+}

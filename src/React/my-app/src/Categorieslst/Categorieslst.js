@@ -3,19 +3,18 @@ import Movieslst from '../Movieslst/Movieslst'
 import TopMovie from '../TopMovie/TopMovie';
 import './Categorieslst.css';
 
-const Categorieslst = ({ userId }) => {
+const Categorieslst = () => {
   const [categoriesMovies, setCategoriesMovies] = useState([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const token = localStorage.getItem('jwtToken');
-
+        console.log(token)
         const response = await fetch(`http://localhost:8080/api/movies`, {
           method: 'GET',
           headers: {
-            'userId': userId,
-            'Authorization': 'Bearer' + token,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
           }
         });
@@ -32,29 +31,34 @@ const Categorieslst = ({ userId }) => {
     };
 
     fetchCategories();
-  }, [userId]);
+  }, []);
 
   const AllReturnedMovies = Object.values(categoriesMovies).flat();
 
   const RandomMovieId = AllReturnedMovies[~~(Math.random() * AllReturnedMovies.length)];
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid custom-container-fluid">
       <TopMovie id={RandomMovieId} />
-      <div className="container">
+      <div className="custom-container">
         {Object.keys(categoriesMovies).length > 0 ? (
-          <div className="container">
+          <div className="custom-container">
             {Object.entries(categoriesMovies).map(([category, movies]) => {
               return movies.length > 0 ? (
-                <div key={category} className="sticky-left">
-                  <h6 className={`text-start text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"}`}>{category}</h6>
+                <div key={category}>
+                  <h6
+                    className={`text-center ${localStorage.getItem("theme") === "dark" ? "text-light" : "text-dark"
+                      }`}
+                  >
+                    {category}
+                  </h6>
                   <Movieslst key={category} Movieslst={movies} />
                 </div>
               ) : null;
             })}
           </div>
         ) : (
-          <p>No Movies Exists Yet, Come Back Later!!!</p>
+          <p className="no-movies">No Movies Exist Yet, Come Back Later!!!</p>
         )}
       </div>
     </div>
