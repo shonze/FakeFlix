@@ -43,7 +43,7 @@ const createMovie = async (req, res) => {
         }
         console.log(req.body);
         const Movie_and_Status = await MovieService.createMovie(req.body.title, req.body.categories,
-            req.body.description, req.body.length, req.body.thumbnail, req.body.video);
+            req.body.description, req.body.length, req.body.thumbnail, req.body.thumbnailName, req.body.video,req.body.videoName);
 
         // Get the status code from the Movie_and_Status array
         const status = Movie_and_Status[0];

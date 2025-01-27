@@ -24,9 +24,17 @@ const MovieSchema = new Schema({
     },
     thumbnail: {
         type: String,
-        required: false
+        required: true
+    },
+    thumbnailName: {
+        type: String,
+        required: true
     },
     video: {
+        type: String,
+        required: true
+    },
+    videoName: {
         type: String,
         required: true
     }

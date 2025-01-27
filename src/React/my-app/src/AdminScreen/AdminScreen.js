@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdminScreen.css';
 
@@ -9,8 +9,6 @@ const AdminScreen = () => {
       categories: [],
       description: '',
       length: '',
-      thumbnail: '',
-      video: '',
   });
   const [newCategory, setNewCategory] = useState({
       name: '',
@@ -43,7 +41,7 @@ const AdminScreen = () => {
           const token = localStorage.getItem('jwtToken');
           const response = await fetch('http://localhost:8080/api/categories', {
               headers: {
-                  'Authorization': `Bearer'+ 'token`,
+                  'Authorization': 'Bearer '+ token,
                   'Content-Type': 'application/json'
               }
           });
@@ -59,38 +57,244 @@ const AdminScreen = () => {
       fetchCategories();
   }, []);
 
+
+  const [newFiles, setFiles] = useState({
+      thumbnail: null,
+      video: null,
+  });
+
+  const [previewThumbnail, setPreviewThumbnail] = useState(null); // For thumbnail preview
+  const [previewVideo, setPreviewVideo] = useState(null); // For video preview
+  const fileInputThumbnailRef = useRef(null);
+  const fileInputVideoRef = useRef(null);
+  
+    // const navigate = useNavigate();
+  
+    // const handleBackClick = () => {
+    //   navigate('/home');
+    // };
+
+  const handleFileChange = (e, type) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (type === 'thumbnail') {
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        if (!validImageTypes.includes(file.type)) {
+          showToast('Please upload a valid image file (JPEG, PNG, GIF, WEBP).', 'error');
+          handleRemoveFile('thumbnail');
+          return;
+        }
+        setFiles((prevData) => ({ ...prevData, thumbnail: file }));
+        setPreviewThumbnail(URL.createObjectURL(file));
+      } else if (type === 'video') {
+        const validVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+        if (!validVideoTypes.includes(file.type)) {
+          showToast('Please upload a valid video file (MP4, WEBM, OGG).', 'error');
+          handleRemoveFile('video');
+          return;
+        }
+        setFiles((prevData) => ({ ...prevData, video: file }));
+        setPreviewVideo(URL.createObjectURL(file));
+      }
+    }
+  };
+
+  const handleRemoveFile = (type) => {
+    if (type === 'thumbnail') {
+      setFiles((prevData) => ({ ...prevData, thumbnail: null }));
+      setPreviewThumbnail(null);
+      if (fileInputThumbnailRef.current) fileInputThumbnailRef.current.value = '';
+    } else if (type === 'video') {
+      setFiles((prevData) => ({ ...prevData, video: null }));
+      setPreviewVideo(null);
+      if (fileInputVideoRef.current) fileInputVideoRef.current.value = '';
+    }
+  };
+
+
+  
+  const deletePhoto = async (name) => {
+    try {
+        const response = await fetch(`http://localhost:8080/api/file/${name}`, {
+            method: 'DELETE',
+        });
+        if (response.ok) {
+            showToast('file deleted successfully', 'success');
+        } else {
+            showToast('file deletion failed', 'error');
+        }
+    } catch (error) {
+        console.error('Error deleting file:', error);
+        showToast('An error occurred while deleting the file.', 'error');
+    }
+}
+  
   const handleAddMovie = async (e) => {
+    var thumbnailUrl;
+    var thumbnailName;
+    var videoUrl;
+    var videoName;
     e.preventDefault();
     clearMessages();
     try {
-        const movieToAdd = {
-            ...newMovie,
-            categories: selectedCategories, // Add this line to set categories
-        };
-        const token = localStorage.getItem('jwtToken');
-        const response = await fetch('http://localhost:8080/api/movies', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer'+ 'token`,
-              'Content-Type': 'application/json' },
-            body: JSON.stringify(movieToAdd),
+      const formData = new FormData();
+      // if (newFiles.thumbnail) formData.append('thumbnail', newFiles.thumbnail);
+      // if (newFiles.video) formData.append('video', newFiles.video);
+      formData.append('files', newFiles.thumbnail);
+
+      // const response = await fetch('http://localhost:8080/api/file', {
+      //   method: 'POST',
+      //   body: formData,
+      // });
+      try {
+        const response2 = await fetch('http://localhost:8080/api/file', {
+          method: 'POST',
+          body: formData,
         });
-        if (!response.ok) throw new Error('Error adding movie');
-        showToast('Movie added successfully!', 'success');
-        setNewMovie({
-            title: '',
-            categories: [],
-            description: '',
-            length: '',
-            thumbnail: '',
-            video: '',
+        const result2 = await response2.json();
+        if (response2.ok) {
+            thumbnailUrl = result2.files[0].url;
+            thumbnailName = result2.files[0].name;
+            showToast('Movie added successfully!', 'success');
+        } else {
+            showToast('thumbnail upload failed: ' + result2.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error uploading thumbnail:', error);
+        showToast('An error occurred while uploading the thumbnail.', 'error');
+    }
+      // Reset form
+      setFiles({
+        thumbnail: null,
+        video: null,
+      });
+      setPreviewVideo(null);
+      handleRemoveFile('thumbnail')
+    } catch (error) {
+      showToast('Error: Unable to add the movie.', 'error');
+      console.error(error);
+    }
+
+    try {
+      const formData = new FormData();
+      // if (newFiles.thumbnail) formData.append('thumbnail', newFiles.thumbnail);
+      // if (newFiles.video) formData.append('video', newFiles.video);
+      formData.append('files', newFiles.video);
+
+      // const response = await fetch('http://localhost:8080/api/file', {
+      //   method: 'POST',
+      //   body: formData,
+      // });
+      try {
+        const response = await fetch('http://localhost:8080/api/file', {
+          method: 'POST',
+          body: formData,
         });
-        setSelectedCategories([]); // Reset selected categories
+        const result = await response.json();
+        if (response.ok) {
+            videoUrl = result.files[0].url;
+            videoName = result.files[0].name;
+            showToast('Movie added successfully!', 'success');
+        } else {
+            showToast('video upload failed: ' + result.message, 'error');
+        }
+      } catch (error) {
+          console.error('Error uploading video:', error);
+          showToast('An error occurred while uploading the video.', 'error');
+      }
+      // Reset form
+      setFiles({
+        thumbnail: null,
+        video: null,
+      });
+      setPreviewVideo(null);
+      handleRemoveFile('video')
+    } catch (error) {
+      showToast('Error: Unable to add the movie.', 'error');
+      console.error(error);
+    }
+
+    try {
+      const movieToAdd = {
+          ...newMovie,
+          categories: selectedCategories,
+          thumbnail: thumbnailUrl,
+          thumbnailName: thumbnailName,
+          video: videoUrl,
+          videoName: videoName
+      };
+      
+      const token = localStorage.getItem('jwtToken');
+      const response = await fetch('http://localhost:8080/api/movies', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer '+ token,
+            'Content-Type': 'application/json' },
+          body: JSON.stringify(movieToAdd),
+      });
+      if (!response.ok) {
+        deletePhoto(videoName);
+        deletePhoto(thumbnailName);
+        throw new Error('Error adding movie');
+      } 
+      showToast('Movie added successfully!', 'success');
+      setNewMovie({
+          title: '',
+          categories: [],
+          description: '',
+          length: '',
+      });
+      setSelectedCategories([]); // Reset selected categories
     } catch (error) {
         showToast('Error: Unable to add the movie.', 'error');
         console.error(error);
+        deletePhoto(videoName);
+        deletePhoto(thumbnailName);
     }
+
   };
+
+
+  // const handleAddMovie = async (e) => {
+  //   var thumbnailUrl;
+  //   var thumbnailName;
+  //   var videoUrl;
+  //   var videoName;
+
+  //   e.preventDefault();
+  //   clearMessages();
+  //   try {
+  //       const movieToAdd = {
+  //           ...newMovie,
+  //           categories: selectedCategories,
+  //           thumbnail: thumbnailUrl,
+  //           thumbnailName: thumbnailName,
+  //           video: videoUrl,
+  //           videoName: videoName
+  //       };
+        
+  //       const token = localStorage.getItem('jwtToken');
+  //       const response = await fetch('http://localhost:8080/api/movies', {
+  //           method: 'POST',
+  //           headers: {
+  //             'Authorization': 'Bearer '+ token,
+  //             'Content-Type': 'application/json' },
+  //           body: JSON.stringify(movieToAdd),
+  //       });
+  //       if (!response.ok) throw new Error('Error adding movie');
+  //       showToast('Movie added successfully!', 'success');
+  //       setNewMovie({
+  //           title: '',
+  //           categories: [],
+  //           description: '',
+  //           length: '',
+  //       });
+  //       setSelectedCategories([]); // Reset selected categories
+  //   } catch (error) {
+  //       showToast('Error: Unable to add the movie.', 'error');
+  //       console.error(error);
+  //   }
+  // };
 
   const handleCategoryChange = (category) => {
     setSelectedCategories(prevCategories => {
@@ -110,7 +314,7 @@ const AdminScreen = () => {
       const token = localStorage.getItem('jwtToken');
       const response = await fetch(`http://localhost:8080/api/movies/${searchId}`,{
         headers: {
-          'Authorization': `Bearer'+ 'token`,
+          'Authorization': 'Bearer '+ token,
           'Content-Type': 'application/json'},
       });
       if (!response.ok) throw new Error('Movie not found');
@@ -133,7 +337,7 @@ const AdminScreen = () => {
           const response = await fetch(`http://localhost:8080/api/movies/${id}`, {
               method: 'DELETE',
               headers: {
-                'Authorization': `Bearer'+ 'token`,
+                'Authorization': 'Bearer '+ token,
                 'Content-Type': 'application/json' },
           });
           if (!response.ok) throw new Error('Error deleting movie');
@@ -153,7 +357,7 @@ const AdminScreen = () => {
           const response = await fetch(`http://localhost:8080/api/movies/${foundMovie._id}`, {
               method: 'PUT',
               headers: {
-                'Authorization': `Bearer'+ 'token`,
+                'Authorization': 'Bearer '+ token,
                 'Content-Type': 'application/json' },
               body: JSON.stringify(foundMovie),
           });
@@ -173,7 +377,7 @@ const AdminScreen = () => {
           const response = await fetch('http://localhost:8080/api/categories', {
               method: 'POST',
               headers: {
-                'Authorization': `Bearer'+ 'token`,
+                'Authorization': 'Bearer '+ token,
                 'Content-Type': 'application/json' },
               body: JSON.stringify(newCategory),
           });
@@ -194,7 +398,7 @@ const AdminScreen = () => {
           const response = await fetch(`http://localhost:8080/api/categories/${id}`, {
               method: 'DELETE',
               headers: {
-                'Authorization': `Bearer'+ 'token`,
+                'Authorization': 'Bearer '+ token,
                 'Content-Type': 'application/json' },
           });
           if (!response.ok) throw new Error('Error deleting category');
@@ -214,7 +418,7 @@ const AdminScreen = () => {
           const response = await fetch(`http://localhost:8080/api/categories/${editingCategory._id}`, {
               method: 'PATCH',
               headers: {
-                'Authorization': `Bearer'+ 'token`,
+                'Authorization': 'Bearer '+ token,
                 'Content-Type': 'application/json' },
               body: JSON.stringify(editingCategory),
           });
@@ -255,232 +459,267 @@ const AdminScreen = () => {
 
 
   return (
-        <div className="container">
-          <button className="back-button" onClick={handleBackClick}>
-            &#8592; Back
-          </button>
-          <h1>Admin Screen</h1>
+          <div className="admin-screen">
+          <div className="container">
+            <button className="back-button" onClick={handleBackClick}>
+              &#8592; Back
+            </button>
+            <h1>Admin Screen</h1>
 
-          {/* Add Category Form */}
-          <form onSubmit={handleAddCategory} className="add-category">
-            <h2>Add Category</h2>
-            <input
-              type="text"
-              placeholder="Category Name"
-              value={newCategory.name}
-              onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Description"
-              value={newCategory.description}
-              onChange={(e) => setNewCategory({ ...newCategory, description: e.target.value })}
-            />
-            <label>
-              Promoted:
+            {/* Add Category Form */}
+            <form onSubmit={handleAddCategory} className="add-category">
+              <h2>Add Category</h2>
               <input
-                type="checkbox"
-                checked={newCategory.promoted}
-                onChange={(e) => setNewCategory({ ...newCategory, promoted: e.target.checked })}
+                type="text"
+                placeholder="Category Name"
+                value={newCategory.name}
+                onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
+                required
               />
-            </label>
-            <p></p>
-            <button type="submit">Add Category</button>
-          </form>
-
-            {/* Category List */}
-            <h2>Categories</h2>
-            <ul>
-                {categories.map((category) => (
-                    <li key={category._id}>
-                        {category.name} <h6></h6> 
-                        <button onClick={() => {
-                            setEditingCategory(category);
-                        }}>Edit</button> <p1> </p1>
-                        <button className="delete-button" onClick={() => handleDeleteCategory(category._id)}>Delete</button>
-                        <h6></h6>
-
-                        {/* Separate Editing Form (when a category is being edited) */}
-                        {editingCategory && editingCategory._id === category._id && (
-                          <form onSubmit={handleUpdateCategory} className="edit-category">
-                            <h2>Edit Category</h2>
-                            <input
-                              type="text"
-                              placeholder="Category Name"
-                              value={editingCategory.name}
-                              onChange={(e) => setEditingCategory({ ...editingCategory, name: e.target.value })}
-                              required
-                            />
-                            <input
-                              type="text"
-                              placeholder="Description"
-                              value={editingCategory.description}
-                              onChange={(e) => setEditingCategory({ ...editingCategory, description: e.target.value })}
-                            />
-                            <label>
-                              Promoted:
-                              <input
-                                type="checkbox"
-                                checked={editingCategory.promoted}
-                                onChange={(e) => setEditingCategory({ ...editingCategory, promoted: e.target.checked })}
-                              />
-                            </label>
-                            <button type="submit">Update Category</button>
-                            <p1>  </p1>
-                            <button type="button" onClick={() => setEditingCategory(null)}>Cancel</button>
-                          </form>
-                          )}
-                    </li>
-                ))}
-            </ul>
-
-            {/* Add Movie Form */}
-            <form onSubmit={handleAddMovie} className="add-movie">
-                <h2>Add Movie</h2>
+              <input
+                type="text"
+                placeholder="Description"
+                value={newCategory.description}
+                onChange={(e) => setNewCategory({ ...newCategory, description: e.target.value })}
+              />
+              <label>
+                Promoted:
                 <input
-                    type="text"
-                    placeholder="Title"
-                    value={newMovie.title}
-                    onChange={(e) => setNewMovie({ ...newMovie, title: e.target.value })}
-                    required
+                  type="checkbox"
+                  checked={newCategory.promoted}
+                  onChange={(e) => setNewCategory({ ...newCategory, promoted: e.target.checked })}
                 />
-                <h3>Select Categories:</h3>
-                <div className="category-checkbox-list">
-                  {categories.map((category) => (
-                    <label key={category._id} className="checkbox-item">
-                      <input
-                        type="checkbox"
-                        value={category.name}
-                        checked={selectedCategories.includes(category.name)}
-                        onChange={() => handleCategoryChange(category.name)}
-                      />
-                      {category.name}
-                    </label>
-                  ))}
-                </div>
-                <input
-                    type="text"
-                    placeholder="Description"
-                    value={newMovie.description}
-                    onChange={(e) => setNewMovie({ ...newMovie, description: e.target.value })}
-                    required
-                />
-                <input
-                    type="number"
-                    placeholder="Length (in minutes)"
-                    value={newMovie.length}
-                    onChange={(e) => setNewMovie({ ...newMovie, length: e.target.value })}
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="Thumbnail URL"
-                    value={newMovie.thumbnail}
-                    onChange={(e) => setNewMovie({ ...newMovie, thumbnail: e.target.value })}
-                />
-                <input
-                    type="text"
-                    placeholder="Video URL"
-                    value={newMovie.video}
-                    onChange={(e) => setNewMovie({ ...newMovie, video: e.target.value })}
-                    required
-                />
-                <button type="submit">Add Movie</button>
+              </label>
+              <p></p>
+              <button type="submit">Add Category</button>
             </form>
-            {/* Search Movie by ID */}
-            <form onSubmit={handleSearchMovie} className="search-movie">
-                <h2>Search Movie by ID</h2>
-                <input
-                    type="text"
-                    placeholder="Enter Movie ID"
-                    value={searchId}
-                    onChange={(e) => setSearchId(e.target.value)}
-                    required
-                />
-                <button type="submit">Search</button>
-              </form>
-            
 
-            {/* Display Found Movie */}
-            {foundMovie && (
-              <div className="found-movie">
-                <h2>Found Movie</h2>
-                <form onSubmit={handleUpdateMovie} className="update-movie">
-                  <h2>Update Movie</h2>
+              {/* Category List */}
+              <h2>Categories</h2>
+              <ul>
+                  {categories.map((category) => (
+                      <li key={category._id}>
+                          {category.name} <h6></h6> 
+                          <button onClick={() => {
+                              setEditingCategory(category);
+                          }}>Edit</button> <p1> </p1>
+                          <button className="delete-button" onClick={() => handleDeleteCategory(category._id)}>Delete</button>
+                          <h6></h6>
+
+                          {/* Separate Editing Form (when a category is being edited) */}
+                          {editingCategory && editingCategory._id === category._id && (
+                            <form onSubmit={handleUpdateCategory} className="edit-category">
+                              <h2>Edit Category</h2>
+                              <input
+                                type="text"
+                                placeholder="Category Name"
+                                value={editingCategory.name}
+                                onChange={(e) => setEditingCategory({ ...editingCategory, name: e.target.value })}
+                                required
+                              />
+                              <input
+                                type="text"
+                                placeholder="Description"
+                                value={editingCategory.description}
+                                onChange={(e) => setEditingCategory({ ...editingCategory, description: e.target.value })}
+                              />
+                              <label>
+                                Promoted:
+                                <input
+                                  type="checkbox"
+                                  checked={editingCategory.promoted}
+                                  onChange={(e) => setEditingCategory({ ...editingCategory, promoted: e.target.checked })}
+                                />
+                              </label>
+                              <button type="submit">Update Category</button>
+                              <p1>  </p1>
+                              <button type="button" onClick={() => setEditingCategory(null)}>Cancel</button>
+                            </form>
+                            )}
+                      </li>
+                  ))}
+              </ul>
+
+              {/* Add Movie Form */}
+              <form onSubmit={handleAddMovie} className="add-movie">
+                  <h2>Add Movie</h2>
                   <input
-                    type="text"
-                    placeholder="Movie ID"
-                    value={foundMovie._id}
-                    readOnly
+                      type="text"
+                      placeholder="Title"
+                      value={newMovie.title}
+                      onChange={(e) => setNewMovie({ ...newMovie, title: e.target.value })}
+                      required
                   />
-                  <input
-                    type="text"
-                    placeholder="Title"
-                    value={foundMovie.title}
-                    onChange={(e) => setFoundMovie({ ...foundMovie, title: e.target.value })}
-                    required
-                  />
-                  
-                  {/* Category Checkbox Section */}
                   <h3>Select Categories:</h3>
                   <div className="category-checkbox-list">
-                    {categories && categories.length > 0 && categories.map((category) => (
+                    {categories.map((category) => (
                       <label key={category._id} className="checkbox-item">
                         <input
                           type="checkbox"
                           value={category.name}
-                          checked={foundMovie.categories && foundMovie.categories.includes(category._id)}
-                          onChange={() => {
-                            const currentCategories = foundMovie.categories;
-                            const updatedCategories = currentCategories.includes(category._id)
-                              ? currentCategories.filter(cat => cat !== category._id)
-                              : [...currentCategories, category._id];
-                            setFoundMovie({ ...foundMovie, categories: updatedCategories });
-                          }}
+                          checked={selectedCategories.includes(category.name)}
+                          onChange={() => handleCategoryChange(category.name)}
                         />
                         {category.name}
                       </label>
                     ))}
                   </div>
-
                   <input
                       type="text"
                       placeholder="Description"
-                      value={foundMovie.description}
-                      onChange={(e) => setFoundMovie({ ...foundMovie, description: e.target.value })}
+                      value={newMovie.description}
+                      onChange={(e) => setNewMovie({ ...newMovie, description: e.target.value })}
                       required
                   />
                   <input
                       type="number"
                       placeholder="Length (in minutes)"
-                      value={foundMovie.length}
-                      onChange={(e) => setFoundMovie({ ...foundMovie, length: e.target.value })}
+                      value={newMovie.length}
+                      onChange={(e) => setNewMovie({ ...newMovie, length: e.target.value })}
                       required
                   />
+
+                  
+                    <label className="form-label">Thumbnail</label>
+                    <input
+                      type="file"
+                      className="custom-input"
+                      onChange={(e) => handleFileChange(e, 'thumbnail')}
+                      accept="image/*"
+                      ref={fileInputThumbnailRef}
+                      required
+                    />
+                    {previewThumbnail && (
+                      <div className="image-preview">
+                        <img src={previewThumbnail} alt="Thumbnail Preview" />
+                        <button
+                          type="button"
+                          className="remove-photo-btn"
+                          onClick={() => handleRemoveFile('thumbnail')}
+                        >
+                          ✖
+                        </button>
+                      </div>
+                    )}
+
+                    <label className="form-label">Video</label>
+                    <input
+                      type="file"
+                      className="custom-input"
+                      onChange={(e) => handleFileChange(e, 'video')}
+                      accept="video/*"
+                      ref={fileInputVideoRef}
+                      required
+                    />
+                    {previewVideo && (
+                      <div className="video-preview">
+                        <video src={previewVideo} controls width="300" />
+                        <button
+                          type="button"
+                          className="remove-photo-btn"
+                          onClick={() => handleRemoveFile('video')}
+                        >
+                          ✖
+                        </button>
+                      </div>
+                    )}
+
+                  <button type="submit">Add Movie</button>
+              </form>
+              {/* Search Movie by ID */}
+              <form onSubmit={handleSearchMovie} className="search-movie">
+                  <h2>Search Movie by ID</h2>
                   <input
                       type="text"
-                      placeholder="Thumbnail URL"
-                      value={foundMovie.thumbnail}
-                      onChange={(e) => setFoundMovie({ ...foundMovie, thumbnail: e.target.value })}
-                  />
-                  <input
-                      type="text"
-                      placeholder="Video URL"
-                      value={foundMovie.video}
-                      onChange={(e) => setFoundMovie({ ...foundMovie, video: e.target.value })}
+                      placeholder="Enter Movie ID"
+                      value={searchId}
+                      onChange={(e) => setSearchId(e.target.value)}
                       required
                   />
-                  <button type="submit">Update Movie</button>
-                  <p1>  </p1>
-                  <button className="delete-button" onClick={() => handleDeleteMovie(foundMovie._id)}>Delete Movie</button>
+                  <button type="submit">Search</button>
                 </form>
-              </div>
-            )}
-            {/* Error Message */}
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
-            {/* Success Message */}
-            {successMessage && <div className="success-message">{successMessage}</div>}  
+              
+
+              {/* Display Found Movie */}
+              {foundMovie && (
+                <div className="found-movie">
+                  <h2>Found Movie</h2>
+                  <form onSubmit={handleUpdateMovie} className="update-movie">
+                    <h2>Update Movie</h2>
+                    <input
+                      type="text"
+                      placeholder="Movie ID"
+                      value={foundMovie._id}
+                      readOnly
+                    />
+                    <input
+                      type="text"
+                      placeholder="Title"
+                      value={foundMovie.title}
+                      onChange={(e) => setFoundMovie({ ...foundMovie, title: e.target.value })}
+                      required
+                    />
+                    
+                    {/* Category Checkbox Section */}
+                    <h3>Select Categories:</h3>
+                    <div className="category-checkbox-list">
+                      {categories && categories.length > 0 && categories.map((category) => (
+                        <label key={category._id} className="checkbox-item">
+                          <input
+                            type="checkbox"
+                            value={category.name}
+                            checked={foundMovie.categories && foundMovie.categories.includes(category._id)}
+                            onChange={() => {
+                              const currentCategories = foundMovie.categories;
+                              const updatedCategories = currentCategories.includes(category._id)
+                                ? currentCategories.filter(cat => cat !== category._id)
+                                : [...currentCategories, category._id];
+                              setFoundMovie({ ...foundMovie, categories: updatedCategories });
+                            }}
+                          />
+                          {category.name}
+                        </label>
+                      ))}
+                    </div>
+
+                    <input
+                        type="text"
+                        placeholder="Description"
+                        value={foundMovie.description}
+                        onChange={(e) => setFoundMovie({ ...foundMovie, description: e.target.value })}
+                        required
+                    />
+                    <input
+                        type="number"
+                        placeholder="Length (in minutes)"
+                        value={foundMovie.length}
+                        onChange={(e) => setFoundMovie({ ...foundMovie, length: e.target.value })}
+                        required
+                    />
+                    <input
+                        type="text"
+                        placeholder="Thumbnail URL"
+                        value={foundMovie.thumbnail}
+                        onChange={(e) => setFoundMovie({ ...foundMovie, thumbnail: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Video URL"
+                        value={foundMovie.video}
+                        onChange={(e) => setFoundMovie({ ...foundMovie, video: e.target.value })}
+                        required
+                    />
+                    <button type="submit">Update Movie</button>
+                    <p1>  </p1>
+                    <button className="delete-button" onClick={() => handleDeleteMovie(foundMovie._id)}>Delete Movie</button>
+                  </form>
+                </div>
+              )}
+              {/* Error Message */}
+              {errorMessage && <div className="error-message">{errorMessage}</div>}
+              {/* Success Message */}
+              {successMessage && <div className="success-message">{successMessage}</div>}  
+          </div>
         </div>
     );
 };
