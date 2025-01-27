@@ -54,23 +54,23 @@ const AdminScreen = () => {
       }
   };
 
-  // useEffect(() => {
-  //     const checkValidation = async () => {
-  //       const token = localStorage.getItem('jwtToken');
+  useEffect(() => {
+      const checkValidation = async () => {
+        const token = localStorage.getItem('jwtToken');
   
-  //       const response = await fetch('http://localhost:8080/api/tokens/validate', {
-  //         headers: {
-  //           'Authorization': 'Bearer ' + token,
-  //           'Content-Type': 'application/json',
-  //           'requiredAdmin': true
-  //         }
-  //       });
-  //       if (!response.ok) {
-  //          navigate('/404');
-  //       }
-  //     };
-  //     checkValidation();
-  // }, []);
+        const response = await fetch('http://localhost:8080/api/tokens/validate', {
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json',
+            'requiredAdmin': true
+          }
+        });
+        if (!response.ok) {
+           navigate('/404');
+        }
+      };
+      checkValidation();
+  }, []);
   useEffect(() => {
       fetchCategories();
   }, []);
@@ -174,13 +174,12 @@ const AdminScreen = () => {
             method: 'DELETE',
         });
         if (response.ok) {
-            showToast('file deleted successfully', 'success');
+            console.error('file deleted successfully');
         } else {
-            showToast('file deletion failed', 'error');
+            console.error('Error deleting file:');
         }
     } catch (error) {
         console.error('Error deleting file:', error);
-        showToast('An error occurred while deleting the file.', 'error');
     }
 }
   
@@ -209,13 +208,11 @@ const AdminScreen = () => {
         if (response2.ok) {
             thumbnailUrl = result2.files[0].url;
             thumbnailName = result2.files[0].name;
-            showToast('Movie added successfully!', 'success');
         } else {
-            showToast('thumbnail upload failed: ' + result2.message, 'error');
+            console.log(showToast('thumbnail upload failed: ' + result2.message, 'error'))
         }
     } catch (error) {
         console.error('Error uploading thumbnail:', error);
-        showToast('An error occurred while uploading the thumbnail.', 'error');
     }
       // Reset form
       setFiles({
@@ -225,7 +222,6 @@ const AdminScreen = () => {
       setPreviewVideo(null);
       handleRemoveFile('thumbnail')
     } catch (error) {
-      showToast('Error: Unable to add the movie.', 'error');
       console.error(error);
     }
 
@@ -242,13 +238,11 @@ const AdminScreen = () => {
         if (response.ok) {
             videoUrl = result.files[0].url;
             videoName = result.files[0].name;
-            showToast('Movie added successfully!', 'success');
         } else {
-            showToast('video upload failed: ' + result.message, 'error');
+            console.log('video upload failed: ' + result.message, 'error');
         }
       } catch (error) {
           console.error('Error uploading video:', error);
-          showToast('An error occurred while uploading the video.', 'error');
       }
       // Reset form
       setFiles({
@@ -258,7 +252,6 @@ const AdminScreen = () => {
       setPreviewVideo(null);
       handleRemoveFile('video')
     } catch (error) {
-      showToast('Error: Unable to add the movie.', 'error');
       console.error(error);
     }
 
@@ -285,7 +278,6 @@ const AdminScreen = () => {
         deleteFile(thumbnailName);
         throw new Error('Error adding movie');
       } 
-      showToast('Movie added successfully!', 'success');
       setNewMovie({
           title: '',
           categories: [],
@@ -294,7 +286,6 @@ const AdminScreen = () => {
       });
       setSelectedCategories([]); // Reset selected categories
     } catch (error) {
-        showToast('Error: Unable to add the movie.', 'error');
         console.error(error);
         deleteFile(videoName);
         deleteFile(thumbnailName);
@@ -379,13 +370,9 @@ const AdminScreen = () => {
           if (response2.ok) {
               thumbnailUrl = result2.files[0].url;
               thumbnailName = result2.files[0].name;
-              showToast('Movie added successfully!', 'success');
-          } else {
-              showToast('thumbnail upload failed: ' + result2.message, 'error');
-          }
+          } 
       } catch (error) {
           console.error('Error uploading thumbnail:', error);
-          showToast('An error occurred while uploading the thumbnail.', 'error');
       }
         // Reset form
         setFiles2({
@@ -395,7 +382,6 @@ const AdminScreen = () => {
         setPreviewVideo2(null);
         handleRemoveFile2('thumbnail')
       } catch (error) {
-        showToast('Error: Unable to add the movie.', 'error');
         console.error(error);
       }
   
@@ -412,13 +398,9 @@ const AdminScreen = () => {
           if (response.ok) {
               videoUrl = result.files[0].url;
               videoName = result.files[0].name;
-              showToast('Movie added successfully!', 'success');
-          } else {
-              showToast('video upload failed: ' + result.message, 'error');
           }
         } catch (error) {
             console.error('Error uploading video:', error);
-            showToast('An error occurred while uploading the video.', 'error');
         }
         // Reset form
         setFiles2({
@@ -428,7 +410,6 @@ const AdminScreen = () => {
         setPreviewVideo2(null);
         handleRemoveFile2('video')
       } catch (error) {
-        showToast('Error: Unable to add the movie.', 'error');
         console.error(error);
       }
 
@@ -467,8 +448,6 @@ const AdminScreen = () => {
           } 
           showToast('Movie updated successfully.', 'success');
           setFoundMovie(null);
-
-
       } catch (error) {
           console.error(error);
       }
