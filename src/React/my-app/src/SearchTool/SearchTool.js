@@ -58,7 +58,7 @@ const SearchScreen = () => {
     useEffect(() => {
         const delayDebounce = setTimeout(() => {
             handleMovieSearch();
-        }, 300); // Debounce by 300ms
+        }, 100); // Debounce by 100ms
 
         return () => clearTimeout(delayDebounce); // Cleanup debounce timer
     }, [movieQuery]);
