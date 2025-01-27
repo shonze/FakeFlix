@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdminScreen.css';
 
@@ -35,14 +35,18 @@ const AdminScreen = () => {
       const token = localStorage.getItem('jwtToken');
 
       const response = await fetch('http://localhost:8080/api/tokens/validate', {
+        method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + token,
-          'Content-Type': 'application/json',
-          'requiredAdmin': true
+          'Content-Type': 'application/json'
         }
       });
       if (!response.ok) {
-         navigate('/404');
+        navigate('/404');
+      }
+      const isAdmin = await response.json();
+      if(isAdmin == false){
+        navigate('/404');
       }
     };
 
@@ -50,7 +54,7 @@ const AdminScreen = () => {
   }, []);
 
   const handleBackClick = () => {
-    navigate('/home'); // Replace '/home' with the route for your HomePage
+    navigate('/home');
   };
   const clearMessages = () => {
     setSuccessMessage('');
@@ -81,20 +85,20 @@ const AdminScreen = () => {
 
 
   const [newFiles, setFiles] = useState({
-      thumbnail: null,
-      video: null,
+    thumbnail: null,
+    video: null,
   });
 
   const [previewThumbnail, setPreviewThumbnail] = useState(null); // For thumbnail preview
   const [previewVideo, setPreviewVideo] = useState(null); // For video preview
   const fileInputThumbnailRef = useRef(null);
   const fileInputVideoRef = useRef(null);
-  
-    // const navigate = useNavigate();
-  
-    // const handleBackClick = () => {
-    //   navigate('/home');
-    // };
+
+  // const navigate = useNavigate();
+
+  // const handleBackClick = () => {
+  //   navigate('/home');
+  // };
 
   const handleFileChange = (e, type) => {
     const file = e.target.files[0];
@@ -134,23 +138,23 @@ const AdminScreen = () => {
   };
 
 
-  
+
   const deletePhoto = async (name) => {
     try {
-        const response = await fetch(`http://localhost:8080/api/file/${name}`, {
-            method: 'DELETE',
-        });
-        if (response.ok) {
-            showToast('file deleted successfully', 'success');
-        } else {
-            showToast('file deletion failed', 'error');
-        }
+      const response = await fetch(`http://localhost:8080/api/file/${name}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        showToast('file deleted successfully', 'success');
+      } else {
+        showToast('file deletion failed', 'error');
+      }
     } catch (error) {
-        console.error('Error deleting file:', error);
-        showToast('An error occurred while deleting the file.', 'error');
+      console.error('Error deleting file:', error);
+      showToast('An error occurred while deleting the file.', 'error');
     }
-}
-  
+  }
+
   const handleAddMovie = async (e) => {
     var thumbnailUrl;
     var thumbnailName;
@@ -175,16 +179,16 @@ const AdminScreen = () => {
         });
         const result2 = await response2.json();
         if (response2.ok) {
-            thumbnailUrl = result2.files[0].url;
-            thumbnailName = result2.files[0].name;
-            showToast('Movie added successfully!', 'success');
+          thumbnailUrl = result2.files[0].url;
+          thumbnailName = result2.files[0].name;
+          showToast('Movie added successfully!', 'success');
         } else {
-            showToast('thumbnail upload failed: ' + result2.message, 'error');
+          showToast('thumbnail upload failed: ' + result2.message, 'error');
         }
-    } catch (error) {
+      } catch (error) {
         console.error('Error uploading thumbnail:', error);
         showToast('An error occurred while uploading the thumbnail.', 'error');
-    }
+      }
       // Reset form
       setFiles({
         thumbnail: null,
@@ -214,15 +218,15 @@ const AdminScreen = () => {
         });
         const result = await response.json();
         if (response.ok) {
-            videoUrl = result.files[0].url;
-            videoName = result.files[0].name;
-            showToast('Movie added successfully!', 'success');
+          videoUrl = result.files[0].url;
+          videoName = result.files[0].name;
+          showToast('Movie added successfully!', 'success');
         } else {
-            showToast('video upload failed: ' + result.message, 'error');
+          showToast('video upload failed: ' + result.message, 'error');
         }
       } catch (error) {
-          console.error('Error uploading video:', error);
-          showToast('An error occurred while uploading the video.', 'error');
+        console.error('Error uploading video:', error);
+        showToast('An error occurred while uploading the video.', 'error');
       }
       // Reset form
       setFiles({
@@ -287,7 +291,7 @@ const AdminScreen = () => {
   //           video: videoUrl,
   //           videoName: videoName
   //       };
-        
+
   //       const token = localStorage.getItem('jwtToken');
   //       const response = await fetch('http://localhost:8080/api/movies', {
   //           method: 'POST',
@@ -486,7 +490,7 @@ const AdminScreen = () => {
 
 
   return (
-          <div className="admin-screen">
+    <div className="admin-screen">
       <div className="container">
         <button className="back-button" onClick={handleBackClick}>
           &#8592; Back
@@ -567,71 +571,71 @@ const AdminScreen = () => {
           ))}
         </ul>
 
-      {/* Add Movie Form */}
-      <form onSubmit={handleAddMovie} className="add-movie">
-        <h2>Add Movie</h2>
-        <input
-          type="text"
-          placeholder="Title"
-          value={newMovie.title}
-          onChange={(e) => setNewMovie({ ...newMovie, title: e.target.value })}
-          required
-        />
-        <h3>Select Categories:</h3>
-        <div className="category-checkbox-list">
-          {categories.map((category) => (
-            <label key={category._id} className="checkbox-item">
-              <input
-                type="checkbox"
-                value={category.name}
-                checked={selectedCategories.includes(category.name)}
-                onChange={() => handleCategoryChange(category.name)}
-              />
-              {category.name}
-            </label>
-          ))}
-        </div>
-        <input
-          type="text"
-          placeholder="Description"
-          value={newMovie.description}
-          onChange={(e) => setNewMovie({ ...newMovie, description: e.target.value })}
-          required
-        />
-        <input
-          type="number"
-          placeholder="Length (in minutes)"
-          value={newMovie.length}
-          onChange={(e) => setNewMovie({ ...newMovie, length: e.target.value })}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Thumbnail URL"
-          value={newMovie.thumbnail}
-          onChange={(e) => setNewMovie({ ...newMovie, thumbnail: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Video URL"
-          value={newMovie.video}
-          onChange={(e) => setNewMovie({ ...newMovie, video: e.target.value })}
-          required
-        />
-        <button type="submit">Add Movie</button>
-      </form>
-      {/* Search Movie by ID */}
-      <form onSubmit={handleSearchMovie} className="search-movie">
-        <h2>Search Movie by ID</h2>
-        <input
-          type="text"
-          placeholder="Enter Movie ID"
-          value={searchId}
-          onChange={(e) => setSearchId(e.target.value)}
-          required
-        />
-        <button type="submit">Search</button>
-      </form>
+        {/* Add Movie Form */}
+        <form onSubmit={handleAddMovie} className="add-movie">
+          <h2>Add Movie</h2>
+          <input
+            type="text"
+            placeholder="Title"
+            value={newMovie.title}
+            onChange={(e) => setNewMovie({ ...newMovie, title: e.target.value })}
+            required
+          />
+          <h3>Select Categories:</h3>
+          <div className="category-checkbox-list">
+            {categories.map((category) => (
+              <label key={category._id} className="checkbox-item">
+                <input
+                  type="checkbox"
+                  value={category.name}
+                  checked={selectedCategories.includes(category.name)}
+                  onChange={() => handleCategoryChange(category.name)}
+                />
+                {category.name}
+              </label>
+            ))}
+          </div>
+          <input
+            type="text"
+            placeholder="Description"
+            value={newMovie.description}
+            onChange={(e) => setNewMovie({ ...newMovie, description: e.target.value })}
+            required
+          />
+          <input
+            type="number"
+            placeholder="Length (in minutes)"
+            value={newMovie.length}
+            onChange={(e) => setNewMovie({ ...newMovie, length: e.target.value })}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Thumbnail URL"
+            value={newMovie.thumbnail}
+            onChange={(e) => setNewMovie({ ...newMovie, thumbnail: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Video URL"
+            value={newMovie.video}
+            onChange={(e) => setNewMovie({ ...newMovie, video: e.target.value })}
+            required
+          />
+          <button type="submit">Add Movie</button>
+        </form>
+        {/* Search Movie by ID */}
+        <form onSubmit={handleSearchMovie} className="search-movie">
+          <h2>Search Movie by ID</h2>
+          <input
+            type="text"
+            placeholder="Enter Movie ID"
+            value={searchId}
+            onChange={(e) => setSearchId(e.target.value)}
+            required
+          />
+          <button type="submit">Search</button>
+        </form>
 
 
         {/* Display Found Movie */}
@@ -653,7 +657,7 @@ const AdminScreen = () => {
                 onChange={(e) => setFoundMovie({ ...foundMovie, title: e.target.value })}
                 required
               />
-  
+
               {/* Category Checkbox Section */}
               <h3>Select Categories:</h3>
               <div className="category-checkbox-list">
@@ -713,7 +717,7 @@ const AdminScreen = () => {
         {errorMessage && <div className="error-message">{errorMessage}</div>}
         {/* Success Message */}
         {successMessage && <div className="success-message">{successMessage}</div>}
-          </div>
+      </div>
     </div>
   );
 };

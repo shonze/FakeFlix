@@ -26,10 +26,10 @@ function CategoryPage() {
             const token = localStorage.getItem('jwtToken');
 
             const response = await fetch('http://localhost:8080/api/tokens/validate', {
+                method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,
-                    'Content-Type': 'application/json',
-                    'requiredAdmin': false
+                    'Content-Type': 'application/json'
                 }
             });
             if (!response.ok) {

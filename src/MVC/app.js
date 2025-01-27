@@ -29,8 +29,6 @@ app.use('/api/categories', category);
 app.use('/api/users', user);
 app.use('/api/tokens', tokens);
 
-
-
 const fileRoutes = require("./routes/file");
 
 // Middleware to parse JSON

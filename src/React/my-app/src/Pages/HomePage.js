@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 
 function HomePage() {
     const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
-    const [isAdmin,setIsAdmin] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
     // Checks if the user is permited to enter the screen
@@ -16,36 +16,21 @@ function HomePage() {
             const token = localStorage.getItem('jwtToken');
 
             const response = await fetch('http://localhost:8080/api/tokens/validate', {
+                method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,
-                    'Content-Type': 'application/json',
-                    'requiredAdmin': false
+                    'Content-Type': 'application/json'
                 }
             });
-            console.log(response)
             if (!response.ok) {
-                 navigate('/404');
+                navigate('/404');
             }
+            const isAdmin = await response.json();
+            console.log(isAdmin)
+            setIsAdmin(isAdmin);
         };
 
         checkValidation();
-
-        const checkIfAdmin = async () => {
-            const token = localStorage.getItem('jwtToken');
-
-            const response = await fetch('http://localhost:8080/api/tokens/validate', {
-                headers: {
-                    'Authorization': 'Bearer ' + token,
-                    'Content-Type': 'application/json',
-                    'requiredAdmin': true
-                }
-            });
-            if (!response.ok) {
-                setIsAdmin(true);
-            }
-        };
-
-        checkIfAdmin();
     }, []);
 
     useEffect(() => {
@@ -62,7 +47,7 @@ function HomePage() {
 
     return (
         <div className={`bg-${theme} min-vh-100`} >
-            <TopMenu admin={isAdmin}/> 
+            <TopMenu admin={isAdmin} />
             <Categorieslst />
         </div>
     );

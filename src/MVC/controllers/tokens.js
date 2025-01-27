@@ -44,14 +44,8 @@ const validateUser = async (req, res) => {
         } catch (error) {
             return res.status(403).json({ errors: error.message });
         }
-        console.log(req.headers.requireAdmin)
-        if (req.headers.requireAdmin == 'true') {
-            if (!existingUserByUsername.isAdmin) {
-                return res.status(403).json({ errors: ['Not an admin!'] });
-            }
-        }
 
-        return res.status(204).json();
+        return res.status(200).json(existingUserByUsername.isAdmin);
         // In case the Category ID is not valid
     } catch (error) {
         return res.status(500).json({ errors: ['Error occured'] });
