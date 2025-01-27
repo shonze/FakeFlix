@@ -8,6 +8,6 @@ const TokensController = require('../controllers/tokens');
 router.route('/')
     .post(TokensController.authenticateUser);
 router.route('/validate')
-    .post(TokensController.validateUser);
+    .get(TokensController.validateUser);
     
 module.exports = router;
