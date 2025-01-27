@@ -53,24 +53,25 @@ const AdminScreen = () => {
           console.error('Error fetching categories:', error);
       }
   };
-
-  useEffect(() => {
-      const checkValidation = async () => {
-        const token = localStorage.getItem('jwtToken');
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // useEffect(() => {
+  //     const checkValidation = async () => {
+  //       const token = localStorage.getItem('jwtToken');
   
-        const response = await fetch('http://localhost:8080/api/tokens/validate', {
-          headers: {
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json',
-            'requiredAdmin': true
-          }
-        });
-        if (!response.ok) {
-           navigate('/404');
-        }
-      };
-      checkValidation();
-  }, []);
+  //       const response = await fetch('http://localhost:8080/api/tokens/validate', {
+  //         headers: {
+  //           'Authorization': 'Bearer ' + token,
+  //           'Content-Type': 'application/json',
+  //           'requiredAdmin': true
+  //         }
+  //       });
+  //       if (!response.ok) {
+  //          navigate('/404');
+  //       }
+  //     };
+  //     checkValidation();
+  // }, []);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
       fetchCategories();
   }, []);
@@ -285,6 +286,7 @@ const AdminScreen = () => {
           length: '',
       });
       setSelectedCategories([]); // Reset selected categories
+      showToast('Movie created!', 'success');
     } catch (error) {
         console.error(error);
         deleteFile(videoName);
@@ -318,12 +320,15 @@ const AdminScreen = () => {
       const data = await response.json();
       // Ensure categories is an array, defaulting to empty if null
 
-      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
       setFoundMovie({
         ...data,
       });
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       showToast('Found Movie', 'success');
+      setPreviewThumbnail2(data.thumbnail)
+      setPreviewVideo2(data.video)
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     } catch (error) {
       showToast('Error: Unable to find the movie.', 'error');
       setFoundMovie(null);
@@ -356,6 +361,10 @@ const AdminScreen = () => {
       var thumbnailName;
       var videoUrl;
       var videoName;
+      if (selectedCategories.length == 0 ) {
+        showToast('at least one category is needed', 'error');
+        return
+    }
 
       try {
         const formData = new FormData();
@@ -741,7 +750,7 @@ const AdminScreen = () => {
                       placeholder="Title"
                       value={foundMovie.title}
                       onChange={(e) => setFoundMovie({ ...foundMovie, title: e.target.value })}
-
+                      required
                     />
                     
                     {/* Category Checkbox Section */}
@@ -771,13 +780,14 @@ const AdminScreen = () => {
                         placeholder="Description"
                         value={foundMovie.description}
                         onChange={(e) => setFoundMovie({ ...foundMovie, description: e.target.value })}
-
+                        required
                     />
                     <input
                         type="number"
                         placeholder="Length (in minutes)"
                         value={foundMovie.length}
                         onChange={(e) => setFoundMovie({ ...foundMovie, length: e.target.value })}
+                        required
 
                     />
                     <label className="form-label">Thumbnail</label>

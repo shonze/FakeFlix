@@ -122,7 +122,7 @@ const updateMovie = async (id, title,categories, description, length, thumbnail,
     Movie = Movie[1];
 
     // Checks if one of the fields are missing
-    if (!id || !title || !categories || !description || !length || !video || !thumbnailName || !videoName || !thumbnail) {
+    if (!id || !title || !categories || !description || !length ) {
         return [400, "One of the required fields are missing"];
     }
 
@@ -157,33 +157,47 @@ const updateMovie = async (id, title,categories, description, length, thumbnail,
     // } catch (error) {
     //     console.error("An error occurred while deleting files:", error);
     // }
-    try {
-        await deleteFileService(Movie.thumbnailName);
-        console.log(`Thumbnail deleted successfully`);
-    } catch (error) {
-        console.error(`Failed to delete thumbnail: ${error.message}`);
-    }
+    // try {
+    //     await deleteFileService(Movie.thumbnailName);
+    //     console.log(`Thumbnail deleted successfully`);
+    // } catch (error) {
+    //     console.error(`Failed to delete thumbnail: ${error.message}`);
+    // }
 
-    try {
-        await deleteFileService(Movie.videoName);
-        console.log(`Video deleted successfully`);
-    } catch (error) {
-        console.error(`Failed to delete video: ${error.message}`);
-    }
+    // try {
+    //     await deleteFileService(Movie.videoName);
+    //     console.log(`Video deleted successfully`);
+    // } catch (error) {
+    //     console.error(`Failed to delete video: ${error.message}`);
+    // }
 
-    console.log("BIG BBBBB")
-    console.log(Movie.thumbnailName)
-    console.log(Movie.videoName)
-    console.log("BIG BBBBB")
     // Update the movie fields
     Movie.title = title;
     Movie.description = description;
     Movie.length = length;
-    Movie.thumbnail = thumbnail;
     Movie.categories = categories;
-    Movie.video = video;
-    Movie.thumbnailName = thumbnailName;
-    Movie.videoName = videoName;
+
+    if (video && videoName) {
+        try {
+            await deleteFileService(Movie.videoName);
+            console.log(`Video deleted successfully`);
+        } catch (error) {
+            console.error(`Failed to delete video: ${error.message}`);
+        }
+        Movie.video = video;
+        Movie.videoName = videoName;
+    }
+    
+    if (thumbnail && thumbnailName) {
+        try {
+            await deleteFileService(Movie.thumbnailName);
+            console.log(`Thumbnail deleted successfully`);
+        } catch (error) {
+            console.error(`Failed to delete thumbnail: ${error.message}`);
+        }
+        Movie.thumbnail = thumbnail;
+        Movie.thumbnailName = thumbnailName;
+    }    
 
     // Checks if the categories are valid and add the movie to the categories list of movies
     for (const categoryId of categories) {
