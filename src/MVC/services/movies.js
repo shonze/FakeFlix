@@ -109,7 +109,10 @@ const getMovies = async (userId) => {
     return [200, randomMoviesByCategory];
 };
 const { deleteFileService } = require("../services/file");
-const updateMovie = async (id, title, description, length, thumbnail,thumbnailName, categories, videoName) => {
+
+
+
+const updateMovie = async (id, title,categories, description, length, thumbnail,thumbnailName, video, videoName) => {
     let Movie = await getMovieById(id);
     console.log(Movie);
     // Returns 404 if the Movie is not found
@@ -119,7 +122,7 @@ const updateMovie = async (id, title, description, length, thumbnail,thumbnailNa
     Movie = Movie[1];
 
     // Checks if one of the fields are missing
-    if (!id || !title || !categories || !description || !length || !video || !thumbnailName || !videoName) {
+    if (!id || !title || !categories || !description || !length || !video || !thumbnailName || !videoName || !thumbnail) {
         return [400, "One of the required fields are missing"];
     }
 
@@ -148,8 +151,30 @@ const updateMovie = async (id, title, description, length, thumbnail,thumbnailNa
         ListOfCategories.push(Category);
     }
 
-    deleteFileService(Movie.thumbnailName)
-    deleteFileService(Movie.videoName)
+    // try {
+    //     deleteFileService(Movie.thumbnailName);
+    //     deleteFileService(Movie.videoName);
+    // } catch (error) {
+    //     console.error("An error occurred while deleting files:", error);
+    // }
+    try {
+        await deleteFileService(movie.thumbnailName);
+        console.log(`Thumbnail deleted successfully`);
+    } catch (error) {
+        console.error(`Failed to delete thumbnail: ${error.message}`);
+    }
+
+    try {
+        await deleteFileService(movie.videoName);
+        console.log(`Video deleted successfully`);
+    } catch (error) {
+        console.error(`Failed to delete video: ${error.message}`);
+    }
+    
+    console.log("BIG BBBBB")
+    console.log(Movie.thumbnailName)
+    console.log(Movie.videoName)
+    console.log("BIG BBBBB")
     // Update the movie fields
     Movie.title = title;
     Movie.description = description;
@@ -175,6 +200,7 @@ const updateMovie = async (id, title, description, length, thumbnail,thumbnailNa
     // Transfer the categories field from names to Ids
     Movie.categories = CategoriesIds;
 
+    console.log(Movie)
     await Movie.save();
 
     // Save the categories
