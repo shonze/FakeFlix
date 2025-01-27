@@ -158,19 +158,19 @@ const updateMovie = async (id, title,categories, description, length, thumbnail,
     //     console.error("An error occurred while deleting files:", error);
     // }
     try {
-        await deleteFileService(movie.thumbnailName);
+        await deleteFileService(Movie.thumbnailName);
         console.log(`Thumbnail deleted successfully`);
     } catch (error) {
         console.error(`Failed to delete thumbnail: ${error.message}`);
     }
 
     try {
-        await deleteFileService(movie.videoName);
+        await deleteFileService(Movie.videoName);
         console.log(`Video deleted successfully`);
     } catch (error) {
         console.error(`Failed to delete video: ${error.message}`);
     }
-    
+
     console.log("BIG BBBBB")
     console.log(Movie.thumbnailName)
     console.log(Movie.videoName)

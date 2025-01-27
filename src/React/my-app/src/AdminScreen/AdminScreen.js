@@ -18,18 +18,7 @@ const AdminScreen = () => {
   const [editingCategory, setEditingCategory] = useState(null);
   const [searchId, setSearchId] = useState('');
   // const [foundMovie, setFoundMovie] = useState(null);
-  const [foundMovie, setFoundMovie] = useState({
-    categories: [],
-    description: "",
-    length: "",
-    thumbnail: "",
-    thumbnailName: "",
-    title: "",
-    video: "",
-    videoName: "",
-    __v: 0,
-    _id: ""
-  });
+  const [foundMovie, setFoundMovie] = useState(null);
   
 
   const [successMessage, setSuccessMessage] = useState('');
@@ -202,6 +191,12 @@ const AdminScreen = () => {
     var videoName;
     e.preventDefault();
     clearMessages();
+    console.log("category")
+    console.log(selectedCategories)
+    if (selectedCategories.length == 0 ) {
+        showToast('at least one category is needed', 'error');
+        return
+    }
     try {
       const formData = new FormData();
       formData.append('files', newFiles.thumbnail);
