@@ -14,3 +14,24 @@
     top: 0;
     left: 0;
 }
+
+.top-movie-text {
+    margin-left: 25px;
+}
+
+.top-movie-button {
+    margin-left: 100px;
+    background-color: red; /* Green background */
+    color: white; /* White text */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.5s ease; /* Smooth transition for the hover effect */
+}
+
+.top-movie-button:hover {
+    background-color: lightcoral; /* Slightly brighter green on hover */
+    box-shadow: 0 0 20px; /* Glowing/shining effect */
+    transform: scale(1.2); /* Slight zoom-in effect */
+}

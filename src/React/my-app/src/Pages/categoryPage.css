@@ -1,0 +1,17 @@
+.movies-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* One column per row */
+    gap: 16px;
+    /* Space between rows */
+    padding: 16px;
+}
+
+.movie-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.movie-card:hover .overlay {
+    opacity: 1;
+}

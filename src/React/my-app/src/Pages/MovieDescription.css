@@ -1,44 +1,31 @@
 .half-top-container {
     position: relative;
-    /* Fix the element to the screen */
-    top: 0;
-    /* Align it to the top of the screen */
-    left: 0;
-    /* Start from the left edge */
-    width: 450px;
-    /* Full width of the viewport */
-    height: 300px;
-    /* Half the viewport height */
-    display: flex;
-    /* Center the image inside */
+    top: 0; /* Align to the top of the screen */
+    left: 0; /* Start from the left edge */
+    width: 500px; /* Reduced width */
+    height: 300px; /* Reduced height */
+    display: flex; /* Center the image inside */
     justify-content: center;
     align-items: center;
-    overflow: hidden;
-    /* Crop any overflowing content */
-    z-index: 10;
-    /* Ensure it stays on top */
+    overflow: hidden; /* Crop any overflowing content */
+    z-index: 10; /* Ensure it stays on top */
 }
 
 .full-thumbnail {
-    width: 100%;
-    /* Make the image fit the width */
-    height: 100%;
-    /* Make the image fit the height */
-    object-fit: cover;
-    /* Ensure the image scales without distortion */
+    width: 50%; /* Make the image fit the width */
+    height: 50%; /* Make the image fit the height */
+    object-fit: cover; /* Ensure the image scales without distortion */
 }
 
 .parent-container {
+    border: 2px solid #000; /* Reduced border thickness */
     position: relative;
-
-    width: 700px;
-    /* Set width to 100cm */
-    height: 300px;
-
-    justify-content: center;
-    /* Horizontally center */
-    align-items: center;
-    /* Ensure stacking context is created for child elements */
+    width: 700px; /* Reduced width */
+    height: 300px; /* Reduced height */
+    display: flex; /* Center the content */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Horizontally center */
+    align-items: center; /* Vertically center */
 }
 
 /* Global Styles */
@@ -69,7 +56,7 @@
 
 .grid {
     display: grid;
-    gap: 1.5rem;
+    gap: 1rem; /* Reduced gap */
 }
 
 .md-grid-cols-2 {
@@ -77,24 +64,24 @@
 }
 
 .gap-6 {
-    gap: 1.5rem;
+    gap: 1rem; /* Reduced gap */
 }
 
 /* Play Button */
 .play-button {
-    position: absolute;
-    top: 100px;
-    right: 75px;
+    position: fixed;
+    top: 80px; /* Adjusted position */
+    right: 50px; /* Adjusted position */
     background-color: #ef4444;
     color: black;
-    padding: 12px 24px;
-    font-size: 16px;
+    padding: 8px 16px; /* Reduced padding */
+    font-size: 14px; /* Reduced font size */
     border-radius: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    gap: 6px; /* Reduced gap */
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
     z-index: 10;
 }
@@ -104,39 +91,40 @@
 }
 
 .play-button svg {
-    width: 24px;
-    height: 24px;
+    width: 20px; /* Reduced size */
+    height: 20px; /* Reduced size */
 }
 
 /* Details Section */
 .details {
-    display: flex;
+    position: relative;
+    /* display: flex; */
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem; /* Reduced gap */
 }
 
 .details-left {
-    flex: 1;
+    flex: 2;
 }
 
 .title {
-    font-size: 2rem;
+    font-size: 1rem; /* Reduced font size */
     font-weight: bold;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem; /* Reduced margin */
 }
 
 .description {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem; /* Reduced margin */
 }
 
 .details-right {
     flex: 1;
-    padding: 16px;
+    padding: 12px; /* Reduced padding */
     border-radius: 8px;
 }
 
 .runtime {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem; /* Reduced margin */
 }
 
 .genres {
@@ -146,24 +134,24 @@
 .genres-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px; /* Reduced gap */
 }
 
 .genre {
     background-color: #2563eb;
-    padding: 6px 12px;
+    padding: 4px 8px; /* Reduced padding */
     border-radius: 9999px;
     color: white;
-    font-size: 14px;
+    font-size: 12px; /* Reduced font size */
 }
 
 /* Recommended Movies Section */
 .recommended {
-    margin-top: 2rem;
+    margin-top: 1rem; /* Reduced margin */
 }
 
 .recommended-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem; /* Reduced font size */
     font-weight: bold;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem; /* Reduced margin */
 }

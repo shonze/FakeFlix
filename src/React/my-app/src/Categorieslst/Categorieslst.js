@@ -10,7 +10,7 @@ const Categorieslst = () => {
     const fetchCategories = async () => {
       try {
         const token = localStorage.getItem('jwtToken');
-        console.log(token)
+        
         const response = await fetch(`http://localhost:8080/api/movies`, {
           method: 'GET',
           headers: {
@@ -48,7 +48,7 @@ const Categorieslst = () => {
                 <div key={category}>
                   <h6
                     className={`text-center ${localStorage.getItem("theme") === "dark" ? "text-light" : "text-dark"
-                      }`}
+                      } category-head`}
                   >
                     {category}
                   </h6>

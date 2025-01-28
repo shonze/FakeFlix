@@ -1,11 +1,37 @@
+/* Ensure the container has a relative position */
+.thumbnail {
+    position: relative; 
+    overflow: visible; /* Make sure the overflow is visible */
+    transition: transform 0.3s ease; /* Smooth transition for hover effect */
+    z-index: 0; /* Ensure it appears behind the back face */
+}
+
 .cube {
     position: relative;
-    width: 250px;
-    /* Cube size */
-    height: 150px;
-    /* Cube size */
-    perspective: 1000px;
+    width: 200px; /* Adjust as needed */
+    height: 300px; /* Adjust as needed */
 }
+
+/* Styling for the back face that contains MovieDescription */
+.back {
+    position: absolute; /* Position it absolutely within the thumbnail */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    right: 0; /* Fill the width */
+    bottom: 0; /* Fill the height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.8); /* Optional: dark background for better readability */
+    color: white; /* Text color */
+    z-index: 10; /* Ensure it appears above other elements */
+}
+.thumbnail:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    z-index: 5; /* Bring the thumbnail to the front during hover */
+}
+
 
 .cube-face {
     position: absolute;
