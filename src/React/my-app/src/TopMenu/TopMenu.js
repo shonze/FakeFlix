@@ -32,6 +32,15 @@ const TopMenu = ({ admin }) => {
         setIsAdmin(admin);
     }, [admin]);
 
+    const handleLogOut = () => {
+        // Remove jwtToken and rememberMe from local storage
+        localStorage.removeItem("jwtToken");
+        localStorage.removeItem("rememberMe");
+
+        // Navigate to the parent route
+        navigate("..");
+    };
+
     const homePage = `http://${window.location.hostname}:${window.location.port}/home`
 
     return (
@@ -63,7 +72,7 @@ const TopMenu = ({ admin }) => {
                         <li className="nav-item">
                             <button
                                 className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"} bg-transparent border-0`}
-                                onClick={() => { navigate('..') }}
+                                onClick={() => { handleLogOut() }}
                             >LogOut</button>
                         </li>
                         <Theme />
