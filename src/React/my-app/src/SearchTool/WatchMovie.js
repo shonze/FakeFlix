@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation,useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './WatchMovie.css';
 
 const WatchMovie = () => {
@@ -9,7 +9,7 @@ const WatchMovie = () => {
     const [categories, setCategories] = useState([]); // State to hold category names
     const navigate = useNavigate();
 
-    // Checks if the user is permited to enter the screen
+    // Checks if the user is permitted to enter the screen
     useEffect(() => {
         const checkValidation = async () => {
             const token = localStorage.getItem('jwtToken');
@@ -27,7 +27,7 @@ const WatchMovie = () => {
         };
 
         checkValidation();
-    }, []);
+    }, [navigate]);
 
     // Function to bring categories based on selected movie
     const bringCategories = async () => {
@@ -68,34 +68,36 @@ const WatchMovie = () => {
     }
 
     return (
-        <div className="movie-container">
-            <img
-                src={selectedMovie.thumbnail}
-                alt={`${selectedMovie.title} Background`}
-                className="movie-background"
-            />
-            <div className="overlay">
-                <div className="movie-info">
-                    <h1 className="movie-title">{selectedMovie.title}</h1>
-                    <p className="movie-description">
-                        {selectedMovie.description}
-                        <p>    </p>
-                        {selectedMovie.length} minutes
-                    </p>
-                    <button className="play-button" onClick={handlePlayClick}>Play</button>
-                    <div className="category-container">
-                        {categories.map((category, index) => (
-                            <span key={index} className="category-badge">{category}</span>
-                        ))}
-                    </div>
-                    {isPlaying && (
-                        <div className="video-container">
-                            <video key={selectedMovie._id} controls className="video-player">
-                                <source src={selectedMovie.video} type="video/mp4" />
-                                Your browser does not support the video tag.
-                            </video>
+        <div className="watchMovie">
+            <div className="watchMovie-movie-container">
+                <img
+                    src={selectedMovie.thumbnail}
+                    alt={`${selectedMovie.title} Background`}
+                    className="watchMovie-movie-background"
+                />
+                <div className="watchMovie-overlay">
+                    <div className="watchMovie-movie-info">
+                        <h1 className="watchMovie-movie-title">{selectedMovie.title}</h1>
+                        <p className="watchMovie-movie-description">
+                            {selectedMovie.description}
+                            <p>    </p>
+                            {selectedMovie.length} minutes
+                        </p>
+                        <button className="watchMovie-play-button" onClick={handlePlayClick}>Play</button>
+                        <div className="watchMovie-category-container">
+                            {categories.map((category, index) => (
+                                <span key={index} className="watchMovie-category-badge">{category}</span>
+                            ))}
                         </div>
-                    )}
+                        {isPlaying && (
+                            <div className="watchMovie-video-container">
+                                <video key={selectedMovie._id} controls className="watchMovie-video-player">
+                                    <source src={selectedMovie.video} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

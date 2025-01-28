@@ -1,19 +1,19 @@
-/* MovieDetails.css */
+/* WatchMovie.css */
 
-body {
+.watchMovie {
     margin: 0;
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background-color: #141414; /* Dark background similar to Netflix */
 }
 
-.movie-container {
+.watchMovie-movie-container {
     position: relative;
     height: 100vh; /* Full height */
     width: 100%; /* Full width */
     overflow: hidden; /* Hide overflow */
 }
 
-.movie-background {
+.watchMovie-movie-background {
     height: 100%;
     width: 100%;
     object-fit: cover; /* Cover the whole area */
@@ -23,7 +23,7 @@ body {
     filter: brightness(200%); /* Darken the background */
 }
 
-.overlay {
+.watchMovie-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -36,7 +36,7 @@ body {
     padding: 20px; /* Padding */
 }
 
-.movie-info {
+.watchMovie-movie-info {
     background-color: rgba(255, 255, 255, 0.1); /* Light background with transparency */
     padding: 20px; /* Padding */
     border-radius: 8px; /* Rounded corners */
@@ -46,19 +46,19 @@ body {
     transition: background-color 0.3s; /* Smooth background change */
 }
 
-.movie-title {
+.watchMovie-movie-title {
     font-size: 2.5rem; /* Large title */
     font-weight: bold; /* Bold */
     margin-bottom: 10px; /* Margin bottom */
 }
 
-.movie-description {
+.watchMovie-movie-description {
     font-size: 1.125rem; /* Regular size */
     margin-bottom: 10px; /* Margin bottom */
     line-height: 1.5; /* Line height */
 }
 
-.play-button {
+.watchMovie-play-button {
     background-color: #e50914; /* Netflix Red */
     color: white; /* White text */
     font-weight: bold; /* Bold */
@@ -71,16 +71,16 @@ body {
     transition: background-color 0.3s, transform 0.3s; /* Smooth background and scale */
 }
 
-.play-button:hover {
+.watchMovie-play-button:hover {
     background-color: #f40612; /* Darker Red on hover */
     transform: scale(1.05); /* Slight zoom effect on hover */
 }
 
-.category-container {
+.watchMovie-category-container {
     margin-bottom: 10px; /* Margin bottom */
 }
 
-.category-badge {
+.watchMovie-category-badge {
     background-color: #ffffff; /* White */
     color: #000; /* Black text */
     padding: 5px 10px; /* Padding */
@@ -90,7 +90,7 @@ body {
     font-size: 0.9rem; /* Smaller size */
 }
 
-.video-player {
+.watchMovie-video-player {
     margin-top: 10px; /* Margin top */
     width: 100%; /* Full width */
     border-radius: 5px; /* Rounded corners */

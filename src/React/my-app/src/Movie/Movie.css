@@ -1,56 +1,69 @@
-/* Ensure the container has a relative position */
-.thumbnail {
-    position: relative; 
-    overflow: visible; /* Make sure the overflow is visible */
-    transition: transform 0.3s ease; /* Smooth transition for hover effect */
-    z-index: 0; /* Ensure it appears behind the back face */
-}
-
-.cube {
+.movie-container {
     position: relative;
-    width: 200px; /* Adjust as needed */
-    height: 300px; /* Adjust as needed */
+    width: 200px;
+    height: 300px;
+    margin: 10px;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: #141414;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Styling for the back face that contains MovieDescription */
-.back {
-    position: absolute; /* Position it absolutely within the thumbnail */
-    top: 0; /* Align to the top */
-    left: 0; /* Align to the left */
-    right: 0; /* Fill the width */
-    bottom: 0; /* Fill the height */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.8); /* Optional: dark background for better readability */
-    color: white; /* Text color */
-    z-index: 10; /* Ensure it appears above other elements */
-}
-.thumbnail:hover {
-    transform: scale(1.05); /* Slightly enlarge on hover */
-    z-index: 5; /* Bring the thumbnail to the front during hover */
-}
-
-
-.cube-face {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-}
-
-.cube-face img {
-    width: 100%;
-    /* Scale image to cube face size */
-    height: 100%;
-    /* Stretch to fit the face */
-    object-fit: cover;
-    /* Ensure aspect ratio is preserved */
-}
-
-.center-container {
-    top: 30vh;
-    left: 50vh;
+.movie-container.hovered {
+    transform: scale(1.1);
+    box-shadow: 0px 30px 100px rgba(0, 0, 0, 0.4);
     z-index: 10;
+
+}
+
+.thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.hover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.hover-overlay .play-button {
+    background-color: #e50914;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.hover-overlay .play-button:hover {
+    background-color: #f40612;
+}
+
+.hover-overlay h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.hover-overlay p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 10px;
 }
