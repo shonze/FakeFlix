@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SearchTool.css';
+import TopMenu from '../TopMenu/TopMenu';
 
 const SearchScreen = () => {
     const [movieQuery, setMovieQuery] = useState('');
     const [movies, setMovies] = useState([]);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
     const navigate = useNavigate();
 
     // Check if the user is permitted to enter the screen
@@ -22,6 +25,8 @@ const SearchScreen = () => {
             if (!response.ok) {
                 navigate('/404');
             }
+            const isAdmin = await response.json();
+            setIsAdmin(isAdmin);
         };
 
         checkValidation();
@@ -63,9 +68,18 @@ const SearchScreen = () => {
         return () => clearTimeout(delayDebounce); // Cleanup debounce timer
     }, [movieQuery]);
 
+    useEffect(() => {
+        const handleStorageChange = (event) => {
+            setTheme(localStorage.getItem("theme"));
+        };
+
+        // Listen for changes to localStorage (triggered by other windows/tabs)
+        window.addEventListener("storage", handleStorageChange);
+    }, []);
+
     return (
-        <div className="search-container">
-            <h1>FakeFlix Movies</h1>
+        <div className={`search-container bg-${theme}`}>
+            <TopMenu admin={isAdmin} />
             <div className="search-sections">
                 <section className="movie-search">
                     <h2>Search Movies</h2>

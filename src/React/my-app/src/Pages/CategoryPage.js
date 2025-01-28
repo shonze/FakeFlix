@@ -17,6 +17,7 @@ function CategoryPage() {
     const [category, setCategory] = useState(null);
     const [categoryMoviesChunked, setCategoryMoviesChunked] = useState([]);
     const [theme, setTheme] = useState(localStorage.getItem("theme"));
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
     // Checks if the user is permitted to enter the screen
@@ -34,6 +35,8 @@ function CategoryPage() {
             if (!response.ok) {
                 navigate('/404');
             }
+            const isAdmin = await response.json();
+            setIsAdmin(isAdmin);
         };
 
         checkValidation();
@@ -85,7 +88,7 @@ function CategoryPage() {
 
     return (
         <div className={`bg-${theme} `}>
-            <TopMenu />
+            <TopMenu admin={isAdmin}/>
             {category.movies.length !== 0 ? (
                 <div>
                     <h1
