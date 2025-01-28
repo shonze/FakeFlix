@@ -62,7 +62,6 @@ const SearchScreen = () => {
 
         return () => clearTimeout(delayDebounce); // Cleanup debounce timer
     }, [movieQuery]);
-
     return (
         <div className="search-container">
             <h1>FakeFlix Movies</h1>
@@ -86,9 +85,9 @@ const SearchScreen = () => {
                                 ))}
                             </ul>
                         </div>
-                    ) : (
+                    ) : movieQuery.length > 0 ? (
                         <div className="no-results">No Results Found</div>
-                    )}
+                    ) : null}
                 </section>
             </div>
         </div>
