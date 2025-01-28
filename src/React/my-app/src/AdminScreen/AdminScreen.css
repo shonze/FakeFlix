@@ -9,6 +9,7 @@ body {
 
 .container {
   padding: 20px;
+  background-color: #141414;
 }
 
 h1 {
@@ -256,9 +257,9 @@ button:hover {
   border: 1px solid #ccc;
   border-radius: 5px;
   overflow: hidden;
-  width: 200px; /* Fixed width */
+  width: 300px; /* Fixed width */
   height: 200px; /* Fixed height */
-  background: #f9f9f9;
+  background: #1e0707;
 }
 
 .image-preview img {
