@@ -1,6 +1,6 @@
 /* General styling for the search container */
 .search-container {
-    background-color: #0f05012e;
+    background-color: #0f0501;
     color: #fff;
     min-height: 100vh;
     padding: 20px;
@@ -19,7 +19,7 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #222;
+    background-color: #22222248;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
 }
@@ -28,7 +28,7 @@
 .movie-search h2 {
     font-size: 1.5rem;
     margin-bottom: 15px;
-    color: #fff;
+    color: #230707;
 }
 
 /* Input field styling */
@@ -73,7 +73,7 @@
 .results h3 {
     font-size: 1.5rem;
     margin-bottom: 10px;
-    color: #efa0a0;
+    color: #180202;
 }
 
 .results ul {
@@ -84,29 +84,30 @@
 .results li {
     font-size: 1rem;
     padding: 10px 0;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid #180505;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .results li strong {
-    color: #f1e3e4;
+    color: #1b0506;
 }
 
 /* No Results Found message */
 .no-results {
     margin-top: 20px;
     font-size: 1.5rem;
-    color: #999;
+    color: #170202;
     text-align: center;
 }
 
 /* Add hover effects to movie list */
 .results li:hover {
-    background-color: #333;
+    background-color: #312d2d6b;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 100%;
 }
 
 .results img {
