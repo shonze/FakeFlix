@@ -85,7 +85,7 @@
     color: #000; /* Black text */
     padding: 5px 10px; /* Padding */
     border-radius: 5px; /* Rounded corners */
-    margin-right: 5px; /* Margin to the right */
+    margin: 5px; /* Margin to the right */
     display: inline-block; /* Inline display */
     font-size: 0.9rem; /* Smaller size */
 }
@@ -97,4 +97,22 @@
     outline: none; /* No outline */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Shadow effect */
     display: auto; /* Initially hide the video player */
+}
+
+.watchMovie-back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 12px;
+    font-size: 10px;
+    color: #fff;
+    background-color: #e5091490; /* Netflix red */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 100;
+}
+.watchMovie-back-button:hover {
+    background-color: #f40612; /* Darker Red on hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
 }

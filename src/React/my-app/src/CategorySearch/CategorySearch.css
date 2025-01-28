@@ -1,0 +1,94 @@
+/* General styles for the dropdown container */
+.nav-item.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Styling the dropdown toggle button */
+.nav-link.dropdown-toggle {
+    font-size: 16px;
+    font-weight: 500;
+    color: inherit;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link.dropdown-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Light hover effect */
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+    min-width: 200px;
+    border-radius: 10px;
+    padding: 10px 0;
+    margin-top: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Adjusting dropdown menu colors based on theme */
+.dropdown-menu-light {
+    background-color: #ffffff;
+    color: #333;
+}
+
+.dropdown-menu-light .dropdown-item {
+    color: #333;
+}
+
+.dropdown-menu-dark {
+    background-color: #333;
+    color: #ffffff;
+}
+
+.dropdown-menu-dark .dropdown-item {
+    color: #ffffff;
+}
+
+/* Dropdown items */
+.dropdown-item {
+    padding: 10px 15px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 8px;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Light hover effect */
+}
+
+/* Add a smooth dropdown animation */
+.dropdown-menu {
+    opacity: 0;
+    transform: translateY(-10px);
+    display: block; /* Ensures dropdown remains accessible */
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .nav-link.dropdown-toggle {
+        font-size: 14px;
+    }
+
+    .dropdown-menu {
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .dropdown-item {
+        text-align: center;
+    }
+}

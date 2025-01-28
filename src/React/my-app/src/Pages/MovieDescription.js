@@ -78,16 +78,11 @@ function HomeDescriptionPage({ movie }) {
             <p className="movieDescription-description">
               {movie.description}
               <p></p>
-              {movie.length}
+              length: {movie.length}
             </p>
             <button className="movieDescription-play-button" onClick={() => navigate("/watch-movie", { state: { movie } })}>
-              Play
+              More Info
             </button>
-            <div className="movieDescription-category-container">
-              {categories.map((category, index) => (
-                <span key={index} className="movieDescription-category-badge">{category}</span>
-              ))}
-            </div>
           </div>
         </div>
       </div>

@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation , useNavigate} from 'react-router-dom';
 import './WatchMovie.css';
 import PleaseConnect from '../Pages/PleaseConnect';
 
+
+
 const WatchMovie = () => {
+
     const location = useLocation();
     const selectedMovie = location.state?.movie;
     const [isPlaying, setIsPlaying] = useState(false);
     const [categories, setCategories] = useState([]); // State to hold category names
     const navigate = useNavigate();
     const [isLogged, setIsLogged] = useState(null);
+
+    const handleBackClick = () => {
+        navigate('/home'); 
+    };
 
     // Checks if the user is permitted to enter the screen
     useEffect(() => {
@@ -87,6 +94,9 @@ const WatchMovie = () => {
         isLogged ? (
 
             <div className="watchMovie">
+                <button className="watchMovie-back-button" onClick={handleBackClick}>
+                    &#8592; Back
+                </button>
             <div className="watchMovie-movie-container">
                 <img
                     src={selectedMovie.thumbnail}

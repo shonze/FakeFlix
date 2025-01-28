@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { Dropdown } from "bootstrap";
+import './CategorySearch.css';
 
 const CategorySearch = () => {
     const [categories, setCategories] = useState([]);
@@ -45,8 +47,12 @@ const CategorySearch = () => {
                             className="dropdown-item"
                             href="#"
                             onClick={(e) => {
-                                e.preventDefault(); 
+                                e.preventDefault(); // Prevent the default link behavior
+                                e.stopPropagation(); // Stop the dropdown from closing
                                 navigate(`/category/${category._id}`);
+                                // Reopen the dropdown menu
+                                const dropdown = Dropdown.getOrCreateInstance(document.getElementById('navbarDarkDropdownMenuLink'));
+                                dropdown.show();
                             }}
                         >
                             {category.name}

@@ -38,9 +38,10 @@
 }
 
 .movieDescription-info {
+    justify-content: center;
     position: absolute;
-    background-color: rgba(13, 1, 1, 0.1); /* Light background with transparency */
-    padding: 20px;
+    background-color: rgba(1, 13, 9, 0.1); /* Light background with transparency */
+    padding: 2px;
     border-radius: 8px;
     max-width: 500px;
     color: rgb(240, 231, 231);
@@ -89,6 +90,5 @@
     padding: 5px 10px;
     border-radius: 5px;
     margin-right: 5px;
-    display: inline-block;
     font-size: 0.5rem;
 }

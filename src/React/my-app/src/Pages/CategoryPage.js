@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TopMenu from "../TopMenu/TopMenu";
 import Movielst from "../Movieslst/Movieslst";
-import './categoryPage.css'; // Import the CSS file
+import './CategoryPage.css'; // Import the CSS file
 import PleaseConnect from './PleaseConnect';
 
 const chunkArray = (array, chunkSize) => {
