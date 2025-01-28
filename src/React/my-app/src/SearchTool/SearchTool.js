@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SearchTool.css';
 import TopMenu from '../TopMenu/TopMenu';
+import NoAccess from '../Pages/NoAccess';
 
 const SearchScreen = () => {
     const [movieQuery, setMovieQuery] = useState('');
@@ -9,28 +10,37 @@ const SearchScreen = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
     const navigate = useNavigate();
+    const [isLogged, setIsLogged] = useState(null);
 
     // Check if the user is permitted to enter the screen
     useEffect(() => {
         const checkValidation = async () => {
-            const token = localStorage.getItem('jwtToken');
+            try {
+                const token = localStorage.getItem('jwtToken');
 
-            const response = await fetch('http://localhost:8080/api/tokens/validate', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + token,
-                    'Content-Type': 'application/json',
-                },
-            });
-            if (!response.ok) {
-                navigate('/404');
-            }
-            const isAdmin = await response.json();
-            setIsAdmin(isAdmin);
+                const response = await fetch('http://localhost:8080/api/tokens/validate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'Requireadmin': false,
+                    }
+                });
+                if (!response.ok) {
+                    setIsLogged(false)
+                    return;
+                }
+                const isAdmin = await response.json();
+                setIsAdmin(isAdmin.isAdmin);
+                setIsLogged(true)
+                
+            } catch (error) {
+                setIsLogged(false)
+            };
         };
 
         checkValidation();
-    }, [navigate]);
+    }, []);
 
     const handleMovieSearch = async () => {
         if (!movieQuery.trim()) {
@@ -77,8 +87,14 @@ const SearchScreen = () => {
         window.addEventListener("storage", handleStorageChange);
     }, []);
 
+    if (isLogged === null) {
+        // Render nothing or a loading spinner while the validation is in progress
+        return <div>Loading...</div>;
+    }
     return (
-        <div className={`search-container bg-${theme}`}>
+        isLogged ? (
+
+            <div className={`search-container bg-${theme}`}>
             <TopMenu admin={isAdmin} />
             <div className="search-sections">
                 <section className="movie-search">
@@ -106,6 +122,9 @@ const SearchScreen = () => {
                 </section>
             </div>
         </div>
+        ) : (
+            <NoAccess />
+        )
     );
 };
 

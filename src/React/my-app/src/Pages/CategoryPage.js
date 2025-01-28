@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import TopMenu from "../TopMenu/TopMenu";
 import Movielst from "../Movieslst/Movieslst";
 import './categoryPage.css'; // Import the CSS file
+import NoAccess from './NoAccess';
 
 const chunkArray = (array, chunkSize) => {
     const chunks = [];
@@ -18,29 +19,38 @@ function CategoryPage() {
     const [categoryMoviesChunked, setCategoryMoviesChunked] = useState([]);
     const [theme, setTheme] = useState(localStorage.getItem("theme"));
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isLogged, setIsLogged] = useState(null);
     const navigate = useNavigate();
 
     // Checks if the user is permitted to enter the screen
     useEffect(() => {
         const checkValidation = async () => {
-            const token = localStorage.getItem('jwtToken');
+            try {
+                const token = localStorage.getItem('jwtToken');
 
-            const response = await fetch('http://localhost:8080/api/tokens/validate', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + token,
-                    'Content-Type': 'application/json'
+                const response = await fetch('http://localhost:8080/api/tokens/validate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'Requireadmin': false,
+                    }
+                });
+                if (!response.ok) {
+                    setIsLogged(false)
+                    return;
                 }
-            });
-            if (!response.ok) {
-                navigate('/404');
-            }
-            const isAdmin = await response.json();
-            setIsAdmin(isAdmin);
+                const isAdmin = await response.json();
+                setIsAdmin(isAdmin.isAdmin);
+                setIsLogged(true)
+                
+            } catch (error) {
+                setIsLogged(false)
+            };
         };
 
         checkValidation();
-    }, [navigate]);
+    }, []);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -85,9 +95,13 @@ function CategoryPage() {
     if (!category) {
         return <h2>Category not found</h2>;
     }
-
+    if (isLogged === null) {
+        // Render nothing or a loading spinner while the validation is in progress
+        return <div>Loading...</div>;
+    }
     return (
-        <div className={`bg-${theme} `}>
+        isLogged ? (
+            <div className={`bg-${theme} `}>
             <TopMenu admin={isAdmin}/>
             {category.movies.length !== 0 ? (
                 <div>
@@ -119,6 +133,9 @@ function CategoryPage() {
                 </div>
             )}
         </div>
+        ) : (
+            <NoAccess />
+        )
     );
 };
 
