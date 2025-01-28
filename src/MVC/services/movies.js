@@ -108,8 +108,11 @@ const getMovies = async (userId) => {
 
     return [200, randomMoviesByCategory];
 };
+const { deleteFileService } = require("../services/file");
 
-const updateMovie = async (id, title, description, length, thumbnail, categories, video) => {
+
+
+const updateMovie = async (id, title,categories, description, length, thumbnail,thumbnailName, video, videoName) => {
     let Movie = await getMovieById(id);
     console.log(Movie);
     // Returns 404 if the Movie is not found
@@ -119,7 +122,7 @@ const updateMovie = async (id, title, description, length, thumbnail, categories
     Movie = Movie[1];
 
     // Checks if one of the fields are missing
-    if (!title || !categories || !description || !length || !video) {
+    if (!id || !title || !categories || !description || !length ) {
         return [400, "One of the required fields are missing"];
     }
 
@@ -148,16 +151,33 @@ const updateMovie = async (id, title, description, length, thumbnail, categories
         ListOfCategories.push(Category);
     }
 
-    if (!thumbnail) {
-        thumbnail = "No Thumbnail";
-    }
     // Update the movie fields
     Movie.title = title;
     Movie.description = description;
     Movie.length = length;
-    Movie.thumbnail = thumbnail;
     Movie.categories = categories;
-    Movie.video = video;
+
+    if (video && videoName) {
+        try {
+            await deleteFileService(Movie.videoName);
+            console.log(`Video deleted successfully`);
+        } catch (error) {
+            console.error(`Failed to delete video: ${error.message}`);
+        }
+        Movie.video = video;
+        Movie.videoName = videoName;
+    }
+    
+    if (thumbnail && thumbnailName) {
+        try {
+            await deleteFileService(Movie.thumbnailName);
+            console.log(`Thumbnail deleted successfully`);
+        } catch (error) {
+            console.error(`Failed to delete thumbnail: ${error.message}`);
+        }
+        Movie.thumbnail = thumbnail;
+        Movie.thumbnailName = thumbnailName;
+    }    
 
     // Checks if the categories are valid and add the movie to the categories list of movies
     for (const categoryId of categories) {
@@ -174,6 +194,7 @@ const updateMovie = async (id, title, description, length, thumbnail, categories
     // Transfer the categories field from names to Ids
     Movie.categories = CategoriesIds;
 
+    console.log(Movie)
     await Movie.save();
 
     // Save the categories
@@ -183,7 +204,7 @@ const updateMovie = async (id, title, description, length, thumbnail, categories
 
     return [204, Movie];
 };
-const { deleteFileService } = require("./file");
+
 const deleteMovie = async (id) => {
     let Movie = await getMovieById(id);
 
