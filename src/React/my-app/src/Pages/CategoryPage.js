@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import TopMenu from "../TopMenu/TopMenu";
 import Movielst from "../Movieslst/Movieslst";
 import './categoryPage.css'; // Import the CSS file
-import NoAccess from './NoAccess';
+import PleaseConnect from './PleaseConnect';
 
 const chunkArray = (array, chunkSize) => {
     const chunks = [];
@@ -134,7 +134,7 @@ function CategoryPage() {
             )}
         </div>
         ) : (
-            <NoAccess />
+            <PleaseConnect />
         )
     );
 };

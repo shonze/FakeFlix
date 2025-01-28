@@ -1,7 +1,7 @@
 import Categorieslst from '../Categorieslst/Categorieslst';
 import TopMenu from '../TopMenu/TopMenu';
 import './HomePage.css';
-import NoAccess from './NoAccess';
+import PleaseConnect from './PleaseConnect';
 
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -63,7 +63,7 @@ function HomePage() {
                 <Categorieslst />
             </div>
         ) : (
-            <NoAccess />
+            <PleaseConnect />
         )
     );
     

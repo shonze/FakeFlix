@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SearchTool.css';
 import TopMenu from '../TopMenu/TopMenu';
-import NoAccess from '../Pages/NoAccess';
+import PleaseConnect from '../Pages/PleaseConnect';
 
 const SearchScreen = () => {
     const [movieQuery, setMovieQuery] = useState('');
@@ -123,7 +123,7 @@ const SearchScreen = () => {
             </div>
         </div>
         ) : (
-            <NoAccess />
+            <PleaseConnect />
         )
     );
 };

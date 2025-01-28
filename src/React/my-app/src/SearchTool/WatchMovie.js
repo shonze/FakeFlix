@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './WatchMovie.css';
-import NoAccess from '../Pages/NoAccess';
+import PleaseConnect from '../Pages/PleaseConnect';
 
 const WatchMovie = () => {
     const location = useLocation();
@@ -120,7 +120,7 @@ const WatchMovie = () => {
             </div>
         </div>
         ) : (
-            <NoAccess />
+            <PleaseConnect />
         )
     );
 };

@@ -1,0 +1,45 @@
+.pleaseConnect-page {
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: flex-start; /* Align content at the top */
+    align-items: center;
+    height: 100vh;
+    background-image: url('../../public/employee_connection.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding-top: 50px; /* Add padding to push content slightly below the top */
+}
+  
+.pleaseConnect-title {
+    font-size: 40px; /* Reduced font size */
+    color: #e50914;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.pleaseConnect-message {
+    font-size: 20px;
+    color: #000;
+    margin-bottom: 30px;
+    text-align: center;
+}
+  
+.pleaseConnect-home-link {
+    font-size: 18px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #e50914;
+    padding: 12px 24px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+  
+.pleaseConnect-home-link:hover {
+    background-color: #0056b3;
+}
+  
+.pleaseConnect-home-link:focus {
+    outline: none;
+}
