@@ -1,0 +1,49 @@
+
+/* 404 Not Found Page Styling */
+.noAccess-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../../public/duck.gif');
+  }
+  
+  .noAccess-container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 50px 40px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-image: url('../../public/404-chess.gif');
+  }
+  
+  .noAccess-title {
+    font-size: 80px;
+    color: #e50914;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .noAccess-message {
+    font-size: 20px;
+    color: #000;
+    margin-bottom: 30px;
+  }
+  
+  .noAccess-home-link {
+    font-size: 18px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #e50914;
+    padding: 12px 24px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .noAccess-home-link:hover {
+    background-color: #0056b3;
+  }
+  
+  .noAccess-home-link:focus {
+    outline: none;
+  }

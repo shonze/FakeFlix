@@ -1,7 +1,7 @@
 import React, { useEffect, useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdminScreen.css';
-
+import NoAccess from '../Pages/NoAccess';
 const AdminScreen = () => {
   const [categories, setCategories] = useState([]);
   const [newMovie, setNewMovie] = useState({
@@ -19,7 +19,7 @@ const AdminScreen = () => {
   const [searchId, setSearchId] = useState('');
   // const [foundMovie, setFoundMovie] = useState(null);
   const [foundMovie, setFoundMovie] = useState(null);
-  
+  const [hasAccess, setHasAccess] = useState(true); // Initialize state
 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -67,12 +67,23 @@ const AdminScreen = () => {
           }
         });
         if (!response.ok) {
-           navigate('/404');
+          setHasAccess(false); // Set state to show "No Access" screen
+          return;
         }
+        setHasAccess(true);
       };
       checkValidation();
       fetchCategories();
   }, []);
+
+  // if (hasAccess === null) {
+  //   // Optionally render a loading screen while validation is in progress
+  //   return <div>Loading...</div>;
+  // }
+
+  // if (!hasAccess) {
+  //   return <NoAccess />;
+  // }
 
   // useEffect(() => {
   //     fetchCategories();
@@ -553,7 +564,7 @@ const AdminScreen = () => {
   }
 
 
-  return (
+  return ( hasAccess && (
           <div className="admin-screen">
           <div className="container">
             <button className="back-button" onClick={handleBackClick}>
@@ -847,7 +858,7 @@ const AdminScreen = () => {
               {successMessage && <div className="success-message">{successMessage}</div>}  
           </div>
         </div>
-    );
+    ) || !hasAccess && <NoAccess/>);
 };
 
 export default AdminScreen;
