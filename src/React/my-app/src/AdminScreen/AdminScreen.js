@@ -19,7 +19,7 @@ const AdminScreen = () => {
   const [searchId, setSearchId] = useState('');
   // const [foundMovie, setFoundMovie] = useState(null);
   const [foundMovie, setFoundMovie] = useState(null);
-  const [hasAccess, setHasAccess] = useState(true); // Initialize state
+  const [hasAccess, setHasAccess] = useState(null); // Initialize state
 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -63,7 +63,7 @@ const AdminScreen = () => {
           headers: {
             'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json',
-            'requiredAdmin': true
+            'Requireadmin': true
           }
         });
         if (!response.ok) {
@@ -75,6 +75,7 @@ const AdminScreen = () => {
       checkValidation();
       fetchCategories();
   }, []);
+
 
   // if (hasAccess === null) {
   //   // Optionally render a loading screen while validation is in progress
@@ -377,7 +378,7 @@ const AdminScreen = () => {
       if (foundMovie.categories.length == 0 ) {
         showToast('at least one category is needed', 'error');
         return
-    }
+      }
 
       try {
         const formData = new FormData();
@@ -440,7 +441,7 @@ const AdminScreen = () => {
         description: foundMovie.description,
         length: foundMovie.length,
         title: foundMovie.title,
-        __v: foundMovie.title,
+        __v: foundMovie._v,
         _id: foundMovie._id,
         thumbnail: thumbnailUrl,
         thumbnailName: thumbnailName,
@@ -562,9 +563,12 @@ const AdminScreen = () => {
       toast.remove();
     }, 4000);
   }
+  if (hasAccess === null) {
+    // Render nothing or a loading spinner while the validation is in progress
+    return <div>Loading...</div>;
+  }
 
-
-  return ( hasAccess && (
+  return ( hasAccess ? (
           <div className="admin-screen">
           <div className="container">
             <button className="back-button" onClick={handleBackClick}>
@@ -860,7 +864,7 @@ const AdminScreen = () => {
               {successMessage && <div className="success-message">{successMessage}</div>}  
           </div>
         </div>
-    ) || !hasAccess && <NoAccess/>);
+    ) : ( <NoAccess/>));
 };
 
 export default AdminScreen;

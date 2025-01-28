@@ -1,6 +1,7 @@
 import Categorieslst from '../Categorieslst/Categorieslst';
 import TopMenu from '../TopMenu/TopMenu';
 import './HomePage.css';
+import NoAccess from './NoAccess';
 
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -8,6 +9,7 @@ import { useState, useEffect } from 'react';
 function HomePage() {
     const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isLogged, setIsLogged] = useState(null);
     const navigate = useNavigate();
 
     // Checks if the user is permited to enter the screen
@@ -20,16 +22,20 @@ function HomePage() {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Requireadmin': false,
                     }
                 });
                 if (!response.ok) {
-                    navigate('/404');
+                    setIsLogged(false)
+                    return;
                 }
                 const isAdmin = await response.json();
-                setIsAdmin(isAdmin);
+                setIsAdmin(isAdmin.isAdmin);
+                setIsLogged(true)
+                
             } catch (error) {
-                navigate('/404');
+                setIsLogged(false)
             };
         };
 
@@ -45,12 +51,22 @@ function HomePage() {
         window.addEventListener("storage", handleStorageChange);
     }, []);
 
+    if (isLogged === null) {
+        // Render nothing or a loading spinner while the validation is in progress
+        return <div>Loading...</div>;
+    }
+
     return (
-        <div className={`home-bg-${theme} min-vh-100`} >
-            <TopMenu admin={isAdmin} />
-            <Categorieslst />
-        </div>
+        isLogged ? (
+            <div className={`home-bg-${theme} min-vh-100`}>
+                <TopMenu admin={isAdmin} />
+                <Categorieslst />
+            </div>
+        ) : (
+            <NoAccess />
+        )
     );
+    
 }
 
 export default HomePage;

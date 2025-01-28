@@ -175,7 +175,7 @@ body {
 }
  */
 
- .image-preview {
+ .image-preview-register {
     position: relative; /* Enable positioning of the "X" button */
     margin-top: 10px;
     display: flex;
@@ -183,7 +183,7 @@ body {
     align-items: center;
 }
 
-.preview-image {
+.preview-image-register {
     width: 80px;
     height: 80px;
     border-radius: 50%;

@@ -1,48 +1,49 @@
 
 /* 404 Not Found Page Styling */
 .not-found-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f9;
-  }
-  
-  .not-found-container {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 50px 40px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .not-found-title {
-    font-size: 80px;
-    color: #ff6f61;
-    margin-bottom: 20px;
-    font-weight: bold;
-  }
-  
-  .not-found-message {
-    font-size: 20px;
-    color: #333;
-    margin-bottom: 30px;
-  }
-  
-  .not-found-home-link {
-    font-size: 18px;
-    text-decoration: none;
-    color: #fff;
-    background-color: #007bff;
-    padding: 12px 24px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .not-found-home-link:hover {
-    background-color: #0056b3;
-  }
-  
-  .not-found-home-link:focus {
-    outline: none;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('../../public/duck.gif');
+}
+
+.not-found-container {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 50px 40px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  background-image: url('../../public/404-chess.gif');
+}
+
+.not-found-title {
+  font-size: 80px;
+  color: #e50914;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.not-found-message {
+  font-size: 20px;
+  color: #000;
+  margin-bottom: 30px;
+}
+
+.not-found-home-link {
+  font-size: 18px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #e50914;
+  padding: 12px 24px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.not-found-home-link:hover {
+  background-color: #0056b3;
+}
+
+.not-found-home-link:focus {
+  outline: none;
+}

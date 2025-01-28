@@ -276,8 +276,8 @@ const RegisterScreen = () => {
                                 ref={fileInputRef}
                             />
                             {preview && (
-                                <div className="image-preview">
-                                    <img src={preview} alt="Profile Preview" className="preview-image" />
+                                <div className="image-preview-register">
+                                    <img src={preview} alt="Profile Preview" className="preview-image-register" />
                                     <button className="remove-photo-btn" onClick={handleRemovePhoto}>
                                         ✖
                                     </button>

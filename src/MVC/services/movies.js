@@ -120,12 +120,12 @@ const updateMovie = async (id, title,categories, description, length, thumbnail,
 
     // Get the movie object from the array
     Movie = Movie[1];
-
+    console.log(id, title,categories, description, length, thumbnail,thumbnailName, video, videoName)
     // Checks if one of the fields are missing
     if (!id || !title || !categories || !description || !length ) {
         return [400, "One of the required fields are missing"];
     }
-
+    console.log("its not that one field is missing")
     // Stores the list of categories to save them in the end
     // We dont want to save the movie if one of the categories is not valid
     const ListOfCategories = [];

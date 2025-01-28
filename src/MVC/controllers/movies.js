@@ -105,9 +105,14 @@ const updateMovie = async (req, res) => {
         if (existingUserByUsername.isAdmin == false) { 
             return res.status(403).json({ errors: 'User is not an admin' });
         }
+        console.log("i am inside controller")
+        console.log(req.params.id,req.body.title, req.body.categories,
+            req.body.description, req.body.length, req.body.thumbnail, req.body.thumbnailName, req.body.video ,req.body.videoName)
 
         const Movie_and_Status = await MovieService.updateMovie(req.params.id,req.body.title, req.body.categories,
             req.body.description, req.body.length, req.body.thumbnail, req.body.thumbnailName, req.body.video ,req.body.videoName);
+
+        console.log("the problem is not service")
 
         // Get the status code from the Movie_and_Status array
         const status = Movie_and_Status[0];
