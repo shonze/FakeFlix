@@ -78,7 +78,7 @@ function HomeDescriptionPage({ movie }) {
             <p className="movieDescription-description">
               {movie.description}
               <p></p>
-              {movie.length} minutes
+              {movie.length}
             </p>
             <button className="movieDescription-play-button" onClick={() => navigate("/watch-movie", { state: { movie } })}>
               Play

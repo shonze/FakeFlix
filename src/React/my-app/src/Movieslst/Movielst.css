@@ -22,10 +22,12 @@
 }
 
 .left-arrow {
+  z-index: 100;
   left: 0;
 }
 
 .right-arrow {
+  z-index: 100;
   right: 0;
 }
 

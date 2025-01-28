@@ -1,5 +1,5 @@
-import React, {useState, useEffect } from "react";
-import { useNavigate , useParams} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import TopMenu from "../TopMenu/TopMenu";
 import Movielst from "../Movieslst/Movieslst";
 import './CategoryPage.css'; // Import the CSS file
@@ -16,7 +16,7 @@ function CategoryPage() {
     const { id } = useParams();
     const [category, setCategory] = useState(null);
     const [categoryMoviesChunked, setCategoryMoviesChunked] = useState([]);
-    const [theme,setTheme] = useState(localStorage.getItem("theme"));
+    const [theme, setTheme] = useState(localStorage.getItem("theme"));
     const navigate = useNavigate();
 
     // Checks if the user is permitted to enter the screen
@@ -83,20 +83,38 @@ function CategoryPage() {
         return <h2>Category not found</h2>;
     }
 
-    if (category.movies.length === 0) {
-        return <h2>No movies!</h2>;
-    }
-
     return (
-        <div className={`bg-${theme}`}>
+        <div className={`bg-${theme} `}>
             <TopMenu />
-            <div className={`movies-row bg-${theme}`}>
-                {categoryMoviesChunked.map((movieIds, index) => (
-                    <div key={index} className="movie-card">
-                        <Movielst Movieslst={movieIds} />
+            {category.movies.length !== 0 ? (
+                <div>
+                    <h1
+                        className={`${localStorage.getItem("theme") === "dark" ? "text-light" : "text-dark"} category-page-head`}
+                    >
+                        {category.name}
+                    </h1>
+                    <div className={`movies-row bg-${theme}`}>
+                        {categoryMoviesChunked.map((movieIds, index) => (
+                            <div key={index} className="movie-card">
+                                <Movielst Movieslst={movieIds} />
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                </div>) : (
+                <div className="full-screen">
+                    <h1
+                        className={`${localStorage.getItem("theme") === "dark" ? "text-light" : "text-dark"} category-page-head`}
+                    >
+                        {category.name}
+                    </h1>
+                    <h2 className="no-movies-found">
+                        No Movie Found!
+                    </h2>
+                    <h3 className="no-movies-found">
+                        Come Back Later.
+                    </h3>
+                </div>
+            )}
         </div>
     );
 };
