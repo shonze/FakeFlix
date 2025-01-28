@@ -59,14 +59,8 @@ const RegisterScreen = () => {
             const response = await fetch(`http://localhost:8080/api/file/${name}`, {
                 method: 'DELETE',
             });
-            if (response.ok) {
-                showToast('Profile picture deleted successfully', 'success');
-            } else {
-                showToast('Profile picture deletion failed', 'error');
-            }
         } catch (error) {
             console.error('Error deleting profile picture:', error);
-            showToast('An error occurred while deleting the profile picture.', 'error');
         }
     }
 
