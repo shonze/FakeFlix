@@ -93,7 +93,7 @@ const TopMenu = ({ admin ,userPic, userName}) => {
                 </div>
 
                 <div className="d-flex align-items-center">
-                    <div className="navbar-text welcome-text">
+                    <div className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"} bg-transparent border-0`}> 
                         Welcome back: {userFullName}
                     </div>
                     {userPicture && (
