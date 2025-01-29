@@ -54,6 +54,8 @@ const TopMenu = ({ admin ,userPic, userName}) => {
         // Remove jwtToken and rememberMe from local storage
         localStorage.removeItem("jwtToken");
         localStorage.removeItem("rememberMe");
+        localStorage.removeItem("userPic")
+        localStorage.removeItem("userName")
 
         // Navigate to the parent route
         navigate("..");
