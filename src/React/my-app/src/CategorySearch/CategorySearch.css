@@ -92,3 +92,20 @@
         text-align: center;
     }
 }
+
+.nav-item.dropdown .dropdown-menu {
+    transition: opacity 0.3s, transform 0.3s, visibility 0s 0.3s;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    transition: opacity 0.3s, transform 0.3s, visibility 0s;
+}
+.nav-item.dropdown .dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -10px; /* Adjust this value based on your needs */
+    left: 0;
+    right: 0;
+    height: 10px;
+    z-index: 1000; /* Ensure it's above other elements */
+}
