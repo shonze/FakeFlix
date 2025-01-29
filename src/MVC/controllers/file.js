@@ -25,6 +25,47 @@ const uploadFile = (req, res) => {
     }
 };
 
+// const uploadFile = (req, res) => {
+//     try {
+//         if (!req.file && !req.files) {
+//             return res.status(400).json({ message: "No file uploaded" });
+//         }
+
+//         const baseUrl = `${req.protocol}://${req.get("host")}`;
+
+//         const sanitizeFilename = (filename) => {
+//             return filename.replace(/\s+/g, "_"); // Replace spaces with underscores
+//         };
+
+//         const filesInfo = req.files
+//             ? req.files.map((file) => {
+//                 const sanitizedFilename = sanitizeFilename(file.filename);
+//                 return {
+//                     filename: sanitizedFilename,
+//                     url: `${baseUrl}/uploads/${sanitizedFilename}`,
+//                     name: sanitizedFilename,
+//                 };
+//             })
+//             : (() => {
+//                 const sanitizedFilename = sanitizeFilename(req.file.filename);
+//                 return {
+//                     filename: sanitizedFilename,
+//                     url: `${baseUrl}/uploads/${sanitizedFilename}`,
+//                     name: sanitizedFilename,
+//                 };
+//             })();
+
+//         res.status(200).json({
+//             message: "Files uploaded successfully",
+//             files: filesInfo,
+//         });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: "Error uploading file", error });
+//     }
+// };
+
+
 const { deleteFileService } = require("../services/file");
 
 // Controller to delete a file

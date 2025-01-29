@@ -54,6 +54,8 @@ const TopMovie = ({ id }) => {
                 }
 
                 const data = await response.json();
+                console.log("video url")
+                console.log(data.video)
                 setMovie(data);
             } catch (error) {
                 console.error("Error fetching movie:", error);
@@ -70,10 +72,22 @@ const TopMovie = ({ id }) => {
 
     return (
         <div className="video-container">
-            <video ref={videoRef} className="full-movie" autoPlay={isVisible} muted loop>
+            {/* <video ref={videoRef} className="full-movie" autoPlay={isVisible} muted loop>
                 <source src="http://localhost:3000/homeVideo.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
+            </video> */}
+            <div >
+            <video
+                ref={videoRef}
+                className="full-movie"
+                autoPlay={isVisible}
+                muted
+                loop 
+                src={movie.video} type="video/mp4"
+            >
+                Your browser does not support the video tag.
             </video>
+            </div>
             <div className="text-overlay position-absolute top-50 start-0 translate-middle-y text-white">
                 <h1 className="top-movie-text display-3">{movie.title}</h1>
                 <p className="top-movie-text lead">{movie.description}</p>
