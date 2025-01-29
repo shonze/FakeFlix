@@ -15,3 +15,56 @@
 .movie-card:hover .overlay {
     opacity: 1;
 }
+
+.category-page-head {
+    font-size: 3rem;
+    /* Bigger text size */
+    font-weight: bold;
+    /* Keeps it bold for emphasis */
+    color: #333;
+    /* Neutral dark color */
+    text-transform: uppercase;
+    /* Ensures text is all caps */
+    letter-spacing: 3px;
+    /* Slightly larger spacing for elegance */
+    text-align: center;
+    /* Centers the text */
+    margin: 30px auto;
+    /* Centers it vertically and horizontally */
+    border-bottom: 4px solid #d49c4d;
+    /* Slightly thicker underline for more impact */
+    padding-bottom: 15px;
+    /* Adds space between text and underline */
+    width: fit-content;
+    /* Keeps the underline only as wide as the text */
+    font-family: 'Georgia', serif;
+    /* Elegant serif font for a classy look */
+}
+
+.full-screen {
+    width: 100vw;
+    height: 100vh;
+}
+
+.no-movies-found {
+    font-size: 2rem;
+    /* Sets the font size */
+    font-weight: bold;
+    /* Makes the text bold */
+    color: #ff6347;
+    /* Sets the text color to tomato */
+    text-align: center;
+    /* Centers the text horizontally */
+    text-transform: uppercase;
+    /* Transforms text to uppercase */
+    letter-spacing: 2px;
+    /* Adds spacing between letters */
+    margin: 20px 0;
+    /* Adds spacing above and below */
+    padding: 10px 0;
+    /* Adds padding above and below */
+    display: inline-block;
+    /* Ensures the heading doesn't stretch across the page */
+    width: 100%;
+    /* Ensures the heading takes up the full width */
+}

@@ -110,8 +110,6 @@ const getMovies = async (userId) => {
 };
 const { deleteFileService } = require("../services/file");
 
-
-
 const updateMovie = async (id, title,categories, description, length, thumbnail,thumbnailName, video, videoName) => {
     let Movie = await getMovieById(id);
     console.log(Movie);
@@ -120,12 +118,12 @@ const updateMovie = async (id, title,categories, description, length, thumbnail,
 
     // Get the movie object from the array
     Movie = Movie[1];
-
+    console.log(id, title,categories, description, length, thumbnail,thumbnailName, video, videoName)
     // Checks if one of the fields are missing
     if (!id || !title || !categories || !description || !length ) {
         return [400, "One of the required fields are missing"];
     }
-
+    console.log("its not that one field is missing")
     // Stores the list of categories to save them in the end
     // We dont want to save the movie if one of the categories is not valid
     const ListOfCategories = [];
@@ -150,26 +148,6 @@ const updateMovie = async (id, title,categories, description, length, thumbnail,
 
         ListOfCategories.push(Category);
     }
-
-    // try {
-    //     deleteFileService(Movie.thumbnailName);
-    //     deleteFileService(Movie.videoName);
-    // } catch (error) {
-    //     console.error("An error occurred while deleting files:", error);
-    // }
-    // try {
-    //     await deleteFileService(Movie.thumbnailName);
-    //     console.log(`Thumbnail deleted successfully`);
-    // } catch (error) {
-    //     console.error(`Failed to delete thumbnail: ${error.message}`);
-    // }
-
-    // try {
-    //     await deleteFileService(Movie.videoName);
-    //     console.log(`Video deleted successfully`);
-    // } catch (error) {
-    //     console.error(`Failed to delete video: ${error.message}`);
-    // }
 
     // Update the movie fields
     Movie.title = title;
@@ -214,7 +192,6 @@ const updateMovie = async (id, title,categories, description, length, thumbnail,
     // Transfer the categories field from names to Ids
     Movie.categories = CategoriesIds;
 
-    console.log(Movie)
     await Movie.save();
 
     // Save the categories

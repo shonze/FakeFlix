@@ -5,9 +5,10 @@ import './TopMenu.css';
 import CategorySearch from '../CategorySearch/CategorySearch'
 import Theme from '../Theme/Theme';
 
-const TopMenu = ({ admin }) => {
+const TopMenu = ({ admin ,userPic}) => {
     const [isTop, setIsTop] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [userPicture, setUserPicture] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,6 +32,12 @@ const TopMenu = ({ admin }) => {
     useEffect(() => {
         setIsAdmin(admin);
     }, [admin]);
+
+    useEffect(() => {
+        setUserPicture(userPic);
+    }, [userPic]);
+
+    
 
     const homePage = `http://${window.location.hostname}:${window.location.port}/home`
 
@@ -69,6 +76,11 @@ const TopMenu = ({ admin }) => {
                         <Theme />
                     </ul>
                 </div>
+                {userPicture ? (
+                            <div className="image-preview-topMenu">
+                                <img src={userPicture} alt="Profile Preview" className="preview-image-TopMenu" />
+                            </div>
+                ) : null}
                 <div className="d-flex justify-content-center align-items-center bg-white rounded shadow">
                     <div className="position-relative">
                         <button

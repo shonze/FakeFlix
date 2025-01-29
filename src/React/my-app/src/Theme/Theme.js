@@ -1,21 +1,17 @@
 import React from 'react';
-import { useState } from 'react'
 
 const Theme = () => {
-    const [theme, setTheme] = useState("light");
-
     const handleClick = () => {
-        if(theme === "light"){
-            setTheme("dark");
+        if(localStorage.getItem(("theme")) === "light"){
+            localStorage.setItem("theme","dark");
         } else {
-            setTheme("light");
+            localStorage.setItem("theme","light");
         }
-        localStorage.setItem('theme', theme);
         window.dispatchEvent(new Event("storage"));
     }   
 
     return (
-        <button id={theme} onClick={handleClick} className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"}  bg-transparent border-0`}>{theme}</button>
+        <button onClick={handleClick} className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"}  bg-transparent border-0`}>{localStorage.getItem("theme")}</button>
     );
 }
 

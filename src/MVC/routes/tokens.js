@@ -9,5 +9,7 @@ router.route('/')
     .post(TokensController.authenticateUser);
 router.route('/validate')
     .post(TokensController.validateUser);
+router.route('/user')
+    .get(TokensController.getUserPic);
     
 module.exports = router;

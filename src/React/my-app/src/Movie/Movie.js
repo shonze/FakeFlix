@@ -4,7 +4,7 @@ import MovieDescription from '../Pages/MovieDescription';
 
 function Movie({ id }) {
     const [movie, setMovie] = useState({});
-    const [isHovered, setIsHovered] = useState(false); // State to track hover
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
         const fetchMovie = async () => {
@@ -34,21 +34,16 @@ function Movie({ id }) {
 
     return (
         <div
-            className="thumbnail"
-            style={{ cursor: "pointer" }}
-            onMouseEnter={() => setIsHovered(true)} // Set hover state to true
-            onMouseLeave={() => setIsHovered(false)} // Set hover state to false
+            className={`movie-container ${isHovered ? 'hovered' : ''}`}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
-            <div className="cube">
-                <div className="cube-face front">
-                    <img src={movie.thumbnail} alt="photo" />
+            <img className="thumbnail" src={movie.thumbnail} alt={movie.title} />
+            {isHovered && (
+                <div className="hover-overlay">
+                    <MovieDescription movie={movie} />
                 </div>
-                {isHovered && ( // Conditionally render the MovieDescription on hover
-                    <div className="cube-face back">
-                        <MovieDescription movie={movie} />
-                    </div>
-                )}
-            </div>
+            )}
         </div>
     );
 }

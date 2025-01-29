@@ -18,7 +18,7 @@ function Movielst({ Movieslst }) {
                 const isContentOverflowing = scrollWidth > clientWidth;
 
                 const scrollAmount = clientWidth * 0.8; // Scroll by 80% of container width
-                const totalChunks = Math.ceil(Movieslst.length * 250 / scrollAmount);
+                const totalChunks = Math.ceil(Movieslst.length * 210 / scrollAmount);
 
                 setTotalScrolls(totalChunks);
 
@@ -67,6 +67,7 @@ function Movielst({ Movieslst }) {
 
     return (
         <div className="position-relative">
+            { totalScrolls !== 1 ? (
             <div className="dot-indicator">
                 {Array.from({ length: totalScrolls }).map((_, index) => (
                     <div
@@ -74,8 +75,8 @@ function Movielst({ Movieslst }) {
                         className={`dot ${index === currentScrollIndex ? "active" : ""}`}
                     />
                 ))}
-            </div>
-
+            </div> ) : null
+            }
             {isLeftArrowVisible && (
                 <button
                     onClick={() => scroll('left')}

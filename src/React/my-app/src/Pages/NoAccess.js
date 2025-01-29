@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom"; // React Router for navigation
 import './NoAccess.css'
 
-const NotFoundPage = () => {
+const NoAccess = () => {
   return (
     <div className="noAccess-page">
       <div className="noAccess-container">
@@ -13,4 +13,4 @@ const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
+export default NoAccess;

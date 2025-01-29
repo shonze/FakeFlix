@@ -44,12 +44,35 @@ const validateUser = async (req, res) => {
         } catch (error) {
             return res.status(403).json({ errors: error.message });
         }
+        console.log("requireadmin:")
+        console.log(req.headers.requireadmin)
+        console.log(req.headers)
+        if ((req.headers.requireadmin == 'true') || (req.headers.requireadmin === 'true') || (req.headers.requireadmin == true) || (req.headers.requireadmin === 'true')) {
+            if (!existingUserByUsername.isAdmin) {
+                return res.status(403).json({ errors: ['Not an admin!'] });
+            }
+        }
 
-        return res.status(200).json(existingUserByUsername.isAdmin);
-        // In case the Category ID is not valid
+        return res.status(200).json({ isAdmin: existingUserByUsername.isAdmin });
+         // In case the Category ID is not valid
     } catch (error) {
         return res.status(500).json({ errors: ['Error occured'] });
     }
 };
 
-module.exports = { authenticateUser, validateUser };
+const getUserPic = async (req, res) => {
+    try {
+        let existingUserByUsername;
+        // Use the new helper function to validate the token and retrieve the user
+        try {
+            existingUserByUsername = await UserService.validateAndGetUser(req);
+        } catch (error) {
+            return res.status(403).json({ errors: error.message });
+        }
+        console.log("in tokens controller: " + existingUserByUsername.photoUrl);
+        return res.status(200).json({ userPicture: existingUserByUsername.photoUrl });
+    } catch (error) {
+        return res.status(500).json({ errors: ['Error occured'] });
+    }
+};
+module.exports = { authenticateUser, validateUser, getUserPic };
