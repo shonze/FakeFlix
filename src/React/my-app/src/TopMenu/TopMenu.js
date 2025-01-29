@@ -32,12 +32,18 @@ const TopMenu = ({ admin ,userPic}) => {
     useEffect(() => {
         setIsAdmin(admin);
     }, [admin]);
-
     useEffect(() => {
         setUserPicture(userPic);
     }, [userPic]);
-
     
+    const handleLogOut = () => {
+        // Remove jwtToken and rememberMe from local storage
+        localStorage.removeItem("jwtToken");
+        localStorage.removeItem("rememberMe");
+
+        // Navigate to the parent route
+        navigate("..");
+    };
 
     const homePage = `http://${window.location.hostname}:${window.location.port}/home`
 
@@ -70,7 +76,7 @@ const TopMenu = ({ admin ,userPic}) => {
                         <li className="nav-item">
                             <button
                                 className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"} bg-transparent border-0`}
-                                onClick={() => { navigate('..') }}
+                                onClick={() => { handleLogOut() }}
                             >LogOut</button>
                         </li>
                         <Theme />
