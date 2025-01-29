@@ -90,6 +90,10 @@ const RegisterScreen = () => {
                 showToast('An error occurred while uploading the profile picture.', 'error');
             }
         }
+        else {
+            name = "noPic"
+            url = "http://localhost:3000/greyNoPic.webp"
+        }
 
         const data = {
             fullName: formData.fullName,

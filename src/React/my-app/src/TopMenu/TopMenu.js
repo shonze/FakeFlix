@@ -5,10 +5,13 @@ import './TopMenu.css';
 import CategorySearch from '../CategorySearch/CategorySearch'
 import Theme from '../Theme/Theme';
 
-const TopMenu = ({ admin ,userPic}) => {
+const TopMenu = ({ admin ,userPic, userName}) => {
+    console.log("balls")
+    console.log(userName)
     const [isTop, setIsTop] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
     const [userPicture, setUserPicture] = useState('');
+    const [userFullName, setUserFullName] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,6 +38,9 @@ const TopMenu = ({ admin ,userPic}) => {
     useEffect(() => {
         setUserPicture(userPic);
     }, [userPic]);
+    useEffect(() => {
+        setUserFullName(userName);
+    }, [userName]);
     
     const handleLogOut = () => {
         // Remove jwtToken and rememberMe from local storage
@@ -46,6 +52,9 @@ const TopMenu = ({ admin ,userPic}) => {
     };
 
     const homePage = `http://${window.location.hostname}:${window.location.port}/home`
+
+    console.log("name:")
+    console.log(userFullName)
 
     return (
         <div className="sticky-top">
@@ -82,11 +91,19 @@ const TopMenu = ({ admin ,userPic}) => {
                         <Theme />
                     </ul>
                 </div>
-                {userPicture ? (
-                            <div className="image-preview-topMenu">
-                                <img src={userPicture} alt="Profile Preview" className="preview-image-TopMenu" />
-                            </div>
-                ) : null}
+
+                <div className="d-flex align-items-center">
+                    <div className="navbar-text welcome-text">
+                        Welcome back: {userFullName}
+                    </div>
+                    {userPicture && (
+                        <div className="image-preview-topMenu">
+                            <img src={userPicture} alt="Profile Preview" className="preview-image-TopMenu" />
+                        </div>
+                    )}
+                </div>
+
+
                 <div className="d-flex justify-content-center align-items-center bg-white rounded shadow">
                     <div className="position-relative">
                         <button

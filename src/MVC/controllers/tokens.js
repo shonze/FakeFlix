@@ -70,7 +70,7 @@ const getUserPic = async (req, res) => {
             return res.status(403).json({ errors: error.message });
         }
         console.log("in tokens controller: " + existingUserByUsername.photoUrl);
-        return res.status(200).json({ userPicture: existingUserByUsername.photoUrl });
+        return res.status(200).json({ userPicture: existingUserByUsername.photoUrl ,userFullName: existingUserByUsername.fullName });
     } catch (error) {
         return res.status(500).json({ errors: ['Error occured'] });
     }
