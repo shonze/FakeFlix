@@ -11,6 +11,7 @@ function HomePage() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [isLogged, setIsLogged] = useState(null);
     const [userPic, setUserPic] = useState('');
+    const [userFullName, setUserFullName] = useState('');
     const navigate = useNavigate();
 
     // Checks if the user is permited to enter the screen
@@ -57,6 +58,9 @@ function HomePage() {
                 const pic = await response.json();
                 console.log(pic);
                 setUserPic(pic.userPicture)
+                setUserFullName(pic.userFullName)
+                console.log("balls2")
+                console.log(pic.userFullName)
                 setIsLogged(true)
                 
             } catch (error) {
@@ -83,11 +87,13 @@ function HomePage() {
     }
 
     console.log("USER PIC"+ userPic);
+    console.log("USER BBBB NAME"+ userFullName);
     return (
         isLogged ? (
             <div className={`home-bg-${theme} min-vh-100`}>
                 <TopMenu admin={isAdmin}
-                        userPic={userPic} />
+                        userPic={userPic}
+                        userName={userFullName} />
                 <Categorieslst />
             </div>
         ) : (

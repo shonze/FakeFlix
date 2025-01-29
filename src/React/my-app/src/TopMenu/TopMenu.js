@@ -5,10 +5,13 @@ import './TopMenu.css';
 import CategorySearch from '../CategorySearch/CategorySearch'
 import Theme from '../Theme/Theme';
 
-const TopMenu = ({ admin ,userPic}) => {
+const TopMenu = ({ admin ,userPic, userName}) => {
+    console.log("balls")
+    console.log(userName)
     const [isTop, setIsTop] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
     const [userPicture, setUserPicture] = useState('');
+    const [userFullName, setUserFullName] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,17 +38,33 @@ const TopMenu = ({ admin ,userPic}) => {
     useEffect(() => {
         setUserPicture(userPic);
     }, [userPic]);
+    useEffect(() => {
+        setUserFullName(userName);
+    }, [userName]);
+    
+    useEffect(() => {
+        if (userPic) localStorage.setItem("userPic", userPic);
+        if (userName) localStorage.setItem("userName", userName);
+    }, [userPic, userName]);
+    
+    const userPicture2 = userPic || localStorage.getItem("userPic");
+    const userFullName2 = userName || localStorage.getItem("userName");
     
     const handleLogOut = () => {
         // Remove jwtToken and rememberMe from local storage
         localStorage.removeItem("jwtToken");
         localStorage.removeItem("rememberMe");
+        localStorage.removeItem("userPic")
+        localStorage.removeItem("userName")
 
         // Navigate to the parent route
         navigate("..");
     };
 
     const homePage = `http://${window.location.hostname}:${window.location.port}/home`
+
+    console.log("name:")
+    console.log(userFullName)
 
     return (
         <div className="sticky-top">
@@ -82,11 +101,19 @@ const TopMenu = ({ admin ,userPic}) => {
                         <Theme />
                     </ul>
                 </div>
-                {userPicture ? (
-                            <div className="image-preview-topMenu">
-                                <img src={userPicture} alt="Profile Preview" className="preview-image-TopMenu" />
-                            </div>
-                ) : null}
+
+                <div className="d-flex align-items-center">
+                    <div className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"} bg-transparent border-0`}> 
+                        Welcome back: {userFullName2}
+                    </div>
+                    {userPicture2 && (
+                        <div className="image-preview-topMenu">
+                            <img src={userPicture2} alt="Profile Preview" className="preview-image-TopMenu" />
+                        </div>
+                    )}
+                </div>
+
+
                 <div className="d-flex justify-content-center align-items-center bg-white rounded shadow">
                     <div className="position-relative">
                         <button

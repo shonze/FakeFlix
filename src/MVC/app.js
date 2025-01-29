@@ -40,6 +40,15 @@ const path = require("path");
 // Serve static files from the 'public/uploads' directory
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 
+
+// Serve static files from the React build directory
+app.use(express.static(path.join(__dirname, "public", "build")));
+
+// Catch-all route to serve index.html for React routing
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "build", "index.html"));
+});
+
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
