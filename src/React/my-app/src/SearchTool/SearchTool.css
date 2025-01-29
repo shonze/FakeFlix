@@ -35,7 +35,6 @@
 .movie-search form input[type="text"] {
     width: calc(100% - 110px);
     padding: 10px;
-    margin-right: 10px;
     font-size: 1rem;
     border: 1px solid #444;
     border-radius: 4px;
@@ -98,8 +97,8 @@
 .no-results {
     margin-top: 20px;
     font-size: 1.5rem;
-    color: #170202;
     text-align: center;
+    justify-content: center;
 }
 
 /* Add hover effects to movie list */

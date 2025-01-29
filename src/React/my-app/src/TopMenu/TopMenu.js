@@ -104,11 +104,11 @@ const TopMenu = ({ admin ,userPic, userName}) => {
 
                 <div className="d-flex align-items-center">
                     <div className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"} bg-transparent border-0`}> 
-                        Welcome back: {userFullName2}
+                        Welcome Back: {userFullName2}
                     </div>
                     {userPicture2 && (
                         <div className="image-preview-topMenu">
-                            <img src={userPicture2} alt="Profile Preview" className="preview-image-TopMenu" />
+                            <img src={userPicture2} className="preview-image-TopMenu" />
                         </div>
                     )}
                 </div>
