@@ -18,7 +18,7 @@ const RegisterScreen = () => {
         files: null,
     });
 
-    const [preview, setPreview] = useState(null); // State for the image preview
+    const [preview, setPreview] = useState("http://localhost:3000/greyNoPic.webp"); // State for the image preview
 
     // Load stored email on component mount
     useEffect(() => {
