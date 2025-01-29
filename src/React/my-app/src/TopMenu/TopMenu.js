@@ -42,6 +42,14 @@ const TopMenu = ({ admin ,userPic, userName}) => {
         setUserFullName(userName);
     }, [userName]);
     
+    useEffect(() => {
+        if (userPic) localStorage.setItem("userPic", userPic);
+        if (userName) localStorage.setItem("userName", userName);
+    }, [userPic, userName]);
+    
+    const userPicture2 = userPic || localStorage.getItem("userPic");
+    const userFullName2 = userName || localStorage.getItem("userName");
+    
     const handleLogOut = () => {
         // Remove jwtToken and rememberMe from local storage
         localStorage.removeItem("jwtToken");
@@ -94,11 +102,11 @@ const TopMenu = ({ admin ,userPic, userName}) => {
 
                 <div className="d-flex align-items-center">
                     <div className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"} bg-transparent border-0`}> 
-                        Welcome back: {userFullName}
+                        Welcome back: {userFullName2}
                     </div>
-                    {userPicture && (
+                    {userPicture2 && (
                         <div className="image-preview-topMenu">
-                            <img src={userPicture} alt="Profile Preview" className="preview-image-TopMenu" />
+                            <img src={userPicture2} alt="Profile Preview" className="preview-image-TopMenu" />
                         </div>
                     )}
                 </div>
