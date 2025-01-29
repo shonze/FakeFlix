@@ -10,3 +10,20 @@
 .navbar {
     position: relative;
 }
+.image-preview-topMenu {
+    margin-right: 5px;
+    position: relative; 
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview-image-TopMenu {
+    margin-right: 100px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+}
