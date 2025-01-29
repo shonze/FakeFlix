@@ -97,8 +97,10 @@ const SearchScreen = () => {
             <div className={`search-container bg-${theme}`}>
             <TopMenu admin={isAdmin} />
             <div className="search-sections">
-                <section className="movie-search">
+                <div className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"} bg-transparent border-0`}> 
                     <h2>Search Movies</h2>
+                </div>
+                <section className="search">
                     <input
                         type="text"
                         placeholder="What would you like to see today?"
@@ -107,17 +109,24 @@ const SearchScreen = () => {
                     />
                     {movies.length > 0 ? (
                         <div className="results">
-                            <h3>Movies</h3>
+                            <div className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"} bg-transparent border-0`}>
+                                <h4>Movies</h4>
+                            </div>
                             <ul>
                                 {movies.map((movie) => (
                                     <li key={movie._id} onClick={() => handleMovieClick(movie)}>
-                                        <strong>{movie.title}</strong> <img src={movie.thumbnail} alt={movie.title} />
+                                        <div className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"} bg-transparent border-0`}>
+                                            <h6>{movie.title}</h6>  
+                                        </div>
+                                        <img src={movie.thumbnail} alt={movie.title} />
                                     </li>
                                 ))}
                             </ul>
                         </div>
                     ) : movieQuery.length > 0 ? (
-                        <div className="no-results">No Results Found</div>
+                        <div className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"} bg-transparent border-0`}>
+                            <h2 className="no-results">No Results Found</h2>
+                        </div>
                     ) : null}
                 </section>
             </div>
