@@ -40,7 +40,7 @@ const AdminScreen = () => {
   const fetchCategories = async () => {
       try {
           const token = localStorage.getItem('jwtToken');
-          const response = await fetch('http://localhost:8080/api/categories', {
+          const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories`, {
             headers: {
                   'Authorization': 'Bearer '+ token,
                   'Content-Type': 'application/json'
@@ -58,7 +58,7 @@ const AdminScreen = () => {
       const checkValidation = async () => {
         const token = localStorage.getItem('jwtToken');
   
-        const response = await fetch('http://localhost:8080/api/tokens/validate', {
+        const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/tokens/validate`, {
           method: 'POST',
           headers: {
             'Authorization': 'Bearer ' + token,
@@ -185,7 +185,7 @@ const AdminScreen = () => {
   
   const deleteFile = async (name) => {
     try {
-        const response = await fetch(`http://localhost:8080/api/file/${name}`, {
+        const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/file/${name}`, {
             method: 'DELETE',
         });
         if (response.ok) {
@@ -215,7 +215,7 @@ const AdminScreen = () => {
       const formData = new FormData();
       formData.append('files', newFiles.thumbnail);
       try {
-        const response2 = await fetch('http://localhost:8080/api/file', {
+        const response2 = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/file`, {
           method: 'POST',
           body: formData,
         });
@@ -245,7 +245,7 @@ const AdminScreen = () => {
       formData.append('files', newFiles.video);
 
       try {
-        const response = await fetch('http://localhost:8080/api/file', {
+        const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/file`, {
           method: 'POST',
           body: formData,
         });
@@ -281,7 +281,7 @@ const AdminScreen = () => {
       };
       
       const token = localStorage.getItem('jwtToken');
-      const response = await fetch('http://localhost:8080/api/movies', {
+      const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies`, {
           method: 'POST',
           headers: {
             'Authorization': 'Bearer '+ token,
@@ -325,7 +325,7 @@ const AdminScreen = () => {
     clearMessages();
     try {
       const token = localStorage.getItem('jwtToken');
-      const response = await fetch(`http://localhost:8080/api/movies/${searchId}`,{
+      const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${searchId}`,{
         headers: {
           'Authorization': 'Bearer '+ token,
           'Content-Type': 'application/json'},
@@ -353,7 +353,7 @@ const AdminScreen = () => {
       clearMessages();
       try {
           const token = localStorage.getItem('jwtToken');
-          const response = await fetch(`http://localhost:8080/api/movies/${id}`, {
+          const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${id}`, {
               method: 'DELETE',
               headers: {
                 'Authorization': 'Bearer '+ token,
@@ -385,7 +385,7 @@ const AdminScreen = () => {
         formData.append('files', newFiles2.thumbnail);
 
         try {
-          const response2 = await fetch('http://localhost:8080/api/file', {
+          const response2 = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/file`, {
             method: 'POST',
             body: formData,
           });
@@ -413,7 +413,7 @@ const AdminScreen = () => {
         formData.append('files', newFiles2.video);
 
         try {
-          const response = await fetch('http://localhost:8080/api/file', {
+          const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/file`, {
             method: 'POST',
             body: formData,
           });
@@ -457,7 +457,7 @@ const AdminScreen = () => {
 
       try {
           const token = localStorage.getItem('jwtToken');
-          const response = await fetch(`http://localhost:8080/api/movies/${foundMovie._id}`, {
+          const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${foundMovie._id}`, {
               method: 'PUT',
               headers: {
                 'Authorization': 'Bearer '+ token,
@@ -481,7 +481,7 @@ const AdminScreen = () => {
       clearMessages();
       try {
           const token = localStorage.getItem('jwtToken');
-          const response = await fetch('http://localhost:8080/api/categories', {
+          const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories`, {
               method: 'POST',
               headers: {
                 'Authorization': 'Bearer '+ token,
@@ -502,7 +502,7 @@ const AdminScreen = () => {
       clearMessages();
       try {
           const token = localStorage.getItem('jwtToken');
-          const response = await fetch(`http://localhost:8080/api/categories/${id}`, {
+          const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories/${id}`, {
               method: 'DELETE',
               headers: {
                 'Authorization': 'Bearer '+ token,
@@ -522,7 +522,7 @@ const AdminScreen = () => {
       clearMessages();
       try {
           const token = localStorage.getItem('jwtToken');
-          const response = await fetch(`http://localhost:8080/api/categories/${editingCategory._id}`, {
+          const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories/${editingCategory._id}`, {
               method: 'PATCH',
               headers: {
                 'Authorization': 'Bearer '+ token,

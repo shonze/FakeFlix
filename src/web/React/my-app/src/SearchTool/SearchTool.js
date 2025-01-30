@@ -99,8 +99,8 @@ const SearchScreen = () => {
             <div className="search-sections">
                 <div className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"} bg-transparent border-0`}> 
                     <h2>Search Movies</h2>
-                </div>
-                <section className="search">
+                    </div>
+                    <section className="search">
                     <input
                         type="text"
                         placeholder="What would you like to see today?"
@@ -125,7 +125,7 @@ const SearchScreen = () => {
                         </div>
                     ) : movieQuery.length > 0 ? (
                         <div className={`btn text-${localStorage.getItem("theme") === "dark" ? "light" : "dark"} bg-transparent border-0`}>
-                            <h2 className="no-results">No Results Found</h2>
+                        <h2 className="no-results">No Results Found</h2>
                         </div>
                     ) : null}
                 </section>

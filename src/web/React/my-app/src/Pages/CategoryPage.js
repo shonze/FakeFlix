@@ -28,7 +28,7 @@ function CategoryPage() {
             try {
                 const token = localStorage.getItem('jwtToken');
 
-                const response = await fetch('http://localhost:8080/api/tokens/validate', {
+                const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/tokens/validate`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,
@@ -57,7 +57,7 @@ function CategoryPage() {
             try {
                 const token = localStorage.getItem('jwtToken');
 
-                const response = await fetch(`http://localhost:8080/api/categories/${id}`, {
+                const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories/${id}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + token,

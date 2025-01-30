@@ -4,6 +4,7 @@ import Field from './Field';
 import { useNavigate } from "react-router-dom";
 
 const RegisterScreen = () => {
+
     const navigate = useNavigate(); // Hook for programmatic navigation
 
     const fileInputRef = useRef(null);
@@ -18,7 +19,7 @@ const RegisterScreen = () => {
         files: null,
     });
 
-    const [preview, setPreview] = useState("http://localhost:3000/greyNoPic.webp"); // State for the image preview
+    const [preview, setPreview] = useState(`http://localhost:${process.env.REACT_APP_PORT}/uploads/greyNoPic.webp`); // State for the image preview
 
     // Load stored email on component mount
     useEffect(() => {
@@ -56,7 +57,7 @@ const RegisterScreen = () => {
 
     const deletePhoto = async (name) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/file/${name}`, {
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/file/${name}`, {
                 method: 'DELETE',
             });
         } catch (error) {
@@ -73,7 +74,7 @@ const RegisterScreen = () => {
             const formDataToSend = new FormData();
             formDataToSend.append("files", formData.files);
             try {
-                const response2 = await fetch('http://localhost:8080/api/file', {
+                const response2 = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/file`, {
                     method: 'POST',
                     body: formDataToSend, // Use FormData as the body
                 });
@@ -92,7 +93,7 @@ const RegisterScreen = () => {
         }
         else {
             name = "noPic"
-            url = "http://localhost:3000/greyNoPic.webp"
+            url = `http://localhost:${process.env.REACT_APP_PORT}/uploads/greyNoPic.webp`
         }
 
         const data = {
@@ -106,7 +107,7 @@ const RegisterScreen = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:8080/api/users', {
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/users`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),

@@ -11,7 +11,7 @@ function Movie({ id }) {
             try {
                 const token = localStorage.getItem('jwtToken');
 
-                const response = await fetch(`http://localhost:8080/api/movies/${id}`, {
+                const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${id}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + token,

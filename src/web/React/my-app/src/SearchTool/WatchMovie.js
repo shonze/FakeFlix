@@ -24,7 +24,7 @@ const WatchMovie = () => {
             try {
                 const token = localStorage.getItem('jwtToken');
 
-                const response = await fetch('http://localhost:8080/api/tokens/validate', {
+                const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/tokens/validate`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,
@@ -55,7 +55,7 @@ const WatchMovie = () => {
             // Assuming selectedMovie.categories is an array of category IDs
             const categoryPromises = selectedMovie.categories.map(async (categoryID) => {
                 const token = localStorage.getItem('jwtToken');
-                const response = await fetch(`http://localhost:8080/api/categories/${categoryID}`, {
+                const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories/${categoryID}`, {
                     headers: {
                         'Authorization': 'Bearer ' + token,
                         'Content-Type': 'application/json'

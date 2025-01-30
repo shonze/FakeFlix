@@ -12,7 +12,7 @@ const CategorySearch = () => {
             try {
                 const token = localStorage.getItem('jwtToken');
 
-                const response = await fetch(`http://localhost:8080/api/categories`, {
+                const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories`, {
                     method: 'GET',
                     headers:{
                         'Authorization': 'Bearer ' + token ,

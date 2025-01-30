@@ -20,7 +20,7 @@ function HomePage() {
             try {
                 const token = localStorage.getItem('jwtToken');
 
-                const response = await fetch('http://localhost:8080/api/tokens/validate', {
+                const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/tokens/validate`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,
@@ -44,7 +44,7 @@ function HomePage() {
             try {
                 const token = localStorage.getItem('jwtToken');
 
-                const response = await fetch('http://localhost:8080/api/tokens/user', {
+                const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/tokens/user`, {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + token,

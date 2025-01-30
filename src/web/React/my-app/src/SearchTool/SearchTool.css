@@ -97,8 +97,8 @@
 .no-results {
     margin-top: 20px;
     font-size: 1.5rem;
-    text-align: center;
     justify-content: center;
+    text-align: center;
 }
 
 /* Add hover effects to movie list */
@@ -128,4 +128,3 @@
     border-radius: 10px; /* Optional: Rounded corners */
     display: block;
 }
-

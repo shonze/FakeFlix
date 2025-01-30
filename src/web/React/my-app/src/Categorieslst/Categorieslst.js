@@ -11,7 +11,7 @@ const Categorieslst = () => {
       try {
         const token = localStorage.getItem('jwtToken');
         
-        const response = await fetch(`http://localhost:8080/api/movies`, {
+        const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies`, {
           method: 'GET',
           headers: {
             'Authorization': 'Bearer ' + token,
