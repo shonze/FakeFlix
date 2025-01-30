@@ -6,3 +6,4 @@ curl.exe
 .env.local
 src/MVC/config
 *.mp4
+node_modules
