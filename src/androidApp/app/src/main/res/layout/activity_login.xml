@@ -70,6 +70,14 @@
                 android:drawablePadding="12dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <CheckBox
+            android:id="@+id/checkboxRememberMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remember Me"
+            android:textColor="@color/white"
+            style="@style/CustomCheckBox"/>
+
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"

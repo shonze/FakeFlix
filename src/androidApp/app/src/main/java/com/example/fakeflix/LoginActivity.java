@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         String username = binding.etUsername.getText().toString().trim();
         String password = binding.etPassword.getText().toString().trim();
 
-        // TODO: Implement user registration logic here
+        // TODO: Implement user login logic here
         // This is where you would typically send the data to your backend or authentication service
 
         // For now, we'll just show a toast message

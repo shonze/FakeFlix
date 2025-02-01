@@ -221,8 +221,8 @@ const AdminScreen = () => {
         });
         const result2 = await response2.json();
         if (response2.ok) {
-            thumbnailUrl = result2.files[0].url;
-            thumbnailName = result2.files[0].name;
+            thumbnailUrl = result2.url;
+            thumbnailName = result2.name;
         } else {
             console.log(showToast('thumbnail upload failed: ' + result2.message, 'error'))
         }
@@ -251,8 +251,8 @@ const AdminScreen = () => {
         });
         const result = await response.json();
         if (response.ok) {
-            videoUrl = result.files[0].url;
-            videoName = result.files[0].name;
+            videoUrl = result.url;
+            videoName = result.name;
         } else {
             console.log('video upload failed: ' + result.message, 'error');
         }
@@ -391,8 +391,8 @@ const AdminScreen = () => {
           });
           const result2 = await response2.json();
           if (response2.ok) {
-              thumbnailUrl = result2.files[0].url;
-              thumbnailName = result2.files[0].name;
+              thumbnailUrl = result2.url;
+              thumbnailName = result2.name;
           } 
       } catch (error) {
           console.error('Error uploading thumbnail:', error);
@@ -419,8 +419,8 @@ const AdminScreen = () => {
           });
           const result = await response.json();
           if (response.ok) {
-              videoUrl = result.files[0].url;
-              videoName = result.files[0].name;
+              videoUrl = result.url;
+              videoName = result.name;
           }
         } catch (error) {
             console.error('Error uploading video:', error);

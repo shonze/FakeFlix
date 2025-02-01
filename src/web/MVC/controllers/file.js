@@ -6,19 +6,36 @@ const uploadFile = (req, res) => {
             return res.status(400).json({ message: "No file uploaded" });
         }
 
+        // const baseUrl = `${req.protocol}://${req.get("host")}`;
+        // const filesInfo = req.files
+        //     ? req.files.map(file => ({
+        //         filename: file.filename,
+        //         url: `${baseUrl}/uploads/${file.filename}`,
+        //         name: file.filename,
+        //     }))
+        //     : { filename: req.file.filename, url: `${baseUrl}/uploads/${req.file.filename}`,name: file.filename, };
+
+        // res.status(200).json({
+        //     message: "Files uploaded successfully",
+        //     files: filesInfo,
+        // });
+
         const baseUrl = `${req.protocol}://${req.get("host")}`;
         const filesInfo = req.files
             ? req.files.map(file => ({
-                filename: file.filename,
                 url: `${baseUrl}/uploads/${file.filename}`,
                 name: file.filename,
             }))
-            : { filename: req.file.filename, url: `${baseUrl}/uploads/${req.file.filename}`,name: file.filename, };
+            : [{
+                url: `${baseUrl}/uploads/${req.file.filename}`,
+                name: req.file.filename,
+            }];
 
         res.status(200).json({
             message: "Files uploaded successfully",
-            files: filesInfo,
+            ...filesInfo[0], // For single file, directly spread the first object
         });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error uploading file", error });

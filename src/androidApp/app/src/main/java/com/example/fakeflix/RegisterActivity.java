@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -39,10 +40,14 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -51,6 +56,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.json.JSONObject;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,7 +73,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 100;
     private Uri imageUri;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +89,6 @@ public class RegisterActivity extends AppCompatActivity {
             binding.etPassword.setTextCursorDrawable(R.drawable.cursor_white);
             binding.etVerifyPassword.setTextCursorDrawable(R.drawable.cursor_white);
         }
-
 
         binding.textInputLayout.setEndIconOnClickListener(v -> {
             binding.birthdateEditText.setText("");
@@ -98,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (validateFields()) {
-                    registerUser();
+                    checkUser();
                 }
             }
         });
@@ -110,7 +120,6 @@ public class RegisterActivity extends AppCompatActivity {
                 showDatePickerDialog();
             }
         });
-
     }
 
     private void openGallery() {
@@ -126,7 +135,6 @@ public class RegisterActivity extends AppCompatActivity {
             binding.ivProfilePicture.setImageURI(imageUri);
         }
     }
-
 
     private void showDatePickerDialog() {
         // Get current date
@@ -198,7 +206,6 @@ public class RegisterActivity extends AppCompatActivity {
                 isValid = false;
             }
         }
-
         // Validate Password
         if (password.isEmpty()) {
             binding.etPassword.setError("Password is required");
@@ -207,7 +214,6 @@ public class RegisterActivity extends AppCompatActivity {
             binding.etPassword.setError("Password must be at least 8 characters long");
             isValid = false;
         }
-
         // Validate Verify Password
         if (verifyPassword.isEmpty()) {
             binding.etVerifyPassword.setError("Please confirm your password");
@@ -218,32 +224,56 @@ public class RegisterActivity extends AppCompatActivity {
         }
         return isValid;
     }
-
-    private void registerUser() {
+    private void checkUser() {
         String fullName = binding.etFullName.getText().toString().trim();
         String username = binding.etUsername.getText().toString().trim();
         String email = binding.etEmail.getText().toString().trim();
         String birthdate = binding.birthdateEditText.getText().toString().trim();
         String password = binding.etPassword.getText().toString().trim();
-        String verifyPassword = binding.etVerifyPassword.getText().toString().trim();
-        String photoName = "example.jpg";
-        String photoUrl = "https://example.com/photo.jpg";
+        String photoName = "default_profile_picture.png";
+        String photoUrl = "R.drawable.default_profile_picture";
 
         User user = new User(fullName, username, email, birthdate, password, photoName, photoUrl);
 
-        Toast.makeText(RegisterActivity.this, "finished setting", Toast.LENGTH_SHORT).show();
-
         ApiService apiService = RetrofitClient.getApiService();
-        Call<AuthResponse> call = apiService.registerUser(user);
-
-        Toast.makeText(RegisterActivity.this, "before sending", Toast.LENGTH_SHORT).show();
+        Call<AuthResponse> call = apiService.checkUser(user);
 
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
 
-                Toast.makeText(RegisterActivity.this, "inside on response", Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful() && response.body() != null) {
+                    // Handle successful response here
+                    registerUser(fullName, username, email, birthdate, password,photoName, photoUrl);
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Error: " + response.body().getErrors(), Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
+                Toast.makeText(RegisterActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void registerUser(String fullName,String username,String email,String birthdate,
+                              String password, String photoName, String photoUrl ) {
+
+        if (imageUri == null) { // Check if imageUri is null
+            String[] arr = {photoUrl, photoName};  // Array initialization
+            // Ensure the values are not modified inside uploadPhoto if you don't want to change them
+            uploadPhoto(arr);
+            photoUrl = arr[0];  // Update the original values from the array
+            photoName = arr[1];
+        }
+        User user = new User(fullName, username, email, birthdate, password, photoName, photoUrl);
+
+        ApiService apiService = RetrofitClient.getApiService();
+        Call<AuthResponse> call = apiService.registerUser(user);
+
+        call.enqueue(new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().getToken();
                     if (token != null) {
@@ -271,6 +301,66 @@ public class RegisterActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("jwtToken", token);
         editor.apply();
+    }
+
+    private void uploadPhoto(String[] arr) {
+        MultipartBody.Part imagePart = prepareFilePart(imageUri);
+
+        ApiService apiService = RetrofitClient.getApiService();
+        Call<ResponseBody> call = apiService.uploadImage(imagePart);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+
+                    try {
+                        // You may need to parse the response if it's in JSON format
+                        String responseBody = response.body().string();
+                        JSONObject jsonResponse = new JSONObject(responseBody);
+
+                        arr[0] = jsonResponse.getString("url");
+                        arr[1] = jsonResponse.getString("name");
+
+                    } catch (Exception e) {
+                        Log.e("Upload", "Error parsing response: " + e.getMessage());
+                    }
+
+                    Log.d("Upload", "Success!");
+                } else {
+                    Log.e("Upload", "Failed: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("Upload", "Error: " + t.getMessage());
+            }
+        });
+    }
+
+    private File getFileFromUri(Uri uri) {
+        File file = null;
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            file = new File(getCacheDir(), "upload_image.jpg");
+            FileOutputStream outputStream = new FileOutputStream(file);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+            outputStream.close();
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    private MultipartBody.Part prepareFilePart(Uri uri) {
+        File file = getFileFromUri(uri);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
+        return MultipartBody.Part.createFormData("file", file.getName(), requestFile);
     }
 
 }
