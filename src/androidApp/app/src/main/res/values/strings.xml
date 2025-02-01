@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Advanced_Programing_Ex_4</string>
+    <string name="BaseUrl">http://10.0.2.2:8080/api/</string>
+</resources>
