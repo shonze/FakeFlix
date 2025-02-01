@@ -1,7 +1,9 @@
 package com.example.fakeflix;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -10,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
@@ -17,6 +20,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
+import androidx.core.content.FileProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -42,6 +46,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -72,6 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ActivityRegisterBinding binding;
 
     private static final int PICK_IMAGE = 100;
+    private static final int TAKE_PHOTO = 101;
     private Uri imageUri;
 
     @Override
@@ -100,7 +106,23 @@ public class RegisterActivity extends AppCompatActivity {
         binding.ivProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openGallery();
+                // Create a dialog to choose between taking a photo or selecting from the gallery
+                CharSequence[] options = {"Take Photo", "Choose from Gallery"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                builder.setTitle("Select an Option");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            // Open the camera to take a photo
+                            openCamera();
+                        } else {
+                            // Open the gallery to choose an image
+                            openGallery();
+                        }
+                    }
+                });
+                builder.show();
             }
         });
 
@@ -127,13 +149,48 @@ public class RegisterActivity extends AppCompatActivity {
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
+    private void openCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+            // Create a temporary file to store the photo
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            if (photoFile != null) {
+                imageUri = FileProvider.getUriForFile(RegisterActivity.this,
+                        "com.example.fakeflix.fileprovider", photoFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                startActivityForResult(cameraIntent, TAKE_PHOTO);
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
-            imageUri = data.getData();
-            binding.ivProfilePicture.setImageURI(imageUri);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PICK_IMAGE && data != null) {
+                imageUri = data.getData();
+                binding.ivProfilePicture.setImageURI(imageUri);
+            } else if (requestCode == TAKE_PHOTO) {
+                binding.ivProfilePicture.setImageURI(imageUri);
+            }
         }
+    }
+
+    // Method to create a temporary file for the camera photo
+    private File createImageFile() throws IOException {
+        String imageFileName = "JPEG_" + System.currentTimeMillis() + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        return image;
     }
 
     private void showDatePickerDialog() {
