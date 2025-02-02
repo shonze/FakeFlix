@@ -24,6 +24,19 @@ android:background="@drawable/starting">
         android:textSize="48sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/moreText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/starting"
+        android:text="Unlimited movies\nTV shows\nand more\nWatch anywhere\nCancel anytime"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+
 
     <Button
         android:id="@+id/signInButton"

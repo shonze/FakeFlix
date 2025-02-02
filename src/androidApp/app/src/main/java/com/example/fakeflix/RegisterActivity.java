@@ -1,49 +1,21 @@
 package com.example.fakeflix;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.example.fakeflix.databinding.ActivityMainBinding;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-
 import androidx.core.content.FileProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
 import com.example.fakeflix.databinding.ActivityRegisterBinding;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -52,18 +24,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.json.JSONObject;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -71,6 +35,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import androidx.room.Room;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -79,6 +44,10 @@ public class RegisterActivity extends AppCompatActivity {
     private static final int PICK_IMAGE = 100;
     private static final int TAKE_PHOTO = 101;
     private Uri imageUri;
+
+    private UserDB db;
+    private UserDetails userDetails;
+    UserDetailsDao userDetailsDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +70,10 @@ public class RegisterActivity extends AppCompatActivity {
             binding.birthdateEditText.setError(null);
         });
 
-        binding.clearProfilePictureButton.setOnClickListener(v -> binding.ivProfilePicture.setImageResource(R.drawable.default_profile_picture));
+        binding.clearProfilePictureButton.setOnClickListener(v -> {
+            binding.ivProfilePicture.setImageResource(R.drawable.default_profile_picture);
+            imageUri = null;
+        });
 
         binding.ivProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,8 +259,8 @@ public class RegisterActivity extends AppCompatActivity {
         String email = binding.etEmail.getText().toString().trim();
         String birthdate = binding.birthdateEditText.getText().toString().trim();
         String password = binding.etPassword.getText().toString().trim();
-        String photoName = "default_profile_picture.png";
-        String photoUrl = "R.drawable.default_profile_picture";
+        String photoName = "noPic.png";
+        String photoUrl = "http://localhost:8080/uploads/noPic.png";
 
         User user = new User(fullName, username, email, birthdate, password, photoName, photoUrl);
 
@@ -316,13 +288,14 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerUser(String fullName,String username,String email,String birthdate,
                               String password, String photoName, String photoUrl ) {
 
-        if (imageUri == null) { // Check if imageUri is null
+        if (imageUri != null) {
             String[] arr = {photoUrl, photoName};  // Array initialization
             // Ensure the values are not modified inside uploadPhoto if you don't want to change them
             uploadPhoto(arr);
             photoUrl = arr[0];  // Update the original values from the array
             photoName = arr[1];
         }
+        String copyPhotoUrl = photoUrl;
         User user = new User(fullName, username, email, birthdate, password, photoName, photoUrl);
 
         ApiService apiService = RetrofitClient.getApiService();
@@ -336,6 +309,13 @@ public class RegisterActivity extends AppCompatActivity {
                     if (token != null) {
                         saveToken(token);
                         Toast.makeText(RegisterActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
+
+                        db = Room.databaseBuilder(getApplicationContext(),
+                                        UserDB.class, "UserDB")
+                                .allowMainThreadQueries().build();
+                        userDetailsDao = db.userDetailsDao();
+                        handleSave(fullName, copyPhotoUrl);
+
                         // Navigate to HomeActivity if needed
                         // startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
                     } else {
@@ -420,4 +400,16 @@ public class RegisterActivity extends AppCompatActivity {
         return MultipartBody.Part.createFormData("file", file.getName(), requestFile);
     }
 
+    private void handleSave(String fullName, String photoUrl) {
+        if (userDetails == null) {
+            userDetails = new UserDetails(fullName, photoUrl);
+            userDetailsDao.insert(userDetails);
+        }
+        else {
+            userDetails.setUserFullName(fullName);
+            userDetails.setUserPhotoUrl(photoUrl);
+            userDetailsDao.update(userDetails);
+        }
+        finish();
+    }
 }
