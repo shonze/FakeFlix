@@ -13,11 +13,7 @@ import java.util.List;
 @Dao
 public interface MoviesListsDao {
     @Query("SELECT * FROM MoviesList")
-    List<MoviesList> index();
-
-    @Query("SELECT * FROM MoviesList WHERE id = :id")
-    MoviesList get(int id);
-
+    List<MoviesList> get();
     @Insert
     void insert(MoviesList... moviesLists);
 

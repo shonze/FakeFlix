@@ -15,15 +15,14 @@ public class Movie {
 
     private String video;
 
-//    public Movie(String title, ArrayList<String> categories, String description,
-//                 String length, String thumbnail, String video) {
-public Movie(String title){
+    public Movie(String title, ArrayList<String> categories, String description,
+                 String length, String thumbnail, String video) {
         this.title = title;
-//        this.categories = categories;
-//        this.description = description;
-//        this.length = length;
-//        this.thumbnail = thumbnail;
-//        this.video = video;
+        this.categories = categories;
+        this.description = description;
+        this.length = length;
+        this.thumbnail = thumbnail;
+        this.video = video;
     }
 
     public String getTitle() {

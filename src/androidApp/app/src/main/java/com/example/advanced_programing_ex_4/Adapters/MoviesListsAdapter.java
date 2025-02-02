@@ -40,7 +40,7 @@ public class MoviesListsAdapter extends RecyclerView.Adapter<MoviesListsAdapter.
     @Override
     public void onBindViewHolder(@NonNull MovieListViewHolder holder, int position) {
         MoviesList currentMoviesList = moviesLists.get(position);
-        holder.listTitleTextView.setText(currentMoviesList.getCategoryName());
+        holder.listTitleTextView.setText(currentMoviesList.getMoviesTitle());
 
         if (holder.moviesRecyclerView.getAdapter() == null) {
             MovieAdapter moviesAdapter = new MovieAdapter(holder.itemView.getContext(), currentMoviesList.getMoviesList());
@@ -67,6 +67,8 @@ public class MoviesListsAdapter extends RecyclerView.Adapter<MoviesListsAdapter.
 
         public MovieListViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            // The movie list is a list of movieAdapters with a title
             listTitleTextView = itemView.findViewById(R.id.categoryTitle);
             moviesRecyclerView = itemView.findViewById(R.id.moviesRecyclerView);
         }

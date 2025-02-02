@@ -58,6 +58,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         private final TextView movieTitleTextView;
 
         public MovieViewHolder(@NonNull View itemView) {
+            // The movie should appear as an image that can be clicked.
             super(itemView);
             movieTitleTextView = itemView.findViewById(R.id.movieTitle);
         }

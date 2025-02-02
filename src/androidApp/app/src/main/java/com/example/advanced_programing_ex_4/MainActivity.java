@@ -6,28 +6,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.example.advanced_programing_ex_4.Adapters.MoviesListsAdapter;
+import com.example.advanced_programing_ex_4.Dao.AppDB;
+import com.example.advanced_programing_ex_4.Dao.MoviesListsDao;
 import com.example.advanced_programing_ex_4.View_Models.MoviesListsViewModel;
 
 public class MainActivity extends AppCompatActivity {
-
-    private MoviesListsViewModel moviesListsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        moviesListsViewModel = new ViewModelProvider(this).get(MoviesListsViewModel.class);
+        // Connect to the viewModel
+        MoviesListsViewModel moviesListsViewModel = new ViewModelProvider(this).get(MoviesListsViewModel.class);
 
+        // Be able to track the changes in the view model
+        // And to show it in the screen.
         RecyclerView lstMoviesLists = findViewById(R.id.lstMovies);
         final MoviesListsAdapter moviesListsAdapter = new MoviesListsAdapter(this);
         lstMoviesLists.setAdapter(moviesListsAdapter);
         lstMoviesLists.setLayoutManager(new LinearLayoutManager(this));
-
-        moviesListsViewModel.get().observe(this, moviesLists -> {
-            moviesListsAdapter.setMoviesLists(moviesLists);
-        });
+        moviesListsViewModel.get().observe(this, moviesListsAdapter::setMoviesLists);
     }
 }

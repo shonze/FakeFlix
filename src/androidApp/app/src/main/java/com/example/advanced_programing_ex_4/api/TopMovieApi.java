@@ -3,9 +3,11 @@ package com.example.advanced_programing_ex_4.api;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.advanced_programing_ex_4.Dao.MoviesListsDao;
+import com.example.advanced_programing_ex_4.Dao.TopMovieDao;
 import com.example.advanced_programing_ex_4.MyApplication;
 import com.example.advanced_programing_ex_4.R;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
+import com.example.advanced_programing_ex_4.entities.TopMovie;
 
 import java.util.List;
 
@@ -15,14 +17,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MoviesListsApi {
-    private MutableLiveData<List<MoviesList>> moviesListData;
-    private MoviesListsDao dao;
+public class TopMovieApi {
+    private MutableLiveData<TopMovie> topMovieData;
+    private TopMovieDao dao;
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
 
-    public MoviesListsApi(MutableLiveData<List<MoviesList>> moviesListData, MoviesListsDao dao) {
-        this.moviesListData = moviesListData;
+    public TopMovieApi(MutableLiveData<TopMovie> topMovieData, TopMovieDao dao) {
+        this.topMovieData = topMovieData;
         this.dao = dao;
 
         retrofit = new Retrofit.Builder()

@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Advanced_Programing_Ex_4</string>
     <string name="BaseUrl">http://10.0.2.2:8080/api/</string>
+    <string name="more_info">ℹ More Info</string>
+    <string name="play">▶ Play</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="movie_thumbnail">Movie Thumbnail</string>
 </resources>

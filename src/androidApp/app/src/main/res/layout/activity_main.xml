@@ -7,11 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+
     <view class="androidx.recyclerview.widget.RecyclerView"
         android:id="@+id/lstMovies"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-    </view>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="52dp"
+        android:layout_height="46dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_search" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

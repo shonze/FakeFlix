@@ -1,5 +1,7 @@
 package com.example.advanced_programing_ex_4.View_Models;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -13,8 +15,8 @@ public class MoviesListsViewModel extends ViewModel {
     private LiveData<List<MoviesList>> moviesLists;
     private MoviesListsRepository repository;
 
-    public MoviesListsViewModel() {
-        repository = new MoviesListsRepository();
+    public MoviesListsViewModel(Context context) {
+        repository = new MoviesListsRepository(context);
         this.moviesLists = repository.getAll();
     }
 

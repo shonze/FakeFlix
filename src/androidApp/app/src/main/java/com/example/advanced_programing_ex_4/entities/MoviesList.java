@@ -7,11 +7,11 @@ import java.util.List;
 @Entity
 public class MoviesList {
     @PrimaryKey(autoGenerate = true)
-    private String categoryName;
+    private String moviesTitle;
     private List<Movie> moviesList;
 
-    public MoviesList(String categoryName, List<Movie> moviesList) {
-        this.categoryName = categoryName;
+    public MoviesList(String moviesTitle, List<Movie> moviesList) {
+        this.moviesTitle = moviesTitle;
         this.moviesList = moviesList;
     }
     public List<Movie> getMoviesList() {
@@ -22,11 +22,11 @@ public class MoviesList {
         this.moviesList = moviesList;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getMoviesTitle() {
+        return moviesTitle;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategoryName(String moviesTitle) {
+        this.moviesTitle = moviesTitle;
     }
 }
