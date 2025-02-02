@@ -28,7 +28,7 @@
             android:exported="false"
             android:theme="@style/Theme.Fakeflix" />
         <activity
-            android:name=".MainActivity"
+            android:name=".StartingActivity"
             android:exported="true"
             android:theme="@style/Theme.Fakeflix">
             <intent-filter>
