@@ -35,12 +35,6 @@ public class MoviesListsRepository {
 
             // The movies lists saved in the room database
             List<MoviesList> moviesLists = new LinkedList<>();
-            List<Movie> movies = new ArrayList<>();
-            movies.add(new Movie("Kifas"));
-            movies.add(new Movie("Mia"));
-            moviesLists.add(new MoviesList("Wala", movies));
-            moviesLists.add(new MoviesList("Babala", movies));
-
             setValue(moviesLists);
         }
 

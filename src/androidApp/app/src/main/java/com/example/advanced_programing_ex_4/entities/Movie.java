@@ -1,8 +1,26 @@
 package com.example.advanced_programing_ex_4.entities;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.ArrayList;
 
+@Entity
 public class Movie {
+    @PrimaryKey(autoGenerate = false)
+    @NonNull
+    private String movieId;
+
+    @NonNull
+    public String getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(@NonNull String movieId) {
+        this.movieId = movieId;
+    }
+
     private String title;
 
     private ArrayList<String> categories;
@@ -15,8 +33,9 @@ public class Movie {
 
     private String video;
 
-    public Movie(String title, ArrayList<String> categories, String description,
+    public Movie(@NonNull String movieId, String title, ArrayList<String> categories, String description,
                  String length, String thumbnail, String video) {
+        this.movieId = movieId;
         this.title = title;
         this.categories = categories;
         this.description = description;

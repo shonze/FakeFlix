@@ -1,32 +1,39 @@
 package com.example.advanced_programing_ex_4.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.example.advanced_programing_ex_4.Dao.MovieIdsConverter;
 
 import java.util.List;
 @Entity
+@TypeConverters(MovieIdsConverter.class)
 public class MoviesList {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
+    @NonNull
     private String moviesTitle;
-    private List<Movie> moviesList;
+    private List<String> movieIds;
 
-    public MoviesList(String moviesTitle, List<Movie> moviesList) {
+    public void setMoviesTitle(@NonNull String moviesTitle) {
         this.moviesTitle = moviesTitle;
-        this.moviesList = moviesList;
-    }
-    public List<Movie> getMoviesList() {
-        return moviesList;
     }
 
-    public void setMoviesList(List<Movie> moviesList) {
-        this.moviesList = moviesList;
+    public List<String> getMovieIds() {
+        return movieIds;
     }
 
+    public void setMovieIds(List<String> movieIds) {
+        this.movieIds = movieIds;
+    }
+
+    public MoviesList(@NonNull String moviesTitle, List<String> movieIds) {
+        this.moviesTitle = moviesTitle;
+        this.movieIds = movieIds;
+    }
+    @NonNull
     public String getMoviesTitle() {
         return moviesTitle;
-    }
-
-    public void setCategoryName(String moviesTitle) {
-        this.moviesTitle = moviesTitle;
     }
 }

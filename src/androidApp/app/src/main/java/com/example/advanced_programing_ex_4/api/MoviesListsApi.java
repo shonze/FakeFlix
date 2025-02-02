@@ -41,7 +41,7 @@ public class MoviesListsApi {
                 new Thread(() -> {
                     dao.clear();
                     dao.insertList(response.body());
-                    postListData.postValue(dao.get());
+                    moviesListData.postValue(dao.get());
                 }).start();
             }
 

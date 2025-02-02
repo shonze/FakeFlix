@@ -6,36 +6,40 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.advanced_programing_ex_4.Dao.AppDB;
-import com.example.advanced_programing_ex_4.Dao.MoviesListsDao;
-import com.example.advanced_programing_ex_4.Dao.TopMovieDao;
+import com.example.advanced_programing_ex_4.Dao.MovieDao;
 import com.example.advanced_programing_ex_4.api.MoviesListsApi;
 import com.example.advanced_programing_ex_4.entities.Movie;
-import com.example.advanced_programing_ex_4.entities.MoviesList;
-import com.example.advanced_programing_ex_4.entities.TopMovie;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class TopMovieRepository {
-    private TopMovieDao dao;
+    private MovieDao dao;
 
     private TopMovieData topMovieData;
 
-    private MoviesListsApi moviesListsApi;
-
     public TopMovieRepository(Context context) {
         AppDB db = AppDB.getInstance(context);
-        dao = db.topMovieDao();
+        dao = db.movieDao();
         topMovieData = new TopMovieData();
     }
 
-    class TopMovieData extends MutableLiveData<TopMovie> {
+    public Movie getRandomMovie(MovieDao movieDao) {
+        int count = movieDao.getMoviesCount();
+        if (count == 0) return null;  // No movies in DB
+
+        int randomIndex = new Random().nextInt(count);  // Generate random index
+        List<String> allMovieIds = movieDao.getAllMovieIds();  // Fetch all IDs
+        String randomId = allMovieIds.get(randomIndex);
+
+        return movieDao.getMovieById(randomId);
+    }
+
+    class TopMovieData extends MutableLiveData<Movie> {
 
         public TopMovieData() {
             super();
 
-            setValue(TopMovie);
+            setValue(getRandomMovie(dao));
         }
 
         @Override
@@ -43,12 +47,12 @@ public class TopMovieRepository {
             super.onActive();
 
             new Thread(() -> {
-                topMovieData.postValue(dao.get());
+                TopMovieData.postValue(dao.get());
             }).start();
         }
     }
 
-    public LiveData<TopMovie> getAll() {
+    public LiveData<Movie> getAll() {
         return topMovieData;
     }
 }

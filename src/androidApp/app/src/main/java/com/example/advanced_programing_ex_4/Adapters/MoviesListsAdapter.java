@@ -43,11 +43,11 @@ public class MoviesListsAdapter extends RecyclerView.Adapter<MoviesListsAdapter.
         holder.listTitleTextView.setText(currentMoviesList.getMoviesTitle());
 
         if (holder.moviesRecyclerView.getAdapter() == null) {
-            MovieAdapter moviesAdapter = new MovieAdapter(holder.itemView.getContext(), currentMoviesList.getMoviesList());
+            MovieAdapter moviesAdapter = new MovieAdapter(holder.itemView.getContext(), currentMoviesList.getMovieIds());
             holder.moviesRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
             holder.moviesRecyclerView.setAdapter(moviesAdapter);
         } else {
-            ((MovieAdapter) holder.moviesRecyclerView.getAdapter()).setMovies(currentMoviesList.getMoviesList());
+            ((MovieAdapter) holder.moviesRecyclerView.getAdapter()).setMovies(currentMoviesList.getMovieIds());
         }
     }
 

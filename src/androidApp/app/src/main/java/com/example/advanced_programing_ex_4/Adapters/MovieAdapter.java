@@ -17,12 +17,12 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private List<Movie> movies;
+    private List<String> moviesIds;
     private final LayoutInflater inflater;
 
-    public MovieAdapter(Context context, List<Movie> movies) {
+    public MovieAdapter(Context context, List<String> movies) {
         this.inflater = LayoutInflater.from(context);
-        this.movies = (movies != null) ? movies : new ArrayList<>();
+        this.moviesIds = (movies != null) ? movies : new ArrayList<>();
     }
 
     @NonNull
@@ -34,7 +34,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        if (position < movies.size()) {
+        if (position < moviesIds.size()) {
             Movie currentMovie = movies.get(position);
             holder.movieTitleTextView.setText(currentMovie.getTitle());
         }
@@ -42,15 +42,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return moviesIds.size();
     }
 
-    public List<Movie> getMovies() {
-        return movies;
+    public List<String> getMovies() {
+        return moviesIds;
     }
 
-    public void setMovies(List<Movie> moviesList) {
-        this.movies = (moviesList != null) ? moviesList : new ArrayList<>();
+    public void setMovies(List<String> moviesList) {
+        this.moviesIds = (moviesList != null) ? moviesList : new ArrayList<>();
         notifyDataSetChanged();
     }
 
