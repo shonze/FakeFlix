@@ -27,18 +27,18 @@ public interface ApiService {
     @DELETE("movies/{id}")
     Call<Void> deleteMovie(@Path("id") String id);
 
-    @GET("api/categories")
+    @GET("categories")
     Call<List<CategoryEntity>> getAllCategories();
 
-    @POST("api/categories")
+    @POST("categories")
     Call<CategoryEntity> addCategory(@Body CategoryEntity category);
 
-    @GET("api/categories/{id}")
+    @GET("categories/{id}")
     Call<CategoryEntity> getCategoryById(@Path("id") String id);
 
-    @PATCH("api/categories/{id}")
+    @PATCH("categories/{id}")
     Call<CategoryEntity> updateCategory(@Path("id") String id, @Body CategoryEntity category);
 
-    @DELETE("api/categories/{id}")
+    @DELETE("categories/{id}")
     Call<Void> deleteCategory(@Path("id") String id);
 }

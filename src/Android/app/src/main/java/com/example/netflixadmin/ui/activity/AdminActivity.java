@@ -1,14 +1,19 @@
 package com.example.netflixadmin.ui.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
 
@@ -28,6 +33,7 @@ import com.example.netflixadmin.ui.viewmodel.CategoryViewModel;
 import com.example.netflixadmin.ui.viewmodel.MovieViewModel;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,6 +41,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AdminActivity extends AppCompatActivity {
+    private ActivityResultLauncher<Intent> videoPickerLauncher;
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
+    private Uri selectedVideoUri;
+    private Uri selectedImageUri;
+    private MaterialButton btnSelectVideo;
+    private MaterialButton btnSelectThumbnail;
+    private String savedTitle = "";
+    private String savedDescription = "";
+    private String savedLength = "";
+    private List<String> savedSelectedCategories = new ArrayList<>();
+
     private static final int PICK_VIDEO_REQUEST = 1;
     private static final int PICK_IMAGE_REQUEST = 2;
     private CategoryViewModel categoryViewModel;
@@ -44,6 +61,17 @@ public class AdminActivity extends AppCompatActivity {
 
     private Button btnAddCategory;
     private Button btnAddMovie;
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (selectedVideoUri != null) {
+            outState.putString("selectedVideoUri", selectedVideoUri.toString());
+        }
+        if (selectedImageUri != null) {
+            outState.putString("selectedImageUri", selectedImageUri.toString());
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +136,16 @@ public class AdminActivity extends AppCompatActivity {
         movieViewModel.fetchMovies(); // Fetch movies
 
         btnAddCategory.setOnClickListener(v -> showAddCategoryDialog());
-        btnAddMovie.setOnClickListener(v -> showAddMovieDialog());
+        btnAddMovie.setOnClickListener(v -> {
+            // Fetch categories from ViewModel and open the dialog
+            movieViewModel.getCategories().observe(this, categories -> {
+                List<String[]> categoryNamesIds = new ArrayList<>();
+                for (CategoryEntity category : categories) {
+                    categoryNamesIds.add(new String[]{category.getName(), category.getCategoryId()});
+                }
+                showAddMovieDialog(categoryNamesIds);
+            });
+        });
 
         // Setup search view listener
         searchViewMovies.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -123,7 +160,40 @@ public class AdminActivity extends AppCompatActivity {
                 return true;
             }
         });
+        videoPickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        selectedVideoUri = result.getData().getData();
+                        btnSelectVideo.setText(selectedVideoUri.toString()); // Update button text
+                        Toast.makeText(this, "Video Selected!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        selectedImageUri = result.getData().getData();
+                        btnSelectThumbnail.setText(selectedImageUri.toString()); // Update button text
+                        Toast.makeText(this, "Thumbnail Selected!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
     }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK) {
+//            if (requestCode == PICK_IMAGE_REQUEST && data != null) {
+//                selectedThumbnailUri = data.getData().toString();
+//            } else if (requestCode == PICK_VIDEO_REQUEST && data != null)  {
+//                selectedVideoUri = data.getData().toString();
+//                btnSelectVideo.setText(selectedVideoUri);
+//            }
+//        }
+//    }
 
     private void showAddCategoryDialog() {
         Dialog dialog = new Dialog(this);
@@ -222,7 +292,7 @@ public class AdminActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void showAddMovieDialog() {
+    private void showAddMovieDialog(List<String[]> categoryNamesIds) {
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_movie, null);
 
         // Get references to EditText fields
@@ -230,10 +300,54 @@ public class AdminActivity extends AppCompatActivity {
         EditText movieDescriptionEditText = dialogView.findViewById(R.id.edtMovieDescription);
         EditText movieLengthEditText = dialogView.findViewById(R.id.edtMovieLength);
 
+        // Restore previously saved values
+        movieTitleEditText.setText(savedTitle);
+        movieDescriptionEditText.setText(savedDescription);
+        movieLengthEditText.setText(savedLength);
+
         // Get references to MaterialButton fields
-        MaterialButton btnSelectVideo = dialogView.findViewById(R.id.btnMovieSelectVideo);
-        MaterialButton btnSelectThumbnail = dialogView.findViewById(R.id.btnMovieSelectThumbnail);
+        btnSelectVideo = dialogView.findViewById(R.id.btnMovieSelectVideo);
+        btnSelectThumbnail = dialogView.findViewById(R.id.btnMovieSelectThumbnail);
         MaterialButton btnSave = dialogView.findViewById(R.id.btnMovieSave);
+        Button btnSelectCategories = dialogView.findViewById(R.id.btnMovieSelectCategories);
+
+        // Store selected categories
+        boolean[] selectedCategories = new boolean[categoryNamesIds.size()];
+        List<String> selectedCategoryList = new ArrayList<>(savedSelectedCategories); // Restore saved categories
+
+        btnSelectCategories.setOnClickListener(v -> {
+            AlertDialog.Builder categoryDialog = new AlertDialog.Builder(this);
+            categoryDialog.setTitle("Select Categories");
+
+            // Extract the category names for the dialog
+            String[] categoryNames = new String[categoryNamesIds.size()];
+            for (int i = 0; i < categoryNamesIds.size(); i++) {
+                categoryNames[i] = categoryNamesIds.get(i)[0]; // Get the category name
+
+                // Restore previous selections
+                if (selectedCategoryList.contains(categoryNames[i])) {
+                    selectedCategories[i] = true;
+                }
+            }
+
+            categoryDialog.setMultiChoiceItems(categoryNames, selectedCategories, (dialog, which, isChecked) -> {
+                if (isChecked) {
+                    selectedCategoryList.add(categoryNamesIds.get(which)[0]); // Add category name
+                } else {
+                    selectedCategoryList.remove(categoryNamesIds.get(which)[0]); // Remove category name
+                }
+            });
+
+            categoryDialog.setPositiveButton("OK", (dialog, which) -> {
+                // Save selected categories
+                savedSelectedCategories = new ArrayList<>(selectedCategoryList);
+                Toast.makeText(this, "Selected Categories: " + savedSelectedCategories, Toast.LENGTH_SHORT).show();
+            });
+
+            categoryDialog.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+            categoryDialog.show();
+        });
 
         // Create the dialog
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -241,30 +355,36 @@ public class AdminActivity extends AppCompatActivity {
                 .setView(dialogView)
                 .create();
 
-        btnSelectVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, PICK_VIDEO_REQUEST);
-            }
+        btnSelectVideo.setOnClickListener(v -> {
+            // Save input values before opening video picker
+            saveCurrentInputs(movieTitleEditText, movieDescriptionEditText, movieLengthEditText, selectedCategoryList);
+
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+            videoPickerLauncher.launch(intent);
         });
-        btnSelectThumbnail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, PICK_IMAGE_REQUEST);
-            }
+
+        btnSelectThumbnail.setOnClickListener(v -> {
+            // Save input values before opening image picker
+            saveCurrentInputs(movieTitleEditText, movieDescriptionEditText, movieLengthEditText, selectedCategoryList);
+
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            imagePickerLauncher.launch(intent);
         });
 
         btnSave.setOnClickListener(v -> {
             String movieTitle = movieTitleEditText.getText().toString().trim();
             String movieDescription = movieDescriptionEditText.getText().toString().trim();
             String movieLengthStr = movieLengthEditText.getText().toString().trim();
-            String movieThumbnail = btnSelectThumbnail.getText().toString().trim();
-            String movieVideo= btnSelectVideo.getText().toString().trim();
+            String movieThumbnail = selectedImageUri != null ? selectedImageUri.toString() : ""; // Use selected thumbnail URI
+            String movieVideo = selectedVideoUri != null ? selectedVideoUri.toString() : ""; // Use selected video URI
 
             if (movieTitle.isEmpty() || movieDescription.isEmpty() || movieLengthStr.isEmpty()) {
                 Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (movieThumbnail.isEmpty() || movieVideo.isEmpty()) {
+                Toast.makeText(this, "Please select both a thumbnail and a video", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -275,9 +395,22 @@ public class AdminActivity extends AppCompatActivity {
             newMovie.setTitle(movieTitle);
             newMovie.setDescription(movieDescription);
             newMovie.setLength(movieLength);
-            newMovie.setThumbnail(movieThumbnail);
-            newMovie.setVideoUrl(movieVideo);
+            newMovie.setThumbnail(movieThumbnail); // Set thumbnail URI
+            newMovie.setVideoUrl(movieVideo); // Set video URI
 
+            // Convert selected category names to IDs
+            List<String> selectedCategoryIds = new ArrayList<>();
+            for (String categoryName : savedSelectedCategories) {
+                String categoryId = getCategoryIdByName(categoryName, categoryNamesIds);
+                if (categoryId != null) {
+                    selectedCategoryIds.add(categoryId);
+                }
+            }
+            newMovie.setCategories(selectedCategoryIds);
+
+            selectedImageUri = null;
+            selectedVideoUri = null;
+            
             // Call ViewModel to add movie
             movieViewModel.addMovie(newMovie, new Callback<MovieEntity>() {
                 @Override
@@ -287,7 +420,7 @@ public class AdminActivity extends AppCompatActivity {
                         Toast.makeText(AdminActivity.this, "Movie added", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     } else {
-                        Toast.makeText(AdminActivity.this, "Failed to add movie", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AdminActivity.this, "Failed to add movie: " + response.message(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -301,6 +434,23 @@ public class AdminActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    // Helper method to save input values before opening video/image picker
+    private void saveCurrentInputs(EditText title, EditText description, EditText length, List<String> categories) {
+        savedTitle = title.getText().toString();
+        savedDescription = description.getText().toString();
+        savedLength = length.getText().toString();
+        savedSelectedCategories = new ArrayList<>(categories);
+    }
+
+
+    private String getCategoryIdByName(String name, List<String[]> categoryNamesIds) {
+        for (String[] ar : categoryNamesIds) {
+            if (ar[0].equals(name)) {
+                return ar[1];
+            }
+        }
+        return "ERROR";
+    }
     private void showEditMovieDialog(MovieEntity movie) {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_edit_movie);

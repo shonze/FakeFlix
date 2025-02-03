@@ -15,14 +15,20 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name="com.example.netflixadmin.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:configChanges="screenSize|smallestScreenSize|keyboardHidden|orientation|screenLayout">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.netflixadmin.ui.activity.AdminActivity"/>
+        <activity
+            android:name="com.example.netflixadmin.ui.activity.AdminActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 

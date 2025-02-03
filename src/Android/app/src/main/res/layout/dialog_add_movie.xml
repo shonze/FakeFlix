@@ -37,6 +37,13 @@
         android:layout_height="wrap_content"
         android:text="Select Thumbnail" />
 
+    <Button
+        android:id="@+id/btnMovieSelectCategories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Categories" />
+
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnMovieSave"
         android:layout_width="match_parent"

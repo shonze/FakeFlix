@@ -17,7 +17,10 @@ public interface CategoryDao {
     List<CategoryEntity> getAllCategories();
 
     @Query("SELECT * FROM categories WHERE id = :id")
-    CategoryEntity getCategoryById(int id);
+    CategoryEntity getCategoryById(String id);
+
+    @Query("SELECT categoryId FROM categories WHERE name = :name")
+    String getCategoryIdByName(String name);
 
     @Update
     void updateCategory(CategoryEntity category);

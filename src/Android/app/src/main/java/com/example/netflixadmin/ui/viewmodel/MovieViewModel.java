@@ -9,6 +9,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.netflixadmin.data.local.MovieEntity;
 import com.example.netflixadmin.data.repository.MovieRepository;
 
+import com.example.netflixadmin.data.local.CategoryEntity;
+import com.example.netflixadmin.data.repository.CategoryRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +21,17 @@ import retrofit2.Response;
 
 public class MovieViewModel extends AndroidViewModel {
     private final MovieRepository repository;
+    private final CategoryRepository categoryRepository;
     public MutableLiveData<List<MovieEntity>> moviesLiveData = new MutableLiveData<>();
 
     public MovieViewModel(Application application) {
         super(application);
         repository = new MovieRepository(application);
+        categoryRepository = new CategoryRepository(application);
+    }
+
+    public  LiveData<List<CategoryEntity>> getCategories(){
+        return categoryRepository.getAllCategories();
     }
 
     public void fetchMovies() {
