@@ -11,7 +11,7 @@ public class UserDetails {
     private String userPhotoUrl;
     private String userFullName;
 
-    public UserDetails(String userPhotoUrl, String userFullName) {
+    public UserDetails(String userFullName, String userPhotoUrl) {
         this.userPhotoUrl = userPhotoUrl;
         this.userFullName = userFullName;
     }

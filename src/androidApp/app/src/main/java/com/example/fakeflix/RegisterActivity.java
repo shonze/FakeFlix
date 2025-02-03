@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -288,16 +289,23 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private void registerUser(String fullName,String username,String email,String birthdate,
                               String password, String photoName, String photoUrl ) {
-
-        if (imageUri != null) {
-            String[] arr = {photoUrl, photoName};  // Array initialization
-            // Ensure the values are not modified inside uploadPhoto if you don't want to change them
-            uploadPhoto(arr);
-            photoUrl = arr[0];  // Update the original values from the array
-            photoName = arr[1];
-        }
         String copyPhotoUrl = photoUrl;
-        User user = new User(fullName, username, email, birthdate, password, photoName, photoUrl);
+        String copyPhotoName = photoName;
+        if (imageUri != null) {
+            ArrayList<String> photoData = new ArrayList<>();
+            photoData.add(photoUrl);
+            photoData.add(photoName);
+
+            uploadPhoto(photoData);
+
+            // Now, photoUrl and photoName are updated
+            copyPhotoUrl = photoData.get(0);
+            copyPhotoName = photoData.get(1);
+            Toast.makeText(RegisterActivity.this, "balls: " + copyPhotoName   , Toast.LENGTH_SHORT).show();
+
+        }
+        String copyPhotoNameFinale = copyPhotoUrl;
+        User user = new User(fullName, username, email, birthdate, password,copyPhotoName, copyPhotoUrl);
 
         ApiService apiService = RetrofitClient.getApiService();
         Call<AuthResponse> call = apiService.registerUser(user);
@@ -315,7 +323,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         UserDB.class, "UserDB")
                                 .allowMainThreadQueries().build();
                         userDetailsDao = db.userDetailsDao();
-                        handleSave(fullName, copyPhotoUrl);
+                        handleSave(fullName, copyPhotoNameFinale);
 
                         // Navigate to HomeActivity if needed
                          startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
@@ -341,7 +349,7 @@ public class RegisterActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    private void uploadPhoto(String[] arr) {
+    private void uploadPhoto(ArrayList<String> photoData) {
         MultipartBody.Part imagePart = prepareFilePart(imageUri);
 
         ApiService apiService = RetrofitClient.getApiService();
@@ -356,9 +364,11 @@ public class RegisterActivity extends AppCompatActivity {
                         String responseBody = response.body().string();
                         JSONObject jsonResponse = new JSONObject(responseBody);
 
-                        arr[0] = jsonResponse.getString("url");
-                        arr[1] = jsonResponse.getString("name");
+                        photoData.set(0, jsonResponse.getString("url").toString());
+                        photoData.set(1, jsonResponse.getString("name").toString());
 
+                        Toast.makeText(RegisterActivity.this, "json: " + jsonResponse.getString("name").toString()   , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "balls: " + photoData.get(1)   , Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         Log.e("Upload", "Error parsing response: " + e.getMessage());
                     }
