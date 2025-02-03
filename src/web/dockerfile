@@ -141,4 +141,7 @@ RUN mkdir -p ./MVC/public && cp -r ./React/my-app/build ./MVC/public/
 
 # Set the default command to run your app
 WORKDIR /usr/src/app/MVC
+
+EXPOSE 8080
+
 CMD ["npm", "start"]

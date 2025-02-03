@@ -45,6 +45,10 @@ const createUser = async (req, res) => {
 };
 
 const checkUser = async (req, res) => {
+    console.log("BALLS BBABABABABBABABA")
+    console.log(req.body);
+    console.log("USERNAME")
+    console.log(req.body.username);
     try {
 
         if(!req.body.username) return res.status(400).json({ errors: ['Username is required'] });
@@ -59,19 +63,19 @@ const checkUser = async (req, res) => {
         if (Date.parse(req.body.birthdate) > Date.now() || Date.parse(req.body.birthdate) < Date.parse('1900-01-01')) {
             return res.status(400).json({ errors: ['Birthdate not valid'] });
         }
-
-        const existingUserByUsername = await User.findOne({ username: username });
+        console.log("PASEED")
+        const existingUserByUsername = await User.findOne({ username: req.body.username });
             
         if (existingUserByUsername) {
             return res.status(400).json({ errors: ['Username already in use'] })
         }
 
-        const existingUserByEmail = await User.findOne({ email: email });
+        const existingUserByEmail = await User.findOne({ email: req.body.email });
             
         if (existingUserByEmail) {
             return res.status(400).json({ errors: ['email already in use'] })
         }
-
+        console.log("PASEED check")
         return res.status(201).json();
 
     } catch (error) {
