@@ -133,11 +133,11 @@ WORKDIR /usr/src/app/React/my-app
 RUN echo "REACT_APP_PORT=${PORT}" > .env.local
 
 # Install React dependencies and build the React app
-RUN npm install && npm run build
+#RUN npm install && npm run build
 
 # Copy the React build to MVC public folder
 WORKDIR /usr/src/app
-RUN mkdir -p ./MVC/public && cp -r ./React/my-app/build ./MVC/public/
+#RUN mkdir -p ./MVC/public && cp -r ./React/my-app/build ./MVC/public/
 
 # Set the default command to run your app
 WORKDIR /usr/src/app/MVC

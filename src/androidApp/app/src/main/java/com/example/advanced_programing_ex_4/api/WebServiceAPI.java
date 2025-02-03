@@ -9,10 +9,11 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.HeaderMap;
 
 public interface WebServiceAPI {
     @GET("movies")
-    Call<List<MoviesList>> getMovies(@Header("Authorization") Map<String, String> headers);
+    Call<Map<String, List<String>>> getMovies(@HeaderMap Map<String, String> headers);
 
 //    @POST("posts")
 //    Call<Void> createPost(@Body Movie movie);

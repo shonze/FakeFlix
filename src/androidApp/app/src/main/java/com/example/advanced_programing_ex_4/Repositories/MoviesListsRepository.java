@@ -43,8 +43,8 @@ public class MoviesListsRepository {
         protected void onActive() {
             super.onActive();
 
+            moviesListsApi.get();
             new Thread(() -> {
-                moviesListsApi.get();
                 moviesListData.postValue(dao.get());
             }).start();
         }

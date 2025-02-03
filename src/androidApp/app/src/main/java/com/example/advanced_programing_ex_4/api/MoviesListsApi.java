@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.advanced_programing_ex_4.Dao.MoviesListsDao;
 import com.example.advanced_programing_ex_4.MyApplication;
 import com.example.advanced_programing_ex_4.R;
+import com.example.advanced_programing_ex_4.ResnponseEntities.MovieListResponse;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
 
 import java.util.HashMap;
@@ -36,24 +37,24 @@ public class MoviesListsApi {
 
     public void get() {
         Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSw\n" +
-                "    iaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY");
-        headers.put("Content-Type","application/json");
-        Call<List<MoviesList>> call = webServiceAPI.getMovies(headers);
-        call.enqueue(new Callback<List<MoviesList>>() {
+        headers.put("authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY");
+        headers.put("Content-Type", "application/json");
+        Call<Map<String, List<String>>> call = webServiceAPI.getMovies(headers);
+        call.enqueue(new Callback<Map<String, List<String>>>() {
             @Override
-            public void onResponse(Call<List<MoviesList>> call, Response<List<MoviesList>> response) {
-                if(response.code() == 204) {
-                    new Thread(() -> {
-                        dao.clear();
-                        dao.insertList(response.body());
-                        moviesListData.postValue(dao.get());
-                    }).start();
+            public void onResponse(Call<Map<String, List<String>>> call, Response<Map<String, List<String>>> response) {
+
+                if (response.code() == 200) {
+//                    new Thread(() -> {
+//                        dao.clear();
+//                        dao.insertList(response.body());
+//                        moviesListData.postValue(dao.get());
+//                    }).start();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<MoviesList>> call, Throwable t) {
+            public void onFailure(Call<Map<String, List<String>>> call, Throwable t) {
             }
         });
     }

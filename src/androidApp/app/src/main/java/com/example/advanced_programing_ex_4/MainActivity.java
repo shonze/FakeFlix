@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Be able to track the changes in the view model
         // And to show it in the screen.
-        RecyclerView lstMoviesLists = findViewById(R.id.movielst);
+        RecyclerView lstMoviesLists = findViewById(R.id.movie_lists_recycler_view);
         final MoviesListsAdapter moviesListsAdapter = new MoviesListsAdapter(this, movieViewModel);
         lstMoviesLists.setAdapter(moviesListsAdapter);
         lstMoviesLists.setLayoutManager(new LinearLayoutManager(this));
