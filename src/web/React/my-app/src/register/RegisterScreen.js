@@ -80,8 +80,8 @@ const RegisterScreen = () => {
                 });
                 const result2 = await response2.json();
                 if (response2.ok) {
-                    url = result2.files[0].url;
-                    name = result2.files[0].name;
+                    url = result2.url;
+                    name = result2.name;
                     showToast('Profile picture uploaded successfully', 'success');
                 } else {
                     showToast('Profile picture upload failed: ' + result2.message, 'error');

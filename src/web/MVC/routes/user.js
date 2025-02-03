@@ -8,6 +8,9 @@ const UserController = require('../controllers/user');
 router.route('/')
     .post(UserController.createUser);
 
+router.route('/check')
+    .post(UserController.checkUser);
+
 /**
  * Route to get a User by ID.
  */

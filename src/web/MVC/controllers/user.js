@@ -1,4 +1,5 @@
 const UserService = require('../services/user');
+const User = require('../modules/user');
 const jwt = require('jsonwebtoken');
 require('custom-env').env(process.env.NODE_ENV, './config');
 /**
@@ -36,6 +37,46 @@ const createUser = async (req, res) => {
         const data = { username: req.body.username, isAdmin: false };
         const token = jwt.sign(data, process.env.JWT_SECRET)
         return res.status(201).json({ token });
+
+    } catch (error) {
+        console.error('Error creating user:', error);
+        res.status(500).json({ errors: ['Internal server error'] });
+    }
+};
+
+const checkUser = async (req, res) => {
+    console.log("BALLS BBABABABABBABABA")
+    console.log(req.body);
+    console.log("USERNAME")
+    console.log(req.body.username);
+    try {
+
+        if(!req.body.username) return res.status(400).json({ errors: ['Username is required'] });
+        if(!req.body.password) return res.status(400).json({ errors: ['Password is required'] });
+        if(!req.body.email) return res.status(400).json({ errors: ['Email is required'] });
+        if(!req.body.fullName) return res.status(400).json({ errors: ['Full name is required'] });
+
+        if (req.body.password.length < 8) {
+            return res.status(400).json({ errors: ['Password must be at least 8 characters long'] });
+        }
+
+        if (Date.parse(req.body.birthdate) > Date.now() || Date.parse(req.body.birthdate) < Date.parse('1900-01-01')) {
+            return res.status(400).json({ errors: ['Birthdate not valid'] });
+        }
+        console.log("PASEED")
+        const existingUserByUsername = await User.findOne({ username: req.body.username });
+            
+        if (existingUserByUsername) {
+            return res.status(400).json({ errors: ['Username already in use'] })
+        }
+
+        const existingUserByEmail = await User.findOne({ email: req.body.email });
+            
+        if (existingUserByEmail) {
+            return res.status(400).json({ errors: ['email already in use'] })
+        }
+        console.log("PASEED check")
+        return res.status(201).json();
 
     } catch (error) {
         console.error('Error creating user:', error);
@@ -88,4 +129,4 @@ const userExists = async (req, res) => {
     }
 };
 
-module.exports = { createUser, getUsers, getUser, userExists };
+module.exports = { createUser, getUsers, getUser, userExists,checkUser };
