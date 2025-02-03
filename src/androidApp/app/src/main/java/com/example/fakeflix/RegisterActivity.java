@@ -275,7 +275,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(RegisterActivity.this, "passed check user: " , Toast.LENGTH_SHORT).show();
                     // Handle successful response here
-                    registerUser(fullName, username, email, birthdate, password,photoName, photoUrl);
+                    uploadPhoto(fullName, username, email, birthdate, password,photoName, photoUrl);
                 } else {
                     Toast.makeText(RegisterActivity.this, "Error: " + response.body(), Toast.LENGTH_SHORT).show();
                 }
@@ -289,23 +289,23 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private void registerUser(String fullName,String username,String email,String birthdate,
                               String password, String photoName, String photoUrl ) {
-        String copyPhotoUrl = photoUrl;
-        String copyPhotoName = photoName;
-        if (imageUri != null) {
-            ArrayList<String> photoData = new ArrayList<>();
-            photoData.add(photoUrl);
-            photoData.add(photoName);
-
-            uploadPhoto(photoData);
-
-            // Now, photoUrl and photoName are updated
-            copyPhotoUrl = photoData.get(0);
-            copyPhotoName = photoData.get(1);
-            Toast.makeText(RegisterActivity.this, "balls: " + copyPhotoName   , Toast.LENGTH_SHORT).show();
-
-        }
-        String copyPhotoNameFinale = copyPhotoUrl;
-        User user = new User(fullName, username, email, birthdate, password,copyPhotoName, copyPhotoUrl);
+//        String copyPhotoUrl = photoUrl;
+//        String copyPhotoName = photoName;
+//        if (imageUri != null) {
+//            ArrayList<String> photoData = new ArrayList<>();
+//            photoData.add(photoUrl);
+//            photoData.add(photoName);
+//
+//            uploadPhoto(photoData);
+//
+//            // Now, photoUrl and photoName are updated
+//            copyPhotoUrl = photoData.get(0);
+//            copyPhotoName = photoData.get(1);
+//            Toast.makeText(RegisterActivity.this, "balls: " + copyPhotoName   , Toast.LENGTH_SHORT).show();
+//
+//        }
+//        String copyPhotoNameFinale = copyPhotoUrl;
+        User user = new User(fullName, username, email, birthdate, password,photoName, photoUrl);
 
         ApiService apiService = RetrofitClient.getApiService();
         Call<AuthResponse> call = apiService.registerUser(user);
@@ -323,7 +323,8 @@ public class RegisterActivity extends AppCompatActivity {
                                         UserDB.class, "UserDB")
                                 .allowMainThreadQueries().build();
                         userDetailsDao = db.userDetailsDao();
-                        handleSave(fullName, copyPhotoNameFinale);
+
+                        handleSave(fullName, photoUrl);
 
                         // Navigate to HomeActivity if needed
                          startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
@@ -349,7 +350,14 @@ public class RegisterActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    private void uploadPhoto(ArrayList<String> photoData) {
+    private void uploadPhoto(String fullName,String username,String email,String birthdate,
+                             String password, String photoName, String photoUrl ) {
+
+        if (imageUri == null) {
+            registerUser(fullName,username, email, birthdate, password,  photoName,  photoUrl );
+            return;
+        }
+
         MultipartBody.Part imagePart = prepareFilePart(imageUri);
 
         ApiService apiService = RetrofitClient.getApiService();
@@ -358,30 +366,32 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
-
                     try {
                         // You may need to parse the response if it's in JSON format
                         String responseBody = response.body().string();
                         JSONObject jsonResponse = new JSONObject(responseBody);
 
-                        photoData.set(0, jsonResponse.getString("url").toString());
-                        photoData.set(1, jsonResponse.getString("name").toString());
+                        String newPhotoName = jsonResponse.getString("name");
+                        String newPhotoUrl = jsonResponse.getString("url");
 
-                        Toast.makeText(RegisterActivity.this, "json: " + jsonResponse.getString("name").toString()   , Toast.LENGTH_SHORT).show();
-                        Toast.makeText(RegisterActivity.this, "balls: " + photoData.get(1)   , Toast.LENGTH_SHORT).show();
+                        registerUser(fullName,username, email, birthdate, password,  newPhotoName,  newPhotoUrl );
+
                     } catch (Exception e) {
                         Log.e("Upload", "Error parsing response: " + e.getMessage());
+                        registerUser(fullName,username, email, birthdate, password,  photoName,  photoUrl );
                     }
 
                     Log.d("Upload", "Success!");
                 } else {
                     Log.e("Upload", "Failed: " + response.message());
+                    registerUser(fullName,username, email, birthdate, password,  photoName,  photoUrl );
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("Upload", "Error: " + t.getMessage());
+                registerUser(fullName,username, email, birthdate, password,  photoName,  photoUrl );
             }
         });
     }
@@ -404,12 +414,6 @@ public class RegisterActivity extends AppCompatActivity {
         }
         return file;
     }
-
-//    private MultipartBody.Part prepareFilePart(Uri uri) {
-//        File file = getFileFromUri(uri);
-//        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
-//        return MultipartBody.Part.createFormData("files", file.getName(), requestFile);
-//    }
 
     private MultipartBody.Part prepareFilePart(Uri uri) {
         File file = getFileFromUri(uri);
