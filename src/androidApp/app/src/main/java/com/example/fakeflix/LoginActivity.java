@@ -1,6 +1,7 @@
 package com.example.fakeflix;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -71,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
                         bringData(token);
                         // Navigate to HomeActivity if needed
-                        // startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                     } else {
                         Toast.makeText(LoginActivity.this, "Error: " + response.body().getErrors(), Toast.LENGTH_SHORT).show();
                     }
@@ -86,9 +87,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
-        // For now, we'll just show a toast message
-        Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
     }
 
     private void saveToken(String token) {
@@ -108,7 +106,8 @@ public class LoginActivity extends AppCompatActivity {
     private void bringData(String token) {
 
         ApiService apiService = RetrofitClient.getApiService();
-        Call<ResponseBody> call = apiService.getUserDetails(token);
+        String fixed = "Bearer " + token;
+        Call<ResponseBody> call = apiService.getUserDetails(fixed);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -133,13 +132,8 @@ public class LoginActivity extends AppCompatActivity {
                         Log.e("Upload", "Error parsing response: " + e.getMessage());
                     }
 
-
-                    Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                    // Navigate to HomeActivity if needed
-                    // startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-
                 } else {
-                    Toast.makeText(LoginActivity.this, "Login failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Bring data failed!", Toast.LENGTH_SHORT).show();
                 }
             }
 
