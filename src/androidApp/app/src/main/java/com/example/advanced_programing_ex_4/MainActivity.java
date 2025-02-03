@@ -25,12 +25,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Connect to the viewModel
         MoviesListsViewModel moviesListsViewModel = new ViewModelProvider(this,new MoviesListsViewModelFactory(this)).get(MoviesListsViewModel.class);
-        MovieViewModel movieViewModel = new ViewModelProvider(this,new MovieViewModelFactory(this)).get(MovieViewModel.class);
+//        MovieViewModel movieViewModel = new ViewModelProvider(this,new MovieViewModelFactory(this)).get(MovieViewModel.class);
 
         // Be able to track the changes in the view model
         // And to show it in the screen.
         RecyclerView lstMoviesLists = findViewById(R.id.movie_lists_recycler_view);
-        final MoviesListsAdapter moviesListsAdapter = new MoviesListsAdapter(this, movieViewModel);
+        final MoviesListsAdapter moviesListsAdapter = new MoviesListsAdapter(this);
         lstMoviesLists.setAdapter(moviesListsAdapter);
         lstMoviesLists.setLayoutManager(new LinearLayoutManager(this));
         moviesListsViewModel.get().observe(this, moviesListsAdapter::setMoviesLists);

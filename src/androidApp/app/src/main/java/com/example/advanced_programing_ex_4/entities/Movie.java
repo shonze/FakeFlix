@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import java.util.List;
 public class Movie {
     @PrimaryKey(autoGenerate = false)
     @NonNull
+    @SerializedName("_id")
     private String movieId;
 
     @NonNull

@@ -1,6 +1,8 @@
 package com.example.advanced_programing_ex_4.Dao;
 
 import androidx.room.Dao;
+import androidx.room.Index;
+import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.example.advanced_programing_ex_4.entities.Movie;
@@ -20,4 +22,7 @@ public interface MovieDao {
 
     @Query("SELECT * FROM Movie")
     List<Movie> getAllMovies();
+
+    @Insert
+    void insertMovie(Movie... movie);
 }
