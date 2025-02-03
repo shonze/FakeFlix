@@ -289,22 +289,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private void registerUser(String fullName,String username,String email,String birthdate,
                               String password, String photoName, String photoUrl ) {
-//        String copyPhotoUrl = photoUrl;
-//        String copyPhotoName = photoName;
-//        if (imageUri != null) {
-//            ArrayList<String> photoData = new ArrayList<>();
-//            photoData.add(photoUrl);
-//            photoData.add(photoName);
-//
-//            uploadPhoto(photoData);
-//
-//            // Now, photoUrl and photoName are updated
-//            copyPhotoUrl = photoData.get(0);
-//            copyPhotoName = photoData.get(1);
-//            Toast.makeText(RegisterActivity.this, "balls: " + copyPhotoName   , Toast.LENGTH_SHORT).show();
-//
-//        }
-//        String copyPhotoNameFinale = copyPhotoUrl;
         User user = new User(fullName, username, email, birthdate, password,photoName, photoUrl);
 
         ApiService apiService = RetrofitClient.getApiService();
@@ -427,20 +411,6 @@ public class RegisterActivity extends AppCompatActivity {
         RequestBody requestFile = RequestBody.create(MediaType.parse(mimeType), file);
         return MultipartBody.Part.createFormData("files", file.getName(), requestFile);
     }
-
-
-//    private void handleSave(String fullName, String photoUrl) {
-//        if (userDetails == null) {
-//            userDetails = new UserDetails(fullName, photoUrl);
-//            userDetailsDao.insert(userDetails);
-//        }
-//        else {
-//            userDetails.setUserFullName(fullName);
-//            userDetails.setUserPhotoUrl(photoUrl);
-//            userDetailsDao.update(userDetails);
-//        }
-//        finish();
-//    }
 
     private void handleSave(String fullName, String photoUrl) {
         // Retrieve the existing user (assuming only one user is stored)
