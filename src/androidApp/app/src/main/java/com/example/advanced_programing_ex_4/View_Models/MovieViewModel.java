@@ -6,10 +6,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.advanced_programing_ex_4.Repositories.TopMovieRepository;
+import com.example.advanced_programing_ex_4.entities.Movie;
 
 public class TopMovieViewModel  extends ViewModel {
 
-        private LiveData<TopMovie> movie;
+        private LiveData<Movie> movie;
         private TopMovieRepository repository;
 
         public TopMovieViewModel(Context context) {
@@ -17,7 +18,7 @@ public class TopMovieViewModel  extends ViewModel {
             this.movie = repository.getAll();
         }
 
-        public LiveData<TopMovie> get() {
+        public LiveData<Movie> get() {
             return movie;
         }
 }
