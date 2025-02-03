@@ -7,7 +7,9 @@ import com.example.advanced_programing_ex_4.MyApplication;
 import com.example.advanced_programing_ex_4.R;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,16 +35,21 @@ public class MoviesListsApi {
     }
 
     public void get() {
-        Call<List<MoviesList>> call = webServiceAPI.getMovies();
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSw\n" +
+                "    iaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY");
+        headers.put("Content-Type","application/json");
+        Call<List<MoviesList>> call = webServiceAPI.getMovies(headers);
         call.enqueue(new Callback<List<MoviesList>>() {
             @Override
             public void onResponse(Call<List<MoviesList>> call, Response<List<MoviesList>> response) {
-
-                new Thread(() -> {
-                    dao.clear();
-                    dao.insertList(response.body());
-                    moviesListData.postValue(dao.get());
-                }).start();
+                if(response.code() == 204) {
+                    new Thread(() -> {
+                        dao.clear();
+                        dao.insertList(response.body());
+                        moviesListData.postValue(dao.get());
+                    }).start();
+                }
             }
 
             @Override

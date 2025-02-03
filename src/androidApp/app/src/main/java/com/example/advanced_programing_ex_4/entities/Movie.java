@@ -5,6 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Movie {
@@ -23,7 +24,7 @@ public class Movie {
 
     private String title;
 
-    private ArrayList<String> categories;
+    private List<String> categories;
 
     private String description;
 
@@ -33,7 +34,7 @@ public class Movie {
 
     private String video;
 
-    public Movie(@NonNull String movieId, String title, ArrayList<String> categories, String description,
+    public Movie(@NonNull String movieId, String title, List<String> categories, String description,
                  String length, String thumbnail, String video) {
         this.movieId = movieId;
         this.title = title;
@@ -52,11 +53,11 @@ public class Movie {
         this.title = title;
     }
 
-    public ArrayList<String> getCategories() {
+    public List<String> getCategories() {
         return categories;
     }
 
-    public void setCategories(ArrayList<String> categories) {
+    public void setCategories(List<String> categories) {
         this.categories = categories;
     }
 

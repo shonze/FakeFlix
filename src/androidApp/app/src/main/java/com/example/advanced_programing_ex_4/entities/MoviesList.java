@@ -7,7 +7,9 @@ import androidx.room.TypeConverters;
 
 import com.example.advanced_programing_ex_4.Dao.MovieIdsConverter;
 
+import java.util.ArrayList;
 import java.util.List;
+
 @Entity
 @TypeConverters(MovieIdsConverter.class)
 public class MoviesList {
@@ -32,6 +34,7 @@ public class MoviesList {
         this.moviesTitle = moviesTitle;
         this.movieIds = movieIds;
     }
+
     @NonNull
     public String getMoviesTitle() {
         return moviesTitle;

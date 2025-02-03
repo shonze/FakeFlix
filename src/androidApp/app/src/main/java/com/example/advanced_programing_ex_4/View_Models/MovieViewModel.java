@@ -5,20 +5,26 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.advanced_programing_ex_4.Repositories.TopMovieRepository;
+import com.example.advanced_programing_ex_4.Repositories.MovieRepository;
 import com.example.advanced_programing_ex_4.entities.Movie;
 
-public class TopMovieViewModel  extends ViewModel {
+import java.util.List;
 
-        private LiveData<Movie> movie;
-        private TopMovieRepository repository;
+public class MovieViewModel extends ViewModel {
 
-        public TopMovieViewModel(Context context) {
-            repository = new TopMovieRepository(context);
-            this.movie = repository.getAll();
-        }
+    private LiveData<List<Movie>> movies;
+    private MovieRepository repository;
 
-        public LiveData<Movie> get() {
-            return movie;
-        }
+    public MovieViewModel(Context context) {
+        repository = new MovieRepository(context);
+        this.movies = repository.getAllMovies();
+    }
+
+    public LiveData<List<Movie>> get() {
+        return movies;
+    }
+
+    public LiveData<Movie> getMovieById(String movieId) {
+        return repository.getMovieById(movieId);
+    }
 }

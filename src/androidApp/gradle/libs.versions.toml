@@ -14,6 +14,7 @@ gson = "2.10.1"
 roomCommon = "2.6.1"
 roomRuntime = "2.6.1"
 roomCompiler = "2.6.1"
+recyclerview = "1.4.0"
 
 
 [libraries]
@@ -31,6 +32,7 @@ gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomRuntime" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
+recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 
 
 [plugins]

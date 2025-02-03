@@ -26,6 +26,7 @@ public class MoviesListsRepository {
         AppDB db = AppDB.getInstance(context);
         dao = db.moviesListsDao();
         moviesListData = new MoviesListData();
+        moviesListsApi = new MoviesListsApi(moviesListData,dao);
     }
 
     class MoviesListData extends MutableLiveData<List<MoviesList>> {
@@ -43,6 +44,7 @@ public class MoviesListsRepository {
             super.onActive();
 
             new Thread(() -> {
+                moviesListsApi.get();
                 moviesListData.postValue(dao.get());
             }).start();
         }

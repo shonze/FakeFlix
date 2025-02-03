@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.advanced_programing_ex_4.R;
+import com.example.advanced_programing_ex_4.View_Models.MovieViewModel;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
 
 import java.util.ArrayList;
@@ -20,8 +21,10 @@ public class MoviesListsAdapter extends RecyclerView.Adapter<MoviesListsAdapter.
 
     private List<MoviesList> moviesLists;
     private final LayoutInflater mInflater;
+    private MovieViewModel movieViewModel; // ViewModel reference
 
-    public MoviesListsAdapter(Context context) {
+    public MoviesListsAdapter(Context context, MovieViewModel movieViewModel) {
+        this.movieViewModel = movieViewModel;
         mInflater = LayoutInflater.from(context);
         moviesLists = new ArrayList<>();
     }
@@ -43,7 +46,7 @@ public class MoviesListsAdapter extends RecyclerView.Adapter<MoviesListsAdapter.
         holder.listTitleTextView.setText(currentMoviesList.getMoviesTitle());
 
         if (holder.moviesRecyclerView.getAdapter() == null) {
-            MovieAdapter moviesAdapter = new MovieAdapter(holder.itemView.getContext(), currentMoviesList.getMovieIds());
+            MovieAdapter moviesAdapter = new MovieAdapter(holder.itemView.getContext(), currentMoviesList.getMovieIds(),movieViewModel);
             holder.moviesRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
             holder.moviesRecyclerView.setAdapter(moviesAdapter);
         } else {
@@ -69,8 +72,8 @@ public class MoviesListsAdapter extends RecyclerView.Adapter<MoviesListsAdapter.
             super(itemView);
 
             // The movie list is a list of movieAdapters with a title
-            listTitleTextView = itemView.findViewById(R.id.categoryTitle);
-            moviesRecyclerView = itemView.findViewById(R.id.moviesRecyclerView);
+            listTitleTextView = itemView.findViewById(R.id.movie_list_title);
+            moviesRecyclerView = itemView.findViewById(R.id.movie_recycler_view);
         }
     }
 }

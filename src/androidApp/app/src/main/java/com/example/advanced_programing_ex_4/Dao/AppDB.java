@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
 
-@Database(entities = {MoviesList.class, Movie.class}, version = 2)
+@Database(entities = {MoviesList.class, Movie.class}, version = 3)
 @TypeConverters(MovieIdsConverter.class) // Register the TypeConverter
 public abstract class AppDB extends RoomDatabase {
     private static volatile AppDB instance;

@@ -1,5 +1,7 @@
 package com.example.advanced_programing_ex_4.Adapters;
 
+import static com.example.advanced_programing_ex_4.MyApplication.context;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.advanced_programing_ex_4.R;
+import com.example.advanced_programing_ex_4.View_Models.MovieViewModel;
 import com.example.advanced_programing_ex_4.entities.Movie;
 
 import java.util.ArrayList;
@@ -20,7 +24,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private List<String> moviesIds;
     private final LayoutInflater inflater;
 
-    public MovieAdapter(Context context, List<String> movies) {
+    private MovieViewModel movieViewModel; // ViewModel reference
+    public MovieAdapter(Context context, List<String> movies, MovieViewModel movieViewModel) {
+        this.movieViewModel = movieViewModel;
         this.inflater = LayoutInflater.from(context);
         this.moviesIds = (movies != null) ? movies : new ArrayList<>();
     }
@@ -35,8 +41,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         if (position < moviesIds.size()) {
-            Movie currentMovie = movies.get(position);
-            holder.movieTitleTextView.setText(currentMovie.getTitle());
+            String currentMovieId = moviesIds.get(position);
+            movieViewModel.getMovieById(currentMovieId).observe((LifecycleOwner) context, movie -> {
+                holder.movieTitleTextView.setText(movie.getTitle());
+            });
         }
     }
 
@@ -60,7 +68,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         public MovieViewHolder(@NonNull View itemView) {
             // The movie should appear as an image that can be clicked.
             super(itemView);
-            movieTitleTextView = itemView.findViewById(R.id.movieTitle);
+            movieTitleTextView = itemView.findViewById(R.id.movie_title);
         }
     }
 }

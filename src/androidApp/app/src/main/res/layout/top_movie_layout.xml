@@ -1,67 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="300dp">
 
-    <!-- Background Thumbnail -->
     <ImageView
-        android:id="@+id/movieThumbnail"
+        android:id="@+id/top_movie_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/movie_thumbnail"
         android:scaleType="centerCrop"
-        android:src="@drawable/sample_thumbnail_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="-16dp" />
+        android:src="@drawable/sample_thumbnail_background" />
 
-    <!-- Semi-Transparent Overlay for Readability -->
-    <View
-        android:id="@+id/view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#80000000" /> <!-- 50% Black Transparency -->
-
-    <!-- Movie Title -->
-    <TextView
-        android:id="@+id/movieTitle"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/movie_title"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:padding="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/playButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_gravity="bottom"
+        android:background="#80000000"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <!-- Play Button -->
-    <Button
-        android:id="@+id/playButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/play"
-        android:backgroundTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/moreInfoButton"
-        android:padding="10dp"
-        android:textColor="@android:color/black"/>
+        <TextView
+            android:id="@+id/top_movie_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Featured Movie Title"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <!-- More Info Button -->
-    <Button
-        android:id="@+id/moreInfoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/more_info"
-        android:backgroundTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/playButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:padding="10dp"
-        android:textColor="@android:color/black"/>
+        <TextView
+            android:id="@+id/top_movie_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="A brief description of the featured movie goes here."
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/top_movie_play_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Play" />
+
+            <Button
+                android:id="@+id/top_movie_info_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="More Info" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
