@@ -102,12 +102,30 @@ public class StartingActivity extends AppCompatActivity {
             }
         });
     }
+//    private void handleSave(String fullName, String photoUrl) {
+//        if (userDetails == null) {
+//            userDetails = new UserDetails(fullName, photoUrl);
+//            userDetailsDao.insert(userDetails);
+//        }
+//        else {
+//            userDetails.setUserFullName(fullName);
+//            userDetails.setUserPhotoUrl(photoUrl);
+//            userDetailsDao.update(userDetails);
+//        }
+//        finish();
+//    }
+
+
     private void handleSave(String fullName, String photoUrl) {
+        // Retrieve the existing user (assuming only one user is stored)
+        userDetails = userDetailsDao.index();
+
         if (userDetails == null) {
-            userDetails = new UserDetails(fullName, photoUrl);
+            // Insert a new user if none exists
+            userDetails = new UserDetails(fullName,photoUrl);
             userDetailsDao.insert(userDetails);
-        }
-        else {
+        } else {
+            // Update the existing user instead of adding a new one
             userDetails.setUserFullName(fullName);
             userDetails.setUserPhotoUrl(photoUrl);
             userDetailsDao.update(userDetails);

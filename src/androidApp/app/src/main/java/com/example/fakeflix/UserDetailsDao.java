@@ -15,7 +15,7 @@ import java.util.List;
 @Dao
 public interface UserDetailsDao {
     @Query("SELECT * FROM userDetails")
-    List<UserDetails> index();
+    UserDetails index();
     @Query("SELECT * FROM userDetails WHERE id = :id")
     UserDetails get(int id);
 

@@ -21,7 +21,7 @@ public class HomeActivity extends AppCompatActivity {
     private ListView lvPosts;
 
     private List<String> usernames;
-    private List<UserDetails> dbPosts;
+    private UserDetails dbPosts;
     private ArrayAdapter<String> adapter;
     private UserDetailsDao userDetailsDao;
 
@@ -52,9 +52,7 @@ public class HomeActivity extends AppCompatActivity {
     private void loadPosts() {
         usernames.clear();
         dbPosts = userDetailsDao.index();
-        for (UserDetails post : dbPosts){
-            usernames.add(post.getId() + "," + post.getUserFullName());
-        }
+        usernames.add(dbPosts.getId() + "," + dbPosts.getUserFullName());
         adapter.notifyDataSetChanged();
     }
 }
