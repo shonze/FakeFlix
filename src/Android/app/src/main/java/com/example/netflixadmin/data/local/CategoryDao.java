@@ -1,0 +1,31 @@
+package com.example.netflixadmin.data.local;
+
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
+import androidx.room.Delete;
+
+import java.util.List;
+
+@Dao
+public interface CategoryDao {
+    @Insert
+    void insertCategory(CategoryEntity category);
+
+    @Query("SELECT * FROM categories")
+    List<CategoryEntity> getAllCategories();
+
+    @Query("SELECT * FROM categories WHERE id = :id")
+    CategoryEntity getCategoryById(int id);
+
+    @Update
+    void updateCategory(CategoryEntity category);
+
+    @Delete
+    void deleteCategory(CategoryEntity category);
+
+    // Add this method to delete all categories
+    @Query("DELETE FROM categories")
+    void deleteAllCategories();
+}
