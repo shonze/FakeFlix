@@ -15,7 +15,7 @@ public interface ApiService {
     Call<AuthResponse> registerUser(@Body User user);
 
     @POST("users/check")
-    Call<AuthResponse> checkUser(@Body User user);
+    Call<ResponseBody> checkUser(@Body User user);
 
     @Multipart
     @POST("file")

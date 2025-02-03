@@ -176,7 +176,7 @@ public class RegisterActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(RegisterActivity.this,
                 (view, year1, monthOfYear, dayOfMonth) -> {
                     // Set the selected birthdate to the EditText
-                    String birthdate = (monthOfYear + 1) + "/" + dayOfMonth + "/" + year1;
+                    String birthdate = (monthOfYear + 1) + "." + dayOfMonth + "." + year1;
                     binding.birthdateEditText.setText(birthdate);
                 }, year, month, day);
 
@@ -265,22 +265,23 @@ public class RegisterActivity extends AppCompatActivity {
         User user = new User(fullName, username, email, birthdate, password, photoName, photoUrl);
 
         ApiService apiService = RetrofitClient.getApiService();
-        Call<AuthResponse> call = apiService.checkUser(user);
+        Call<ResponseBody> call = apiService.checkUser(user);
 
-        call.enqueue(new Callback<AuthResponse>() {
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(RegisterActivity.this, "passed check user: " , Toast.LENGTH_SHORT).show();
                     // Handle successful response here
                     registerUser(fullName, username, email, birthdate, password,photoName, photoUrl);
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Error: " + response.body().getErrors(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Error: " + response.body(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<AuthResponse> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(RegisterActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -394,11 +395,25 @@ public class RegisterActivity extends AppCompatActivity {
         return file;
     }
 
+//    private MultipartBody.Part prepareFilePart(Uri uri) {
+//        File file = getFileFromUri(uri);
+//        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
+//        return MultipartBody.Part.createFormData("files", file.getName(), requestFile);
+//    }
+
     private MultipartBody.Part prepareFilePart(Uri uri) {
         File file = getFileFromUri(uri);
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
-        return MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
+        // Get MIME type from ContentResolver
+        String mimeType = getContentResolver().getType(uri);
+        if (mimeType == null) {
+            mimeType = "image/jpg"; // Default MIME type
+        }
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse(mimeType), file);
+        return MultipartBody.Part.createFormData("files", file.getName(), requestFile);
     }
+
 
     private void handleSave(String fullName, String photoUrl) {
         if (userDetails == null) {
