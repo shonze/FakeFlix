@@ -11,14 +11,15 @@ const createCategory = async (req, res) => {
         let existingUserByUsername;
 
         // Use the new helper function to validate the token and retrieve the user
-        try {
-            existingUserByUsername = await UserService.validateAndGetUser(req);
-        } catch (error) {
-            return res.status(403).json({ errors: error.message });
-        }
-        if (existingUserByUsername.isAdmin == false) { 
-            return res.status(403).json({ errors: 'User is not an admin' });
-        }
+        // try {
+        //     existingUserByUsername = await UserService.validateAndGetUser(req);
+        // } catch (error) {
+        //     return res.status(403).json({ errors: error.message });
+        // }
+        // if (existingUserByUsername.isAdmin == false) { 
+        //     return res.status(403).json({ errors: 'User is not an admin' });
+        // }
+        console.log(req.body);
         if(!req.body.name) return res.status(400).json({ errors: ['Name is required'] });
         if(req.body.promoted == undefined) return res.status(400).json({ errors: ['Promoted is required'] });
         const newCategory = await CategoryService.createCategory(
@@ -28,7 +29,8 @@ const createCategory = async (req, res) => {
             req.body.createdAt,
             req.body.movies
         );
-        return res.status(201).json();
+        return res.status(201).json({
+            message: 'Category created successfully'});
     } catch (error) {
         console.error('Error creating category:', error);
         res.status(500).json({ errors: ['Internal server error'] });
@@ -72,17 +74,17 @@ const getCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
     try {
         
-        let existingUserByUsername;
+        // let existingUserByUsername;
 
-        // Use the new helper function to validate the token and retrieve the user
-        try {
-            existingUserByUsername = await UserService.validateAndGetUser(req);
-        } catch (error) {
-            return res.status(403).json({ errors: error.message });
-        }
-        if (existingUserByUsername.isAdmin == false) { 
-            return res.status(403).json({ errors: 'User is not an admin' });
-        }
+        // // Use the new helper function to validate the token and retrieve the user
+        // try {
+        //     existingUserByUsername = await UserService.validateAndGetUser(req);
+        // } catch (error) {
+        //     return res.status(403).json({ errors: error.message });
+        // }
+        // if (existingUserByUsername.isAdmin == false) { 
+        //     return res.status(403).json({ errors: 'User is not an admin' });
+        // }
 
         const category = await CategoryService.deleteCategory(req.params.id);
         if (!category) {
@@ -103,17 +105,17 @@ const deleteCategory = async (req, res) => {
 const updateCategory = async (req, res) => {
     try {
         
-        let existingUserByUsername;
+    //     let existingUserByUsername;
 
-        // Use the new helper function to validate the token and retrieve the user
-        try {
-            existingUserByUsername = await UserService.validateAndGetUser(req);
-        } catch (error) {
-            return res.status(403).json({ errors: error.message });
-        }
-        if (existingUserByUsername.isAdmin == false) { 
-            return res.status(403).json({ errors: 'User is not an admin' });
-        }
+    //     // Use the new helper function to validate the token and retrieve the user
+    //     try {
+    //         existingUserByUsername = await UserService.validateAndGetUser(req);
+    //     } catch (error) {
+    //         return res.status(403).json({ errors: error.message });
+    //     }
+    //     if (existingUserByUsername.isAdmin == false) { 
+    //         return res.status(403).json({ errors: 'User is not an admin' });
+    //     }
 
         // If all the update details are missing then its a bad request
         if(!(req.body.name ||

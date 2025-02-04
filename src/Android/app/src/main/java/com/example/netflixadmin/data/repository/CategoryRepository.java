@@ -1,0 +1,109 @@
+package com.example.netflixadmin.data.repository;
+
+import android.app.Application;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.netflixadmin.data.local.CategoryDao;
+import com.example.netflixadmin.data.local.CategoryDatabase;
+import com.example.netflixadmin.data.local.CategoryEntity;
+import com.example.netflixadmin.data.remote.ApiService;
+import com.example.netflixadmin.data.remote.RetrofitClient;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class CategoryRepository {
+    private CategoryDao dao;
+    private ApiService apiService;
+    private CategoryListData categoryListData;
+
+    public CategoryRepository(Application application) {
+        // Initialize local database and DAO
+        CategoryDatabase db = CategoryDatabase.getInstance(application);
+        dao = db.categoryDao();
+
+        // Initialize Retrofit API service
+        apiService = RetrofitClient.getClient().create(ApiService.class);
+
+        // Initialize MutableLiveData for categories
+        categoryListData = new CategoryListData();
+    }
+
+    // Inner class for MutableLiveData
+    class CategoryListData extends MutableLiveData<List<CategoryEntity>> {
+        public CategoryListData() {
+            super();
+            setValue(new LinkedList<>()); // Initialize with an empty list
+        }
+
+        @Override
+        protected void onActive() {
+            super.onActive();
+
+            // Fetch data from the local database when the LiveData becomes active
+            new Thread(() -> {
+                List<CategoryEntity> categories = dao.getAllCategories();
+                postValue(categories); // Update LiveData with local data
+
+                // Fetch data from the remote API and update the local database
+                fetchCategoriesFromApi();
+            }).start();
+        }
+
+        private void fetchCategoriesFromApi() {
+            apiService.getAllCategories().enqueue(new Callback<List<CategoryEntity>>() {
+                @Override
+                public void onResponse(Call<List<CategoryEntity>> call, Response<List<CategoryEntity>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        // Update LiveData with API data
+                        postValue(response.body());
+
+                        // Save API data to the local database
+                        new Thread(() -> {
+                            // Clear existing data in the local database
+                            dao.deleteAllCategories();
+
+                            // Insert new data from the API
+                            for (CategoryEntity category : response.body()) {
+                                dao.insertCategory(category);
+                            }
+                        }).start();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<CategoryEntity>> call, Throwable t) {
+                    // Handle API call failure
+                    t.printStackTrace();
+                }
+            });
+        }
+    }
+
+    // Method to get all categories as LiveData
+    public LiveData<List<CategoryEntity>> getAllCategories() {
+        categoryListData.fetchCategoriesFromApi();
+        return categoryListData;
+    }
+
+    // Method to add a new category
+    public void addCategory(CategoryEntity category, Callback<CategoryEntity> callback) {
+        apiService.addCategory(category).enqueue(callback);
+    }
+
+    // Method to update a category
+    public void updateCategory(String id, CategoryEntity category, Callback<CategoryEntity> callback) {
+        apiService.updateCategory(id, category).enqueue(callback);
+    }
+
+    // Method to delete a category
+    public void deleteCategory(String id, Callback<Void> callback) {
+        apiService.deleteCategory(id).enqueue(callback);
+    }
+}

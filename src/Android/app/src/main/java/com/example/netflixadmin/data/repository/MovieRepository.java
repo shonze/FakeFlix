@@ -1,0 +1,224 @@
+package com.example.netflixadmin.data.repository;
+
+import android.app.Application;
+import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
+
+import androidx.core.util.Pair;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.netflixadmin.data.local.MovieDao;
+import com.example.netflixadmin.data.local.MovieDatabase;
+import com.example.netflixadmin.data.local.MovieEntity;
+import com.example.netflixadmin.data.remote.ApiService;
+import com.example.netflixadmin.data.remote.RetrofitClient;
+
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class MovieRepository {
+    private MovieDao dao;
+    private ApiService apiService;
+    private MovieListData movieListData;
+
+    public MovieRepository(Application application) {
+        // Initialize local database and DAO
+        MovieDatabase db = MovieDatabase.getInstance(application);
+        dao = db.movieDao();
+
+        // Initialize Retrofit API service
+        apiService = RetrofitClient.getClient().create(ApiService.class);
+
+        // Initialize MutableLiveData for movies
+        movieListData = new MovieListData();
+    }
+
+    // Inner class for MutableLiveData
+    class MovieListData extends MutableLiveData<List<MovieEntity>> {
+        public MovieListData() {
+            super();
+            setValue(new LinkedList<>()); // Initialize with an empty list
+        }
+
+        @Override
+        protected void onActive() {
+            super.onActive();
+
+            // Fetch data from the local database when the LiveData becomes active
+            new Thread(() -> {
+                List<MovieEntity> movies = dao.getAllMovies();
+                postValue(movies); // Update LiveData with local data
+
+                // Fetch data from the remote API and update the local database
+                fetchMoviesFromApi();
+            }).start();
+        }
+
+        private void fetchMoviesFromApi() {
+            apiService.getAllMovies().enqueue(new Callback<List<MovieEntity>>() {
+                @Override
+                public void onResponse(Call<List<MovieEntity>> call, Response<List<MovieEntity>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        // Update LiveData with API data
+                        postValue(response.body());
+
+                        // Save API data to the local database
+                        new Thread(() -> {
+                            // Clear existing data in the local database
+                            dao.deleteAllMovies();
+
+                            // Insert new data from the API
+                            for (MovieEntity movie : response.body()) {
+                                dao.insertMovie(movie);
+                            }
+                        }).start();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<MovieEntity>> call, Throwable t) {
+                    // Handle API call failure
+                    t.printStackTrace();
+                }
+            });
+        }
+    }
+
+    // Method to get all movies as LiveData
+    public LiveData<List<MovieEntity>> getAllMovies() {
+        return movieListData;
+    }
+
+    // Method to add a new movie
+    public void addMovie(MovieEntity movie, Callback<MovieEntity> callback) {
+        apiService.addMovie(movie).enqueue(callback);
+    }
+
+    // Method to update a movie
+    public void updateMovie(MovieEntity movie, Callback<MovieEntity> callback) {
+        apiService.updateMovie(movie.getId(), movie).enqueue(callback);
+    }
+
+    // Method to delete a movie
+    public void deleteMovie(String id, Callback<Void> callback) {
+        apiService.deleteMovie(id).enqueue(callback);
+    }
+
+    // Method to search for a movie by ID
+    public LiveData<MovieEntity> getMovieById(String id) {
+        MutableLiveData<MovieEntity> movieLiveData = new MutableLiveData<>();
+        new Thread(() -> {
+            MovieEntity movie = dao.getMovieById(id);
+            movieLiveData.postValue(movie);
+        }).start();
+        return movieLiveData;
+    }
+    public LiveData<Pair<String, String>> uploadImage(Uri imageUri, Context context) {
+        MutableLiveData<Pair<String, String>> resultLiveData = new MutableLiveData<>();
+        MultipartBody.Part imagePart = prepareFilePart(imageUri, context);
+
+        apiService.uploadImage(imagePart).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        String responseBody = response.body().string();
+                        JSONObject jsonResponse = new JSONObject(responseBody);
+                        String imageUrl = jsonResponse.getString("url"); // Assuming API returns 'url'
+                        String imageName = jsonResponse.getString("name");
+                        resultLiveData.postValue(new Pair<>(imageName, imageUrl)); // Post Pair of name and URL
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        resultLiveData.postValue(null);
+                    }
+                } else {
+                    resultLiveData.postValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                resultLiveData.postValue(null);
+            }
+        });
+
+        return resultLiveData;
+    }
+
+
+    public LiveData<Pair<String, String>> uploadVideo(Uri videoUri, Context context) {
+        MutableLiveData<Pair<String, String>> resultLiveData = new MutableLiveData<>();
+        MultipartBody.Part videoPart = prepareFilePart(videoUri, context);
+
+        apiService.uploadVideo(videoPart).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        String responseBody = response.body().string();
+                        JSONObject jsonResponse = new JSONObject(responseBody);
+                        String videoUrl = jsonResponse.getString("url");
+                        String videoName = jsonResponse.getString("name");
+                        resultLiveData.postValue(new Pair<>(videoName, videoUrl)); // Post Pair of name and URL
+                    } catch (Exception e) {
+                        Log.e("Upload Video", "Exception parsing response", e);
+                        resultLiveData.postValue(null);
+                    }
+                } else {
+                    Log.d("NOT GOOD", "OOPS FELL OF 1: " + response.code() + " - " + response.message());
+                    resultLiveData.postValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("NOT GOOD", "OOPS FELL OF 2: " + t.getMessage());
+                resultLiveData.postValue(null);
+            }
+        });
+
+        return resultLiveData;
+    }
+
+
+
+    private MultipartBody.Part prepareFilePart(Uri uri, Context context) {
+        File file = getFileFromUri(uri, context);
+        String mimeType = context.getContentResolver().getType(uri);
+        if (mimeType == null) mimeType = "video/mp4";
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse(mimeType), file);
+        return MultipartBody.Part.createFormData("files", file.getName(), requestFile);
+    }
+
+    private File getFileFromUri(Uri uri, Context context) {
+        File file = new File(context.getCacheDir(), "upload_temp");
+        try (InputStream inputStream = context.getContentResolver().openInputStream(uri);
+             FileOutputStream outputStream = new FileOutputStream(file)) {
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+}
