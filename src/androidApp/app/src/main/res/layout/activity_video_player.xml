@@ -4,14 +4,16 @@
 <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
 <!--    android:background="#000">-->
 
+<!--    &lt;!&ndash; PlayerView with default controls disabled &ndash;&gt;-->
 <!--    <com.google.android.exoplayer2.ui.PlayerView-->
 <!--        android:id="@+id/playerView"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->
 <!--        android:keepScreenOn="true"-->
 <!--        app:show_buffering="when_playing"-->
-<!--        app:use_controller="true" />-->
+<!--        app:use_controller="false" />-->
 
+<!--    &lt;!&ndash; Custom back button &ndash;&gt;-->
 <!--    <ImageButton-->
 <!--        android:id="@+id/backButton"-->
 <!--        android:layout_width="48dp"-->
@@ -19,23 +21,49 @@
 <!--        android:layout_margin="16dp"-->
 <!--        android:background="?attr/selectableItemBackgroundBorderless"-->
 <!--        android:src="@drawable/baseline_arrow_back_24"-->
-<!--        app:tint="#FFFFFF"-->
+<!--        android:tint="#FFFFFF"-->
 <!--        android:contentDescription="Back"-->
 <!--        android:layout_alignParentTop="true"-->
 <!--        android:layout_alignParentStart="true"/>-->
-<!--</RelativeLayout>-->
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:orientation="vertical"-->
-<!--    android:gravity="center"-->
-<!--    android:background="#000000">-->
 
-<!--    <VideoView-->
-<!--        android:id="@+id/videoView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"/>-->
-<!--</LinearLayout>-->
+<!--    &lt;!&ndash; Play/Pause button &ndash;&gt;-->
+<!--    <ImageButton-->
+<!--        android:id="@+id/playPauseButton"-->
+<!--        android:layout_width="48dp"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--        android:src="@drawable/ic_play"-->
+<!--        android:tint="#FFFFFF"-->
+<!--        android:contentDescription="Play/Pause"-->
+<!--        android:layout_centerInParent="true"/>-->
+
+<!--    &lt;!&ndash; Skip forward button &ndash;&gt;-->
+<!--    <ImageButton-->
+<!--        android:id="@+id/skipForwardButton"-->
+<!--        android:layout_width="48dp"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--        android:src="@drawable/ic_skip_forward"-->
+<!--        android:tint="#FFFFFF"-->
+<!--        android:contentDescription="Skip Forward"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:layout_toEndOf="@id/playPauseButton"/>-->
+
+<!--    &lt;!&ndash; Skip backward button &ndash;&gt;-->
+<!--    <ImageButton-->
+<!--        android:id="@+id/skipBackwardButton"-->
+<!--        android:layout_width="48dp"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--        android:src="@drawable/ic_skip_backward"-->
+<!--        android:tint="#FFFFFF"-->
+<!--        android:contentDescription="Skip Backward"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:layout_toStartOf="@id/playPauseButton"/>-->
+<!--</RelativeLayout>-->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -43,14 +71,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#000">
 
+    <!-- PlayerView with default controls disabled -->
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:keepScreenOn="true"
         app:show_buffering="when_playing"
-        app:use_controller="true" />
+        app:use_controller="false" />
 
+    <!-- Custom back button -->
     <ImageButton
         android:id="@+id/backButton"
         android:layout_width="48dp"
@@ -62,4 +92,53 @@
         android:contentDescription="Back"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"/>
+
+    <!-- Play/Pause button -->
+    <ImageButton
+        android:id="@+id/playPauseButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_play"
+        android:tint="#FFFFFF"
+        android:contentDescription="Play/Pause"
+        android:layout_centerInParent="true"/>
+
+    <!-- Skip forward button -->
+    <ImageButton
+        android:id="@+id/skipForwardButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_skip_forward"
+        android:tint="#FFFFFF"
+        android:contentDescription="Skip Forward"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/playPauseButton"/>
+
+    <!-- Skip backward button -->
+    <ImageButton
+        android:id="@+id/skipBackwardButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_skip_backward"
+        android:tint="#FFFFFF"
+        android:contentDescription="Skip Backward"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/playPauseButton"/>
+
+    <!-- Seek bar -->
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_alignParentBottom="true"
+        android:max="100"
+        android:progress="0"
+        android:thumb="@drawable/ic_thumb" />
 </RelativeLayout>
