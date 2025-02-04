@@ -40,14 +40,16 @@ public class MoviesListsAdapter extends RecyclerView.Adapter<MoviesListsAdapter.
     @Override
     public void onBindViewHolder(@NonNull MovieListViewHolder holder, int position) {
         MoviesList currentMoviesList = moviesLists.get(position);
-        holder.listTitleTextView.setText(currentMoviesList.getMoviesTitle());
+        if (currentMoviesList.getMovieList() != null && currentMoviesList.getMovieList().size() != 0) {
+            holder.listTitleTextView.setText(currentMoviesList.getMoviesTitle());
 
-        if (holder.moviesRecyclerView.getAdapter() == null) {
-            MovieAdapter moviesAdapter = new MovieAdapter(holder.itemView.getContext(), currentMoviesList.getMovieList());
-            holder.moviesRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
-            holder.moviesRecyclerView.setAdapter(moviesAdapter);
-        } else {
-            ((MovieAdapter) holder.moviesRecyclerView.getAdapter()).setMovies(currentMoviesList.getMovieList());
+            if (holder.moviesRecyclerView.getAdapter() == null) {
+                MovieAdapter moviesAdapter = new MovieAdapter(holder.itemView.getContext(), currentMoviesList.getMovieList());
+                holder.moviesRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
+                holder.moviesRecyclerView.setAdapter(moviesAdapter);
+            } else {
+                ((MovieAdapter) holder.moviesRecyclerView.getAdapter()).setMovies(currentMoviesList.getMovieList());
+            }
         }
     }
 

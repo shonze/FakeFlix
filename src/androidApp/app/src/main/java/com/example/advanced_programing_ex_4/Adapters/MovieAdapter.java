@@ -23,6 +23,7 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private List<Movie> moviesList;
     private final LayoutInflater inflater;
+
     public MovieAdapter(Context context, List<Movie> movies) {
         this.inflater = LayoutInflater.from(context);
         this.moviesList = movies;
@@ -40,17 +41,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         if (position < moviesList.size()) {
             Movie currentMovie = moviesList.get(position);
 
-            Log.d("MovieAdapter", "Movie is " + currentMovie);
-
-//            movieViewModel.getMovieById(currentMovieId).observe((LifecycleOwner) holder.itemView.getContext(), movie -> {
-//                if (movie != null) {
-//                    Log.d("MovieAdapter", "Movie loaded: " + movie.getTitle());
-//                    holder.movieTitleTextView.setText(movie.getTitle());
-//                } else {
-//                    Log.d("MovieAdapter", "Movie is null for ID: " + currentMovieId);
-//                    holder.movieTitleTextView.setText("Loading...");
-//                }
-//            });
+            Log.d("MovieAdapter", "Movie loaded: " + currentMovie.getTitle());
+            holder.movieTitleTextView.setText(currentMovie.getTitle());
         }
     }
 

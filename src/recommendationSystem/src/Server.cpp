@@ -27,7 +27,7 @@ Server::Server(int port) {
         exit(EXIT_FAILURE);
     }
 
-    std::string fileName= "src/recommendationSystem/data/data.txt";
+    std::string fileName= "../data/data.txt";
     // Initializing the commands
 
     MemoryWriteable* writer = new WriteToTxt(fileName);

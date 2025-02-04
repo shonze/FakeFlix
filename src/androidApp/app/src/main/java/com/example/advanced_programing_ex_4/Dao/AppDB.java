@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
 
-@Database(entities = {MoviesList.class, Movie.class}, version = 6)
+@Database(entities = {MoviesList.class, Movie.class}, version = 4)
 @TypeConverters(MovieIdsConverter.class) // Register the TypeConverter
 public abstract class AppDB extends RoomDatabase {
     private static volatile AppDB instance;
@@ -19,11 +19,9 @@ public abstract class AppDB extends RoomDatabase {
         if (instance == null) {
             synchronized (AppDB.class) {
                 if (instance == null) {
-                    instance = Room.databaseBuilder(
-                                    context.getApplicationContext(),
-                                    AppDB.class,
-                                    "MoviesListDB"
-                            )
+                    instance = Room.databaseBuilder(context.getApplicationContext(),
+                                    AppDB.class, "movie_database")
+                            .fallbackToDestructiveMigration()  // Allows destructive migration (erases data)
                             .build();
                 }
             }

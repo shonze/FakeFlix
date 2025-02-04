@@ -57,11 +57,24 @@ public class MoviesListsApi {
                             List<String> moviesIds = entry.getValue();
                             if (moviesIds.size() != 0) {
                                 List<Movie> movies = new ArrayList<>();
-                                for(String movieId:moviesIds){
-                                    movies.add(moviesApi.getMovieById(movieId));
+                                for (String movieId : moviesIds) {
+                                    moviesApi.getMovieById(movieId, new MovieCallback() {
+                                        @Override
+                                        public void onSuccess(Movie movie) {
+                                            // Do something with the movie
+                                            movies.add(movie);
+                                        }
+
+                                        @Override
+                                        public void onFailure(String errorMessage) {
+                                            // Handle the error
+                                            System.err.println("Error: " + errorMessage);
+                                        }
+                                    });
                                 }
                                 // Assuming MovieList has a constructor that accepts a key and a list of movies
-                                MoviesList movieList = new MoviesList(key, movies);
+                                MoviesList movieList = new MoviesList(key, moviesIds);
+                                movieList.setMovieList(movies);
                                 movieLists.add(movieList);
 
                                 // For debugging purposes

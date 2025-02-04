@@ -34,29 +34,28 @@ public class MoviesApi {
     }
 
     // Fetch the movie from the API if not found in local database
-    public Movie getMovieById(String movieId){
+    public void getMovieById(String movieId,final MovieCallback callback){
         Map<String, String> headers = new HashMap<>();
         headers.put("authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY");
         headers.put("Content-Type", "application/json");
-        final Movie[] returnedMovie = new Movie[1];
+
         Call<Movie> call = webServiceAPI.getMovieById(movieId, headers);
         call.enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    returnedMovie[0] = response.body();
+                    callback.onSuccess(response.body());
                 } else {
                     // Handle response failure
-                    System.err.println("Failed to fetch movie from API: " + response.code());
+                    callback.onFailure(null);
                 }
             }
             @Override
             public void onFailure(Call<Movie> call, Throwable t) {
                 // Handle failure
-                System.err.println("API call failed: " + t.getMessage());
+                callback.onFailure(null);
             }
         });
-        return returnedMovie[0];
     }
 }
 

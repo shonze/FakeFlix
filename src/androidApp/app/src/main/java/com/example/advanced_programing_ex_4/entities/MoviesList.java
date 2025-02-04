@@ -13,18 +13,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@TypeConverters(MovieIdsConverter.class)
 public class MoviesList {
     @PrimaryKey(autoGenerate = true)
     private long id;
 
-    @ColumnInfo(name = "movies_title")
     private String moviesTitle;
-    @TypeConverters(MovieIdsConverter.class)
-    @ColumnInfo(name = "movie_list")
+
+    private List<String> movieIds;
+    @Ignore
     private List<Movie> movieList;
 
     public List<Movie> getMovieList() {
         return movieList;
+    }
+
+    public List<String> getMovieIds() {
+        return movieIds;
+    }
+
+    public void setMovieIds(List<String> movieIds) {
+        this.movieIds = movieIds;
     }
 
     public void setMovieList(List<Movie> movieList) {
@@ -35,9 +44,10 @@ public class MoviesList {
         this.moviesTitle = moviesTitle;
     }
 
-    public MoviesList(@NonNull String moviesTitle, List<Movie> movies) {
+    public MoviesList(@NonNull String moviesTitle, List<String> movieIds) {
         this.moviesTitle = moviesTitle;
-        this.movieList = movies;
+        this.movieIds = movieIds;
+
     }
 
     public MoviesList() {}
