@@ -1,17 +1,38 @@
-package com.example.advanced_programing_ex_4.entities;
+package com.example.fakeflix.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
-@Entity
-public class Movie {
+@Entity(tableName = "movies")
+public class Movie implements Serializable {
     @PrimaryKey(autoGenerate = false)
     @NonNull
     private String movieId;
+    private String title;
+    private List<String> categories;
+    private String description;
+    private String length;
+    private String thumbnail;
+    private String thumbnailName;
+
+    private String video;
+
+    private String videoName;
+
+    public Movie(@NonNull String movieId, String title, List<String> categories, String description, String length, String thumbnail, String thumbnailName, String video, String videoName) {
+        this.movieId = movieId;
+        this.title = title;
+        this.categories = categories;
+        this.description = description;
+        this.length = length;
+        this.thumbnail = thumbnail;
+        this.thumbnailName = thumbnailName;
+        this.video = video;
+        this.videoName = videoName;
+    }
 
     @NonNull
     public String getMovieId() {
@@ -20,29 +41,6 @@ public class Movie {
 
     public void setMovieId(@NonNull String movieId) {
         this.movieId = movieId;
-    }
-
-    private String title;
-
-    private List<String> categories;
-
-    private String description;
-
-    private String length;
-
-    private String thumbnail;
-
-    private String video;
-
-    public Movie(@NonNull String movieId, String title, List<String> categories, String description,
-                 String length, String thumbnail, String video) {
-        this.movieId = movieId;
-        this.title = title;
-        this.categories = categories;
-        this.description = description;
-        this.length = length;
-        this.thumbnail = thumbnail;
-        this.video = video;
     }
 
     public String getTitle() {
@@ -85,11 +83,27 @@ public class Movie {
         this.thumbnail = thumbnail;
     }
 
+    public String getThumbnailName() {
+        return thumbnailName;
+    }
+
+    public void setThumbnailName(String thumbnailName) {
+        this.thumbnailName = thumbnailName;
+    }
+
     public String getVideo() {
         return video;
     }
 
     public void setVideo(String video) {
         this.video = video;
+    }
+
+    public String getVideoName() {
+        return videoName;
+    }
+
+    public void setVideoName(String videoName) {
+        this.videoName = videoName;
     }
 }

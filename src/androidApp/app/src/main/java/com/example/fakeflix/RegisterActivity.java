@@ -1,5 +1,6 @@
 package com.example.fakeflix;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -311,7 +312,7 @@ public class RegisterActivity extends AppCompatActivity {
                         handleSave(fullName, photoUrl);
 
                         // Navigate to HomeActivity if needed
-                         startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+                         startActivity(new Intent(RegisterActivity.this, SearchActivity.class));
                     } else {
                         Toast.makeText(RegisterActivity.this, "Error: " + response.body().getErrors(), Toast.LENGTH_SHORT).show();
                     }

@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
                         bringData(token);
                         // Navigate to HomeActivity if needed
-                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                         startActivity(new Intent(LoginActivity.this, SearchActivity.class));
                     } else {
                         Toast.makeText(LoginActivity.this, "Error: " + response.body().getErrors(), Toast.LENGTH_SHORT).show();
                     }

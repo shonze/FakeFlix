@@ -38,7 +38,7 @@ public class StartingActivity extends AppCompatActivity {
         if ("true".equals(rememberMe) && jwtToken != null) {
             bringData(jwtToken);
             // Redirect to homepage if needed
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
             finish(); // Prevent returning to LoginActivity
         }
