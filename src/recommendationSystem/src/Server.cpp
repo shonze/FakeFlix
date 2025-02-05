@@ -27,7 +27,7 @@ Server::Server(int port) {
         exit(EXIT_FAILURE);
     }
 
-    std::string fileName= "../data/data.txt";
+    std::string fileName= "data/data.txt";
     // Initializing the commands
 
     MemoryWriteable* writer = new WriteToTxt(fileName);
@@ -80,7 +80,7 @@ void Server::run() {
         if (client_fd < 0) {
             continue;
         }
-
+        std::cout << "Balls." << std::endl;
         // Create a new thread to handle the client
         // std::thread(&Server::handleClient, this, client_fd).detach();
         threadPool->addTask(client_fd);
