@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/starting">
 
     <TextView
         android:id="@+id/movieTitle"
@@ -48,6 +49,7 @@
         android:textColor="@color/white"
         android:layout_gravity="start"/>
 
+
     <!-- Watch Button -->
     <Button
         android:id="@+id/watchMovieButton"
@@ -57,4 +59,25 @@
         android:layout_marginTop="20dp"
         android:backgroundTint="@android:color/holo_red_dark"
         android:textColor="@android:color/white"/>
+
+    <TextView
+        android:id="@+id/recommendedMovies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="Recommended Movies:"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/white"
+        android:layout_gravity="start"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recommendedMoviesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:clipToPadding="false"
+        android:textColor="@color/white"
+        android:paddingHorizontal="16dp"/>
+
 </LinearLayout>

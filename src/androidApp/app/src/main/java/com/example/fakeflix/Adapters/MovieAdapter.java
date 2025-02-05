@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.fakeflix.R;
+import com.example.fakeflix.SearchActivity;
+import com.example.fakeflix.WatchMovieActivity;
 import com.example.fakeflix.entities.Movie;
 import java.util.List;
 
@@ -37,8 +39,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
-        return new MovieViewHolder(view);
+        if (context instanceof SearchActivity) {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
+            return new MovieViewHolder(view);
+        }
+        else if (context instanceof WatchMovieActivity) {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_movie_below, parent, false);
+            return new MovieViewHolder(view);
+        }
+        else {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
+            return new MovieViewHolder(view);
+        }
+//        View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
+//        return new MovieViewHolder(view);
     }
 
     @Override

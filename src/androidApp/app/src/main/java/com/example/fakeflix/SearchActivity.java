@@ -20,6 +20,8 @@ import com.example.fakeflix.Adapters.MovieAdapter;
 import com.example.fakeflix.entities.Movie;
 
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 import okhttp3.ResponseBody;
@@ -61,6 +63,8 @@ public class SearchActivity extends AppCompatActivity {
             // Handle movie click
             Intent intent = new Intent(SearchActivity.this, WatchMovieActivity.class);
 //            Intent intent = new Intent(SearchActivity.this, VideoPlayerActivity.class);
+
+
             intent.putExtra("movieId", movie.getMovieId());
             intent.putExtra("movieTitle", movie.getTitle());
             intent.putExtra("movieThumbnail", "http://10.0.0.16:8080/uploads/" + movie.getThumbnailName());

@@ -37,5 +37,11 @@ public interface ApiService {
 
     @GET("movies/search/{query}")
     Call<List<Movie>> searchMovies(@Header("Authorization") String token, @Path("query") String query);
+
+    @GET("movies/{id}/recommend")
+    Call<List<Movie>> getRecommendedMovies(@Header("Authorization") String token, @Path("id") String id);
+
+    @POST("movies/{id}/recommend")
+    Call<ResponseBody> updateUserWatchedMovies(@Header("Authorization") String token, @Path("id") String id);
 }
 
