@@ -1,83 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
+    android:fillViewport="true"
     android:background="@drawable/starting">
 
-    <TextView
-        android:id="@+id/movieTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:paddingBottom="16dp"
-        android:textColor="@color/fakeflix_red"
-        android:layout_gravity="start"/>
-
-    <ImageView
-        android:id="@+id/movieThumbnail"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:scaleType="centerCrop"/>
-
-    <TextView
-        android:id="@+id/movieDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/white"
-        android:layout_gravity="start"/>
-
-    <TextView
-        android:id="@+id/movieLength"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/white"
-        android:layout_gravity="start"/>
-
-    <TextView
-        android:id="@+id/movieCategories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/white"
-        android:layout_gravity="start"/>
-
-
-    <!-- Watch Button -->
-    <Button
-        android:id="@+id/watchMovieButton"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Watch Now"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@android:color/holo_red_dark"
-        android:textColor="@android:color/white"/>
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/recommendedMovies"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="Recommended Movies:"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/white"
-        android:layout_gravity="start"/>
+        <TextView
+            android:id="@+id/movieTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:paddingBottom="16dp"
+            android:textColor="@color/fakeflix_red"
+            android:layout_gravity="start"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recommendedMoviesRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:clipToPadding="false"
-        android:textColor="@color/white"
-        android:paddingHorizontal="16dp"/>
+        <ImageView
+            android:id="@+id/movieThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:scaleType="centerCrop"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/movieDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/white"
+            android:layout_gravity="start"/>
+
+        <TextView
+            android:id="@+id/movieLength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/white"
+            android:layout_gravity="start"/>
+
+        <TextView
+            android:id="@+id/movieCategories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/white"
+            android:layout_gravity="start"/>
+
+        <!-- Watch Button -->
+        <Button
+            android:id="@+id/watchMovieButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Watch Now"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/fakeflix_red"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/recommendedMoviesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Find Similar Movies"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"/>
+
+        <!-- Recommended Movies Section -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recommendedMoviesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clipToPadding="false"
+            android:paddingHorizontal="16dp"/>
+
+    </LinearLayout>
+
+</ScrollView>

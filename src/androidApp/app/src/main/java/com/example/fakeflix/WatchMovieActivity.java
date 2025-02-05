@@ -55,6 +55,8 @@ public class WatchMovieActivity extends AppCompatActivity {
 
     private String movieId;
     private Button watchMovieButton;
+
+    private Button recommendedMoviesButton;
     private TextView movieDescription;
     private TextView movieLength;
 
@@ -74,6 +76,7 @@ public class WatchMovieActivity extends AppCompatActivity {
 
         Glide.with(this);
 
+        recommendedMoviesButton = findViewById(R.id.recommendedMoviesButton);
 
         movieThumbnail = findViewById(R.id.movieThumbnail);
         movieLength = findViewById(R.id.movieLength);
@@ -99,11 +102,7 @@ public class WatchMovieActivity extends AppCompatActivity {
             String imageUrl = intent.getStringExtra("movieThumbnail");
             Uri imageUri = Uri.parse(imageUrl);
 
-
-            getRecommendedMovies(movieId);
-
-//            String balls = "http://10.0.0.16:8080/uploads/1738672512999-951545829-match_distribution_20 (1).png";
-//            Uri urlballs = Uri.parse(balls);
+//            getRecommendedMovies(movieId);
 
             Glide.with(this)
                     .load(imageUri)
@@ -111,11 +110,6 @@ public class WatchMovieActivity extends AppCompatActivity {
 
             movieDescription.setText("Description: " + intent.getStringExtra("movieDescription"));
             movieLength.setText("Length: " + intent.getStringExtra("movieLength") + " minutes");
-
-//            String[] categoriesArray = getIntent().getStringArrayExtra("movieCategories");
-//
-//            String categoriesText = TextUtils.join(", ", categoriesArray); // "Action, Drama, Comedy"
-//            binding.movieCategories.setText("Categories: " + categoriesText);
 
         }
 
@@ -145,14 +139,19 @@ public class WatchMovieActivity extends AppCompatActivity {
             });
         });
 
+        recommendedMoviesButton.setOnClickListener(v -> {
+            getRecommendedMovies(movieId);
+        });
+//        new Handler().postDelayed(() -> getRecommendedMovies(movieId), 500);
+
         movieAdapter = new MovieAdapter(this, movie -> {
             // Handle movie click
             Intent intent2 = new Intent(WatchMovieActivity.this, WatchMovieActivity.class);
 //            Intent intent = new Intent(SearchActivity.this, VideoPlayerActivity.class);
             intent2.putExtra("movieId", movie.getMovieId());
             intent2.putExtra("movieTitle", movie.getTitle());
-            intent2.putExtra("movieThumbnail", "http://10.0.0.16:8080/uploads/" + movie.getThumbnailName());
-            intent2.putExtra("movieVideo", "http://10.0.0.16:8080/uploads/" + movie.getVideoName());
+            intent2.putExtra("movieThumbnail", getString(R.string.api_base_url) + "/uploads/" + movie.getThumbnailName());
+            intent2.putExtra("movieVideo", getString(R.string.api_base_url) + "/uploads/" + movie.getVideoName());
 
             intent2.putExtra("movieDescription", movie.getDescription());
             intent2.putExtra("movieLength", movie.getLength());
@@ -167,10 +166,16 @@ public class WatchMovieActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(movieAdapter);
 
+
+//        movieAdapter.setMovies(new ArrayList<>());
+//        getRecommendedMovies(movieId);
+
+
     }
 
     private void getRecommendedMovies(String id) {
         if (id.trim().isEmpty()) {
+            Toast.makeText(WatchMovieActivity.this, "id is null", Toast.LENGTH_SHORT).show();
             movieAdapter.setMovies(null);
             return;
         }
@@ -185,6 +190,7 @@ public class WatchMovieActivity extends AppCompatActivity {
                     if (movies != null && !movies.isEmpty()) {
                         movieAdapter.setMovies(movies); // Update RecyclerView
                     } else {
+                        Toast.makeText(WatchMovieActivity.this, "movies are empty", Toast.LENGTH_SHORT).show();
                         movieAdapter.setMovies(new ArrayList<>()); // Clear list if empty
                     }
                 } else {
