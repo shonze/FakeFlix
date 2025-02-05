@@ -22,8 +22,8 @@ public interface MovieDao {
     @Update
     void updateMovie(MovieEntity movie);
 
-    @Delete
-    void deleteMovie(MovieEntity movie);
+    @Query("DELETE FROM movies WHERE id= :id")
+    void deleteMovie(String id);
 
     // Add this method to delete all movies
     @Query("DELETE FROM movies")

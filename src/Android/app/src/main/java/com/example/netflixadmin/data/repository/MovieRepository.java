@@ -116,21 +116,72 @@ public class MovieRepository {
 
     // Method to delete a movie
     public void deleteMovie(String id, Callback<Void> callback) {
-        apiService.deleteMovie(id).enqueue(callback);
+        apiService.deleteMovie(id).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    // Delete movie from local database after successful API deletion
+                    new Thread(() -> {
+                        dao.deleteMovie(id);
+                    }).start();
+                    callback.onResponse(call, response); // Notify success
+                } else {
+                    Log.d("Failed Deletion", response.message() + response.code());
+                    callback.onFailure(call, new Throwable("Failed to delete movie from server"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure(call, t); // Notify failure
+            }
+        });
     }
 
+
     // Method to search for a movie by ID
+// Method to search for a movie by ID
     public LiveData<MovieEntity> getMovieById(String id) {
         MutableLiveData<MovieEntity> movieLiveData = new MutableLiveData<>();
+
+        // Fetch movie from local database
         new Thread(() -> {
             MovieEntity movie = dao.getMovieById(id);
-            movieLiveData.postValue(movie);
+            if (movie != null) {
+                movieLiveData.postValue(movie);
+            }
         }).start();
+
+        // Fetch movie from remote API
+        apiService.getMovieById(id).enqueue(new Callback<MovieEntity>() {
+            @Override
+            public void onResponse(Call<MovieEntity> call, Response<MovieEntity> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Perform database insertion on a background thread
+                    new Thread(() -> {
+                        dao.insertMovie(response.body()); // Ensure this is a method in your DAO for inserting a movie
+                    }).start();
+
+                    movieLiveData.postValue(response.body());
+                } else {
+                    movieLiveData.postValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieEntity> call, Throwable t) {
+                movieLiveData.postValue(null);
+            }
+        });
+
         return movieLiveData;
     }
+
+
+
     public LiveData<Pair<String, String>> uploadImage(Uri imageUri, Context context) {
         MutableLiveData<Pair<String, String>> resultLiveData = new MutableLiveData<>();
-        MultipartBody.Part imagePart = prepareFilePart(imageUri, context);
+        MultipartBody.Part imagePart = prepareFilePartImage(imageUri, context);
 
         apiService.uploadImage(imagePart).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -163,7 +214,7 @@ public class MovieRepository {
 
     public LiveData<Pair<String, String>> uploadVideo(Uri videoUri, Context context) {
         MutableLiveData<Pair<String, String>> resultLiveData = new MutableLiveData<>();
-        MultipartBody.Part videoPart = prepareFilePart(videoUri, context);
+        MultipartBody.Part videoPart = prepareFilePartVideo(videoUri, context);
 
         apiService.uploadVideo(videoPart).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -197,8 +248,8 @@ public class MovieRepository {
 
 
 
-    private MultipartBody.Part prepareFilePart(Uri uri, Context context) {
-        File file = getFileFromUri(uri, context);
+    private MultipartBody.Part prepareFilePartVideo(Uri uri, Context context) {
+        File file = getFileFromUriVideo(uri, context);
         String mimeType = context.getContentResolver().getType(uri);
         if (mimeType == null) mimeType = "video/mp4";
 
@@ -206,8 +257,33 @@ public class MovieRepository {
         return MultipartBody.Part.createFormData("files", file.getName(), requestFile);
     }
 
-    private File getFileFromUri(Uri uri, Context context) {
-        File file = new File(context.getCacheDir(), "upload_temp");
+    private MultipartBody.Part prepareFilePartImage(Uri uri, Context context) {
+        File file = getFileFromUriImage(uri, context);
+        String mimeType = context.getContentResolver().getType(uri);
+        if (mimeType == null) mimeType = "image/jpg";
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse(mimeType), file);
+        return MultipartBody.Part.createFormData("files", file.getName(), requestFile);
+    }
+
+
+    private File getFileFromUriVideo(Uri uri, Context context) {
+        File file = new File(context.getCacheDir(), "upload_temp.mp4");
+        try (InputStream inputStream = context.getContentResolver().openInputStream(uri);
+             FileOutputStream outputStream = new FileOutputStream(file)) {
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+    private File getFileFromUriImage(Uri uri, Context context) {
+        File file = new File(context.getCacheDir(), "upload_temp.jpg");
         try (InputStream inputStream = context.getContentResolver().openInputStream(uri);
              FileOutputStream outputStream = new FileOutputStream(file)) {
 

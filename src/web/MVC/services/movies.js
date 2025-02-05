@@ -112,6 +112,7 @@ const { deleteFileService } = require("../services/file");
 
 const updateMovie = async (id, title,categories, description, length, thumbnail,thumbnailName, video, videoName) => {
     let Movie = await getMovieById(id);
+    console.log("Hello update");
     console.log(Movie);
     // Returns 404 if the Movie is not found
     if (Movie[0] != 200) return Movie;
@@ -202,6 +203,7 @@ const updateMovie = async (id, title,categories, description, length, thumbnail,
     return [204, Movie];
 };
 
+
 const deleteMovie = async (id) => {
     let Movie = await getMovieById(id);
 
@@ -228,64 +230,124 @@ const deleteMovie = async (id) => {
         ListOfObjects.push(Category);
     }
 
-    // Remove the movie from the user's watched movies in the cpp recommendation server
+    // // Remove the movie from the user's watched movies in the cpp recommendation server
+    // const net = require('net');
+
+    // const ip = 'host.docker.internal'; // Ensure IP is defined
+    // const port = process.env.CPP_PORT || 3001; // Ensure port is defined
+
+    // const client = new net.Socket();
+
+    // // Use a Promise to handle asynchronous connection and communication
+    // await new Promise((resolve, reject) => {
+    //     client.connect(port, ip, async () => {
+    //         try {
+    //             const users = await userServices.getUsers();
+
+    //             for (const user of users) {
+
+    //                 // Remove the movie to the user list of movies
+    //                 user.movies = user.movies.filter(movie_id => {
+    //                     return movie_id.toString() !== Movie._id.toString();
+    //                 });
+
+    //                 // To save it later if no problems accure
+    //                 ListOfObjects.push(user);
+
+    //                 // Send a DELETE command to the server
+    //                 await new Promise((resolve) => {
+    //                     client.write(`DELETE ${user._id.toString()} ${id}`);
+
+    //                     // Wait for response before sending next command
+    //                     const handleData = (data) => {
+    //                         console.log('Received response:', data.toString());
+    //                         client.removeListener('data', handleData);
+    //                         resolve();
+    //                     };
+
+    //                     client.on('data', handleData);
+    //                 });
+    //             }
+    //             resolve();
+    //         } catch (error) {
+    //             client.destroy();
+    //             reject(error);
+    //         }
+    //     });
+
+    //     // Handle any connection errors
+    //     client.on('error', (err) => {
+    //         reject(err);
+    //     });
+
+    //     // Ensure the socket is closed properly
+    //     client.on('close', () => {
+    //         console.log("Connection closed");
+    //     });
+    // });
+
+    // // After communication is done, destroy the client socket
+    // client.destroy();
+
     const net = require('net');
 
-    const ip = process.env.CPP_IP || 'host.docker.internal'; // Ensure IP is defined
+    const ip = 'host.docker.internal'; // Ensure IP is correct
     const port = process.env.CPP_PORT || 3001; // Ensure port is defined
 
     const client = new net.Socket();
 
-    // Use a Promise to handle asynchronous connection and communication
-    await new Promise((resolve, reject) => {
-        client.connect(port, ip, async () => {
-            try {
-                const users = await userServices.getUsers();
+    async function sendDeleteRequest(client, userId, movieId) {
+        return new Promise((resolve, reject) => {
+            client.write(`DELETE ${userId} ${movieId}`);
+
+            client.once('data', (data) => {
+                console.log('Received response:', data.toString());
+                resolve();
+            });
+
+            client.once('error', (err) => {
+                reject(err);
+            });
+        });
+    }
+
+    async function processUsers() {
+        try {
+            const users = await userServices.getUsers();
+
+            client.connect(port, ip, async () => {
+                console.log(`Connected to ${ip}:${port}`);
 
                 for (const user of users) {
+                    // Remove the movie from the user's list
+                    user.movies = user.movies.filter(movie_id => movie_id.toString() !== Movie._id.toString());
 
-                    // Remove the movie to the user list of movies
-                    user.movies = user.movies.filter(movie_id => {
-                        return movie_id.toString() !== Movie._id.toString();
-                    });
-
-                    // To save it later if no problems accure
+                    // Store modified users for saving later
                     ListOfObjects.push(user);
 
-                    // Send a DELETE command to the server
-                    await new Promise((resolve) => {
-                        client.write(`DELETE ${user._id.toString()} ${id}`);
-
-                        // Wait for response before sending next command
-                        const handleData = (data) => {
-                            console.log('Received response:', data.toString());
-                            client.removeListener('data', handleData);
-                            resolve();
-                        };
-
-                        client.on('data', handleData);
-                    });
+                    // Send DELETE request to the C++ server
+                    await sendDeleteRequest(client, user._id.toString(), id);
                 }
-                resolve();
-            } catch (error) {
+
+                console.log("All users processed. Closing connection.");
                 client.destroy();
-                reject(error);
-            }
-        });
+            });
 
-        // Handle any connection errors
-        client.on('error', (err) => {
-            reject(err);
-        });
+            client.on('error', (err) => {
+                console.error("Socket error:", err);
+                client.destroy();
+            });
 
-        // Ensure the socket is closed properly
-        client.on('close', () => {
-            console.log("Connection closed");
-        });
-    });
+            client.on('close', () => {
+                console.log("Connection closed");
+            });
+        } catch (error) {
+            console.error("Error processing users:", error);
+        }
+    }
 
-    // After communication is done, destroy the client socket
-    client.destroy();
+    // Call the function
+    processUsers();
 
 
     await MoviesModel.deleteOne(Movie);

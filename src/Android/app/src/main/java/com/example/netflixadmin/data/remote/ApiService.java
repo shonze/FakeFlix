@@ -31,6 +31,9 @@ public interface ApiService {
     @DELETE("movies/{id}")
     Call<Void> deleteMovie(@Path("id") String id);
 
+    @GET("movies/{id}")
+    Call<MovieEntity> getMovieById(@Path("id") String id);
+
     @Multipart
     @POST("file") // Update the endpoint based on your backend
     Call<ResponseBody> uploadImage(@Part MultipartBody.Part image);

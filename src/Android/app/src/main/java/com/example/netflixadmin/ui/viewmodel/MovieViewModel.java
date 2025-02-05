@@ -15,12 +15,9 @@ import com.example.netflixadmin.data.repository.MovieRepository;
 import com.example.netflixadmin.data.local.CategoryEntity;
 import com.example.netflixadmin.data.repository.CategoryRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MovieViewModel extends AndroidViewModel {
     private final MovieRepository repository;
@@ -94,6 +91,7 @@ public class MovieViewModel extends AndroidViewModel {
     public LiveData<MovieEntity> getMovieById(String id) {
         return repository.getMovieById(id);
     }
+
 
 
 }

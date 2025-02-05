@@ -18,6 +18,7 @@ import android.widget.EditText;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.SearchView;
+
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -66,6 +67,7 @@ public class AdminActivity extends AppCompatActivity {
 
     private Button btnAddCategory;
     private Button btnAddMovie;
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -141,13 +143,14 @@ public class AdminActivity extends AppCompatActivity {
 
         List<String> categoryNames = new ArrayList<>();
         movieViewModel.getCategories().observe(this, categories -> {
-                    for (CategoryEntity category : categories) {
-                        categoryNames.add(category.getName());
-                    }
+            categoryNames.clear();
+            for (CategoryEntity category : categories) {
+                categoryNames.add(category.getName());
+            }
         });
-
+        Log.d("Categories", categoryNames.toString());
         btnAddMovie.setOnClickListener(v -> {
-                showAddMovieDialog(categoryNames);
+            showAddMovieDialog(categoryNames);
         });
 
         // Setup search view listener
@@ -159,7 +162,7 @@ public class AdminActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String id) {
-                movieViewModel.getMovieById(id); // You need to implement this in your MovieViewModel
+                searchMovieById(id); // You need to implement this in your MovieViewModel
                 return true;
             }
         });
@@ -256,7 +259,6 @@ public class AdminActivity extends AppCompatActivity {
     }
 
 
-
     private void showEditCategoryDialog(CategoryEntity category) {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_edit_category);
@@ -303,7 +305,7 @@ public class AdminActivity extends AppCompatActivity {
     private void showDeleteCategoryDialog(CategoryEntity category) {
         new AlertDialog.Builder(this)
                 .setTitle("Delete Category")
-                .setMessage("Are you sure you want to delete " + category.getName() + "?")
+                .setMessage("Are you sure you want to delete '" + category.getName() + "'?")
                 .setPositiveButton("Yes", (dialog, which) -> {
                     categoryViewModel.deleteCategory(category.getCategoryId(), new Callback<Void>() {
                         @Override
@@ -338,6 +340,7 @@ public class AdminActivity extends AppCompatActivity {
         if (addMovieDialog != null && addMovieDialog.isShowing()) {
             return;
         }
+        Log.d("Categories", categoryNames.toString());
 
         // Initialize the dialog
         addMovieDialog = new Dialog(this);
@@ -345,17 +348,6 @@ public class AdminActivity extends AppCompatActivity {
         addMovieDialog.setCancelable(false);
         addMovieDialog.getWindow().setDimAmount(0f);
 
-        // Find the close button
-        Button closeButton = addMovieDialog.findViewById(R.id.close_dialog_button);
-
-        // Set OnClickListener for the close button
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Dismiss the addMovieDialog when the button is clicked
-                addMovieDialog.dismiss();
-            }
-        });
 
         // Get references to EditText fields
         EditText movieTitleEditText = addMovieDialog.findViewById(R.id.edtMovieTitle);
@@ -458,11 +450,11 @@ public class AdminActivity extends AppCompatActivity {
                             newMovie.setTitle(movieTitle);
                             newMovie.setDescription(movieDescription);
                             newMovie.setLength(movieLength);
-                            newMovie.setThumbnail(thumbnailUrl.first);
-                            newMovie.setVideoUrl(videoUrl.first);
+                            newMovie.setThumbnail(thumbnailUrl.second);
+                            newMovie.setVideoUrl(videoUrl.second);
                             newMovie.setCategories(selectedCategoryList);
-                            newMovie.setThumbnailName(thumbnailUrl.second);
-                            newMovie.setVideoName(videoUrl.second);
+                            newMovie.setThumbnailName(thumbnailUrl.first);
+                            newMovie.setVideoName(videoUrl.first);
 
                             // Call ViewModel function with a callback
                             movieViewModel.addMovie(newMovie, new Callback<MovieEntity>() {
@@ -515,10 +507,6 @@ public class AdminActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
     // Helper method to save input values before opening video/image picker
     private void saveCurrentInputs(EditText title, EditText description, EditText length, List<String> categories) {
         savedTitle = title.getText().toString();
@@ -536,6 +524,7 @@ public class AdminActivity extends AppCompatActivity {
         }
         return "ERROR";
     }
+
     private void showEditMovieDialog(MovieEntity movie) {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_edit_movie);
@@ -543,24 +532,20 @@ public class AdminActivity extends AppCompatActivity {
         EditText edtMovieTitle = dialog.findViewById(R.id.edtMovieTitle);
         EditText edtMovieDescription = dialog.findViewById(R.id.edtMovieDescription);
         EditText edtMovieLength = dialog.findViewById(R.id.edtMovieLength);
-        EditText edtMovieThumbnail = dialog.findViewById(R.id.btnSelectThumbnail); // Assuming thumbnail URL input
-        EditText edtMovieVideo = dialog.findViewById(R.id.btnSelectVideo);
         Button btnUpdateMovie = dialog.findViewById(R.id.btnUpdateMovie);
 
-
+        // Populate existing movie data into the EditTexts
         edtMovieTitle.setText(movie.getTitle());
         edtMovieDescription.setText(movie.getDescription());
         edtMovieLength.setText(String.valueOf(movie.getLength()));
-        edtMovieThumbnail.setText(movie.getThumbnailName());
-        edtMovieVideo.setText(movie.getVideoUrl());
 
+        // Update movie on button click
         btnUpdateMovie.setOnClickListener(v -> {
             movie.setTitle(edtMovieTitle.getText().toString().trim());
             movie.setDescription(edtMovieDescription.getText().toString().trim());
             movie.setLength(Integer.parseInt(edtMovieLength.getText().toString().trim()));
-            movie.setThumbnailName(edtMovieThumbnail.getText().toString().trim());
-            movie.setVideoUrl(edtMovieVideo.getText().toString().trim());
 
+            // Call the ViewModel to update the movie
             movieViewModel.updateMovie(movie, new Callback<MovieEntity>() {
                 @Override
                 public void onResponse(Call<MovieEntity> call, Response<MovieEntity> response) {
@@ -583,10 +568,11 @@ public class AdminActivity extends AppCompatActivity {
         dialog.show();
     }
 
+
     private void showDeleteMovieDialog(MovieEntity movie) {
         new AlertDialog.Builder(this)
                 .setTitle("Delete Movie")
-                .setMessage("Are you sure you want to delete " + movie.getTitle() + "?")
+                .setMessage("Are you sure you want to delete '" + movie.getTitle() + "'?")
                 .setPositiveButton("Yes", (dialog, which) -> {
                     movieViewModel.deleteMovie(movie.getId(), new Callback<Void>() {
                         @Override
@@ -608,4 +594,29 @@ public class AdminActivity extends AppCompatActivity {
                 .setNegativeButton("No", null)
                 .show();
     }
+
+    private void searchMovieById(String movieId) {
+
+        if (movieId.isEmpty()) {
+            Toast.makeText(AdminActivity.this, "Please enter a Movie ID", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Observe the LiveData from the ViewModel
+        movieViewModel.getMovieById(movieId).observe(this, movie -> {
+            if (movie != null) {
+                new AlertDialog.Builder(AdminActivity.this)
+                        .setTitle("Movie Found")
+                        .setMessage("Movie: " + movie.getTitle())
+                        .setPositiveButton("Edit", (dialog, which) -> showEditMovieDialog(movie))
+                        .setNegativeButton("Delete", (dialog, which) -> showDeleteMovieDialog(movie))
+                        .setNeutralButton("Cancel", null)
+                        .show();
+            } else {
+                Toast.makeText(AdminActivity.this, "Movie not found", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 }

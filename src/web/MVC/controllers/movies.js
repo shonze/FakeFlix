@@ -138,6 +138,8 @@ const deleteMovie = async (req, res) => {
         // if (existingUserByUsername.isAdmin == false) { 
         //     return res.status(403).json({ errors: 'User is not an admin' });
         // }
+        
+        console.log(req.params.id);
 
         const Movie_and_Status = await MovieService.deleteMovie(req.params.id);
 
