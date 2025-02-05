@@ -210,7 +210,7 @@ const getRecoomendations = async (req, res) => {
         
         console.log(Movies);
 
-        res.status(status).json(Movie_or_Error);
+        res.status(status).json(Movies);
     }
     catch (error) {
         res.status(500).json({ errors: [error.message] });
