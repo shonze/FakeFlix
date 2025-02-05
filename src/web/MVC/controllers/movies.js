@@ -199,7 +199,7 @@ const getRecoomendations = async (req, res) => {
         if (status != 201 && status != 204 && status != 200 && status != '201' && status != '204' && status != '200') {
             return res.status(status).json({ errors: Movie_or_Error });
         }
-        res.status(status).end();
+        res.status(status).json(Movie_or_Error);
     }
     catch (error) {
         res.status(500).json({ errors: [error.message] });
