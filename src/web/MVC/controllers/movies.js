@@ -138,7 +138,7 @@ const deleteMovie = async (req, res) => {
         // if (existingUserByUsername.isAdmin == false) { 
         //     return res.status(403).json({ errors: 'User is not an admin' });
         // }
-        
+
         console.log(req.params.id);
 
         const Movie_and_Status = await MovieService.deleteMovie(req.params.id);
@@ -201,7 +201,18 @@ const getRecoomendations = async (req, res) => {
         if (status != 201 && status != 204 && status != 200 && status != '201' && status != '204' && status != '200') {
             return res.status(status).json({ errors: Movie_or_Error });
         }
-        res.status(status).end();
+        console.log(Movie_or_Error);
+        // const Movies = await Promise.all(Movie_or_Error.map(id => MovieService.getMovieById(id)));
+        const Movies = await Promise.all(
+            Movie_or_Error.map(async id => {
+                const [, movie] = await MovieService.getMovieById(id); // Destructure to discard 200
+                return movie;
+            })
+        );
+
+        console.log(Movies);
+
+        res.status(status).json(Movies);
     }
     catch (error) {
         res.status(500).json({ errors: [error.message] });

@@ -28,8 +28,8 @@ const Categorieslst = () => {
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
-    };
 
+    };
     fetchCategories();
   }, []);
 

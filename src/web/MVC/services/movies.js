@@ -407,20 +407,39 @@ const getRecoomendations = async (userId, movieId) => {
             try {
                 // Convert the data to a string
                 const dataString = data.toString();
+                console.log(`recived : ${dataString}`);
 
                 // Split the string by newline to separate status and movies
-                const parts = dataString.split('\n').map(part => part.trim());
+                // const partscomb = dataString.split('\n').map(part => part.trim());
+                // const parts = partscomb[1].split(/\s+/).map(part => part.trim()); // Split by any whitespace
 
-                // Extract the status code from the first part (e.g., "200 Ok")
-                const statusLine = parts[0];
+
+                // // Extract the status code from the first part (e.g., "200 Ok")
+                // const statusLine = parts[0];
+                // const statusMatch = statusLine.match(/^(\d{3})/); // Match the status code (e.g., "200")
+                // const status = statusMatch ? parseInt(statusMatch[1], 10) : null; // Extract and parse the status code
+
+                // // Extract the movies (remaining lines after an empty line)
+                // const movies = parts.slice(1).filter(movie => movie);
+
+                // // Combine the status and movies into a single array
+                // const result = status !== null ? [status, ...movies] : movies;
+
+                // Split by double newlines to separate status from numbers
+                const parts = dataString.split('\n\n').map(part => part.trim());
+
+                // Extract the status code (first part)
+                const statusLine = parts[0] || "";
                 const statusMatch = statusLine.match(/^(\d{3})/); // Match the status code (e.g., "200")
-                const status = statusMatch ? parseInt(statusMatch[1], 10) : null; // Extract and parse the status code
 
-                // Extract the movies (remaining lines after an empty line)
-                const movies = parts.slice(1).filter(movie => movie);
+                // Extract and parse the status code
+                const status = statusMatch ? parseInt(statusMatch[1], 10) : null;
 
-                // Combine the status and movies into a single array
-                const result = status !== null ? [status, ...movies] : movies;
+                // Extract the numbers (second part, space-separated)
+                const numbers = parts[1] ? parts[1].split(/\s+/).map(num => num.trim()) : [];
+
+                // Combine into final result
+                const result = status !== null ? [status, ...numbers] : numbers;
 
                 // Resolve the promise with the result
                 resolve(result);
