@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.advanced_programing_ex_4.Dao.MoviesListsDao;
 import com.example.advanced_programing_ex_4.MyApplication;
 import com.example.advanced_programing_ex_4.R;
+import com.example.advanced_programing_ex_4.Repositories.MoviesListsRepository;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,14 +22,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MoviesListsApi {
-    private MutableLiveData<List<MoviesList>> moviesListData;
+    // So we can use some of its special functunalities
+    private MoviesListsRepository.MoviesListData moviesListData;
     private MoviesListsDao dao;
 
     private MoviesApi moviesApi;
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
 
-    public MoviesListsApi(MutableLiveData<List<MoviesList>> moviesListData, MoviesListsDao dao) {
+    public MoviesListsApi(MoviesListsRepository.MoviesListData moviesListData, MoviesListsDao dao) {
         this.moviesListData = moviesListData;
         this.dao = dao;
         this.moviesApi = new MoviesApi();
@@ -52,40 +55,20 @@ public class MoviesListsApi {
                         Map<String, List<String>> responseBody = response.body();
                         List<MoviesList> movieLists = new ArrayList<>();
 
+                        // Transform the map into moviesLists
                         for (Map.Entry<String, List<String>> entry : responseBody.entrySet()) {
                             String key = entry.getKey();
                             List<String> moviesIds = entry.getValue();
-                            if (moviesIds.size() != 0) {
-                                List<Movie> movies = new ArrayList<>();
-                                for (String movieId : moviesIds) {
-                                    moviesApi.getMovieById(movieId, new MovieCallback() {
-                                        @Override
-                                        public void onSuccess(Movie movie) {
-                                            // Do something with the movie
-                                            movies.add(movie);
-                                        }
 
-                                        @Override
-                                        public void onFailure(String errorMessage) {
-                                            // Handle the error
-                                            System.err.println("Error: " + errorMessage);
-                                        }
-                                    });
-                                }
-                                // Assuming MovieList has a constructor that accepts a key and a list of movies
-                                MoviesList movieList = new MoviesList(key, moviesIds);
-                                movieList.setMovieList(movies);
-                                movieLists.add(movieList);
-
-                                // For debugging purposes
-                                System.out.println("Key = " + key + ", Movies = " + movies);
-                            }
+                            MoviesList movieList = new MoviesList(key, moviesIds);
+                            movieLists.add(movieList);
                         }
-
                         // Clear the DAO and insert the new list
                         dao.clear();
                         dao.insertList(movieLists);
-                        moviesListData.postValue(dao.get());
+
+                        // Get the actual moviesLists with the movies
+                        moviesListData.fetchMovieDetails(movieLists);
                     }).start();
                 } else {
                     // Handle the case where the response is not successful or the body is null

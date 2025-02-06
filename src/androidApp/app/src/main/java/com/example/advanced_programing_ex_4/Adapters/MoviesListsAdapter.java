@@ -1,6 +1,7 @@
 package com.example.advanced_programing_ex_4.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public class MoviesListsAdapter extends RecyclerView.Adapter<MoviesListsAdapter.
     @Override
     public void onBindViewHolder(@NonNull MovieListViewHolder holder, int position) {
         MoviesList currentMoviesList = moviesLists.get(position);
-        if (currentMoviesList.getMovieList() != null && currentMoviesList.getMovieList().size() != 0) {
+        if (currentMoviesList.getMovieList() != null && !currentMoviesList.getMovieList().isEmpty()) {
             holder.listTitleTextView.setText(currentMoviesList.getMoviesTitle());
 
             if (holder.moviesRecyclerView.getAdapter() == null) {

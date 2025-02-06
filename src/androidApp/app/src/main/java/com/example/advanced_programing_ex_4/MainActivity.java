@@ -1,6 +1,9 @@
 package com.example.advanced_programing_ex_4;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -47,10 +50,12 @@ public class MainActivity extends AppCompatActivity {
         moviesListsViewModel.get().observe(this, new Observer<List<MoviesList>>() {
             @Override
             public void onChanged(List<MoviesList> moviesLists) {
+                Log.d("cheking","changed");
+                // Fetch a random movie from a random movieList
                 if (!moviesLists.isEmpty()) {
                     MoviesList randomElement = moviesLists.get((int) Math.floor(Math.random() * moviesLists.size()));
                     List<Movie> movieList = randomElement.getMovieList();
-                    if (!movieList.isEmpty()) {
+                    if (movieList != null && !movieList.isEmpty()) {
                         Movie randomMovie = movieList.get((int) Math.floor(Math.random() * movieList.size()));
                         TextView movieTitleTextView = findViewById(R.id.top_movie_title);
                         TextView movieDescription = findViewById(R.id.top_movie_description);
