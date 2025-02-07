@@ -2,6 +2,7 @@ package com.example.advanced_programing_ex_4.api;
 
 import androidx.room.Query;
 
+import com.example.advanced_programing_ex_4.entities.Category;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
 
@@ -22,9 +23,6 @@ public interface WebServiceAPI {
     @GET("movies/{movieId}")
     Call<Movie> getMovieById(@Path("movieId") String movieId, @HeaderMap Map<String, String> headers);
 
-//    @POST("posts")
-//    Call<Void> createPost(@Body Movie movie);
-//
-//    @DELETE("posts/{id}")
-//    Call<Void> deletePost(@Path("id") int id);
+    @GET("categories")
+    Call<List<Category>> getCategories(@HeaderMap Map<String, String> headers);
 }

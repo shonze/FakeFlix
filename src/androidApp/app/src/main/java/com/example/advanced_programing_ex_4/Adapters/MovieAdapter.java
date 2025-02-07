@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
@@ -41,8 +43,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         if (position < moviesList.size()) {
             Movie currentMovie = moviesList.get(position);
 
-            Log.d("MovieAdapter", "Movie loaded: " + currentMovie.getTitle());
             holder.movieTitleTextView.setText(currentMovie.getTitle());
+            holder.movieThumbnail.setOnClickListener(v -> {
+                Toast.makeText(context, "Image clicked!", Toast.LENGTH_SHORT).show();
+            });
         }
     }
 
@@ -63,10 +67,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     static class MovieViewHolder extends RecyclerView.ViewHolder {
         private final TextView movieTitleTextView;
 
+        private final ImageView movieThumbnail;
         public MovieViewHolder(@NonNull View itemView) {
             // The movie should appear as an image that can be clicked.
             super(itemView);
-            movieTitleTextView = itemView.findViewById(R.id.movie_title);
+            this.movieTitleTextView = itemView.findViewById(R.id.movie_title);
+            this.movieThumbnail = itemView.findViewById(R.id.movie_image);
         }
     }
 }

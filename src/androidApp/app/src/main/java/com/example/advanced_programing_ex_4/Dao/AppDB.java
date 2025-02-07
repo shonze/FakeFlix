@@ -7,10 +7,11 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.example.advanced_programing_ex_4.entities.Category;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
 
-@Database(entities = {MoviesList.class, Movie.class}, version = 7)
+@Database(entities = {MoviesList.class, Movie.class, Category.class}, version = 15)
 @TypeConverters(MovieIdsConverter.class) // Register the TypeConverter
 public abstract class AppDB extends RoomDatabase {
     private static volatile AppDB instance;
@@ -32,4 +33,6 @@ public abstract class AppDB extends RoomDatabase {
     public abstract MoviesListsDao moviesListsDao();
 
     public abstract MovieDao movieDao();
+
+    public abstract CategoriesDao categoriesDao();
 }

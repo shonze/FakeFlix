@@ -5,4 +5,10 @@
     <string name="play">▶ Play</string>
     <string name="movie_title">Movie Title</string>
     <string name="movie_thumbnail">Movie Thumbnail</string>
+    <string name="categories">Categories</string>
+    <string name="top_movie_desc">A brief description of the featured movie goes here.</string>
+    <string name="top_movie_title">Featured Movie Title</string>
+    <string name="close">Close</string>
+    <string name="movie_list_title">Movie List Title</string>
+    <string name="fakeflix">FakeFlix</string>
 </resources>
