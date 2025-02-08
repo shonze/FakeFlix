@@ -73,9 +73,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         // Get from the intent if the user is admin
-        isAdmin = true;
-//        if (getIntent().getBooleanExtra("isAdmin")) isAdmin = true;
-//        else isAdmin = false;
+       if (getIntent().getBooleanExtra("isAdmin")) isAdmin = true;
+       else isAdmin = false;
 
         // Get the user token
         preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
@@ -122,32 +121,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Ensure buttons exist before setting listeners
         if (searchButton != null) {
             searchButton.setOnClickListener(v -> {
-                Toast.makeText(context, "Search button clicked!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, SearchActivity.class);
+
+                context.startActivity(intent);
             });
         }
 
         if (topMoviePlayButton != null) {
             topMoviePlayButton.setOnClickListener(v -> {
                 if (randomMovie != null) {
-//                    Intent intent = new Intent(context, CategoryMoviesActivity.class);
-//
-//                    intent.putExtra("movieId", randomMovie.getMovieId());
-//                    intent.putExtra("movieTitle", randomMovie.getTitle());
-//                    intent.putExtra("movieThumbnail", randomMovie.getThumbnailName());
-//                    intent.putExtra("movieVideo", "http://10.0.2.2:8080/uploads/" + randomMovie.getVideoName());
-//                    intent.putExtra("movieDescription", "http://10.0.2.2:8080/uploads/" + randomMovie.getDescription());
-//                    intent.putExtra("movieLength", randomMovie.getLength());
-//                    intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
-//
-//                    context.startActivity(intent);
-                    Toast.makeText(context, "Play button clicked!", Toast.LENGTH_SHORT).show();
+                   Intent intent = new Intent(context, CategoryMoviesActivity.class);
+
+                   intent.putExtra("movieId", randomMovie.getMovieId());
+                   intent.putExtra("movieTitle", randomMovie.getTitle());
+                   intent.putExtra("movieThumbnail", randomMovie.getThumbnailName());
+                   intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
+                   intent.putExtra("movieDescription", Constants.BASE_URL + "/uploads/" + randomMovie.getDescription());
+                   intent.putExtra("movieLength", randomMovie.getLength());
+                   intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
+
+                   context.startActivity(intent);
                 }
             });
         }
 
         if (topMovieDescriptionButton != null) {
             topMovieDescriptionButton.setOnClickListener(v -> {
-                Toast.makeText(context, "Description button clicked!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, WatchMovieActivity.class);
+
+                intent.putExtra("movieId", randomMovie.getMovieId());
+                intent.putExtra("movieTitle", randomMovie.getTitle());
+                intent.putExtra("movieThumbnail", randomMovie.getThumbnailName());
+                intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
+                intent.putExtra("movieDescription", Constants.BASE_URL + "/uploads/" + randomMovie.getDescription());
+                intent.putExtra("movieLength", randomMovie.getLength());
+                intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
+
+                context.startActivity(intent);
             });
         }
 
@@ -188,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             if (topMovieDescription != null) {
                                 topMovieDescription.setText(randomMovie.getDescription());
                             }
-                            String thumbnailUrl = "http://10.0.2.2:8080/uploads/" + randomMovie.getThumbnailName();
+                            String thumbnailUrl = Constants.BASE_URL + "/uploads/" + randomMovie.getThumbnailName();
 
                             // Set image using Glide
                             Glide.with(topMovieThumbnail.getContext())
@@ -226,23 +236,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_categories) {
             showFloatingList();
         } else if (id == R.id.admin_screen) {
-//            Intent intent = new Intent(context, AdminActivity.class);
-//
-//            context.startActivity(intent);
-            Toast.makeText(this, "Admin Page Clicked", Toast.LENGTH_SHORT).show();
+           Intent intent = new Intent(context, AdminActivity.class);
+
+           context.startActivity(intent);
         } else if (id == R.id.nav_theme) {
-            Toast.makeText(this, "Admin Page Clicked", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Changed theme!", Toast.LENGTH_SHORT).show();
             ThemeUtils.toggleTheme(this);
         } else if (id == R.id.logout) {
             // Delete the shared preference of the JwtToken
             SharedPreferences.Editor editor = preferences.edit();
             editor.remove("AppPrefs");
             editor.apply();
+            
+            Intent intent = new Intent(context, AdminActivity.class);
 
-            //            Intent intent = new Intent(context, AdminActivity.class);
-//
-//            context.startActivity(intent);
-            Toast.makeText(context, "Log Out button clicked!", Toast.LENGTH_SHORT).show();
+           context.startActivity(intent);
         }
 
         drawer.closeDrawer(GravityCompat.START);

@@ -48,7 +48,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
             holder.movieTitleTextView.setText(currentMovie.getTitle());
 
-            String thumbnailUrl = Constants.BASE_URL +"/uploads/" + currentMovie.getThumbnailName();
+            String thumbnailUrl = Constants.BASE_URL + "/uploads/" + currentMovie.getThumbnailName();
 
             // Set image using Glide
             Glide.with(holder.itemView.getContext())
@@ -58,7 +58,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                     .into(holder.movieThumbnail); // ImageView reference
 
             holder.movieThumbnail.setOnClickListener(v -> {
-                Toast.makeText(context, "Image clicked!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, WatchMovieActivity.class);
+
+                intent.putExtra("movieId", currentMovie.getMovieId());
+                intent.putExtra("movieTitle", currentMovie.getTitle());
+                intent.putExtra("movieThumbnail", currentMovie.getThumbnailName());
+                intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + currentMovie.getVideoName());
+                intent.putExtra("movieDescription", Constants.BASE_URL + "/uploads/" + currentMovie.getDescription());
+                intent.putExtra("movieLength", currentMovie.getLength());
+                intent.putExtra("movieCategories", currentMovie.getCategories().toArray(new String[0]));
+
+                context.startActivity(intent);
             });
         }
     }
