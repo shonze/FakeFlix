@@ -171,7 +171,7 @@ const searchMovies = async (req, res) => {
         if (status != 200) {
             return res.status(status).json({ errors: Movie_or_Error });
         }
-
+        console.log(Movie_or_Error);
         res.status(status).json(Movie_or_Error);
     }
     catch (error) {
@@ -209,7 +209,7 @@ const getRecoomendations = async (req, res) => {
                 return movie;
             })
         );
-
+        
         console.log(Movies);
 
         res.status(status).json(Movies);

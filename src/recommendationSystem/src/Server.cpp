@@ -80,7 +80,7 @@ void Server::run() {
         if (client_fd < 0) {
             continue;
         }
-
+        std::cout << "Balls." << std::endl;
         // Create a new thread to handle the client
         // std::thread(&Server::handleClient, this, client_fd).detach();
         threadPool->addTask(client_fd);
