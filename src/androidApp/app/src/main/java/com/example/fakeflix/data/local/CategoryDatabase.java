@@ -1,4 +1,4 @@
-package com.example.netflixadmin.data.local;
+package com.example.fakeflix.data.local;
 
 import androidx.room.Database;
 import androidx.room.Room;
@@ -7,7 +7,7 @@ import androidx.room.TypeConverters;
 
 import android.content.Context;
 
-import com.example.netflixadmin.utils.Converters;
+import com.example.fakeflix.utils.Converters;
 
 @Database(entities = {CategoryEntity.class}, version = 1)
 @TypeConverters({Converters.class})

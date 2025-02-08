@@ -1,4 +1,4 @@
-package com.example.netflixadmin.ui.activity;
+package com.example.fakeflix.ui.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,11 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -23,25 +20,23 @@ import androidx.appcompat.widget.SearchView;
 
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.netflixadmin.R;
-import com.example.netflixadmin.data.local.CategoryEntity;
-import com.example.netflixadmin.data.local.MovieEntity;
-import com.example.netflixadmin.ui.adapter.CategoryAdapter;
-import com.example.netflixadmin.ui.adapter.MovieAdapter;
-import com.example.netflixadmin.ui.viewmodel.CategoryViewModel;
-import com.example.netflixadmin.ui.viewmodel.MovieViewModel;
-import com.example.netflixadmin.ui.viewmodel.ViewModelFactory;
-import com.example.netflixadmin.utils.LiveDataUtils;
+import com.example.fakeflix.R;
+import com.example.fakeflix.data.local.CategoryEntity;
+import com.example.fakeflix.data.local.MovieEntity;
+import com.example.fakeflix.ui.adapter.CategoryAdapter;
+import com.example.fakeflix.ui.adapter.MovieAdapter;
+import com.example.fakeflix.ui.viewmodel.CategoryViewModel;
+import com.example.fakeflix.ui.viewmodel.MovieViewModel;
+import com.example.fakeflix.ui.viewmodel.ViewModelFactory;
+import com.example.fakeflix.utils.LiveDataUtils;
 import com.google.android.material.button.MaterialButton;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

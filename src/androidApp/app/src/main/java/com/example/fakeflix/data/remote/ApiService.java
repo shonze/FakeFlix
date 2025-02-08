@@ -1,7 +1,7 @@
-package com.example.netflixadmin.data.remote;
+package com.example.fakeflix.data.remote;
 
-import com.example.netflixadmin.data.local.MovieEntity;
-import com.example.netflixadmin.data.local.CategoryEntity;
+import com.example.fakeflix.data.local.MovieEntity;
+import com.example.fakeflix.data.local.CategoryEntity;
 
 import java.util.List;
 

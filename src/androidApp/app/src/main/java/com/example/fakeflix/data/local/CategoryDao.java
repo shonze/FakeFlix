@@ -1,4 +1,4 @@
-package com.example.netflixadmin.data.local;
+package com.example.fakeflix.data.local;
 
 import androidx.room.Dao;
 import androidx.room.Insert;

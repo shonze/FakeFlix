@@ -1,4 +1,4 @@
-package com.example.netflixadmin;
+package com.example.fakeflix;
 
 import android.content.Context;
 

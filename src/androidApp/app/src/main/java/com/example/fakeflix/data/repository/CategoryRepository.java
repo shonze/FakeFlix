@@ -1,15 +1,15 @@
-package com.example.netflixadmin.data.repository;
+package com.example.fakeflix.data.repository;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.netflixadmin.data.local.CategoryDao;
-import com.example.netflixadmin.data.local.CategoryDatabase;
-import com.example.netflixadmin.data.local.CategoryEntity;
-import com.example.netflixadmin.data.remote.ApiService;
-import com.example.netflixadmin.data.remote.RetrofitClient;
+import com.example.fakeflix.data.local.CategoryDao;
+import com.example.fakeflix.data.local.CategoryDatabase;
+import com.example.fakeflix.data.local.CategoryEntity;
+import com.example.fakeflix.data.remote.ApiService;
+import com.example.fakeflix.data.remote.RetrofitClient;
 
 import java.util.LinkedList;
 import java.util.List;

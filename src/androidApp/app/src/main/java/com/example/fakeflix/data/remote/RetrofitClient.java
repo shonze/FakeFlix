@@ -1,6 +1,6 @@
-package com.example.netflixadmin.data.remote;
+package com.example.fakeflix.data.remote;
 
-import com.example.netflixadmin.utils.Constants;
+import com.example.fakeflix.utils.Constants;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

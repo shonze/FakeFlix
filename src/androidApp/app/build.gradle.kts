@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.netflixadmin"
+    namespace = "com.example.fakeflix"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.netflixadmin"
+        applicationId = "com.example.fakeflix"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

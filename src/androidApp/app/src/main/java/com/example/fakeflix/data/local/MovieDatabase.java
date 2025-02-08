@@ -1,4 +1,4 @@
-package com.example.netflixadmin.data.local;
+package com.example.fakeflix.data.local;
 
 import androidx.room.Database;
 import androidx.room.Room;
@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.example.netflixadmin.utils.Converters;
+import com.example.fakeflix.utils.Converters;
 
 @Database(entities = {MovieEntity.class}, version = 3) // Current version is 3
 @TypeConverters({Converters.class})

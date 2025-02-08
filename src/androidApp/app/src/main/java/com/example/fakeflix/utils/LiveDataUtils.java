@@ -1,4 +1,4 @@
-package com.example.netflixadmin.utils;
+package com.example.fakeflix.utils;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;

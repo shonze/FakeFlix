@@ -1,8 +1,7 @@
-package com.example.netflixadmin.data.repository;
+package com.example.fakeflix.data.repository;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 
@@ -10,11 +9,11 @@ import androidx.core.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.netflixadmin.data.local.MovieDao;
-import com.example.netflixadmin.data.local.MovieDatabase;
-import com.example.netflixadmin.data.local.MovieEntity;
-import com.example.netflixadmin.data.remote.ApiService;
-import com.example.netflixadmin.data.remote.RetrofitClient;
+import com.example.fakeflix.data.local.MovieDao;
+import com.example.fakeflix.data.local.MovieDatabase;
+import com.example.fakeflix.data.local.MovieEntity;
+import com.example.fakeflix.data.remote.ApiService;
+import com.example.fakeflix.data.remote.RetrofitClient;
 
 import org.json.JSONObject;
 

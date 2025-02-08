@@ -1,4 +1,4 @@
-package com.example.netflixadmin.ui.adapter;
+package com.example.fakeflix.ui.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.netflixadmin.R;
-import com.example.netflixadmin.data.local.CategoryEntity;
+import com.example.fakeflix.R;
+import com.example.fakeflix.data.local.CategoryEntity;
 
 import java.util.List;
 

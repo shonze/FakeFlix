@@ -1,12 +1,12 @@
-package com.example.netflixadmin;
+package com.example.fakeflix;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.netflixadmin.R;
-import com.example.netflixadmin.ui.activity.AdminActivity;
+import com.example.fakeflix.R;
+import com.example.fakeflix.ui.activity.AdminActivity;
 
 public class MainActivity extends AppCompatActivity {
     @Override

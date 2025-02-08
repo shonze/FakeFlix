@@ -1,4 +1,4 @@
-package com.example.netflixadmin;
+package com.example.fakeflix;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

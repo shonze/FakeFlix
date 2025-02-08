@@ -1,4 +1,4 @@
-package com.example.netflixadmin.ui.viewmodel;
+package com.example.fakeflix.ui.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
@@ -9,11 +9,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.netflixadmin.data.local.MovieEntity;
-import com.example.netflixadmin.data.repository.MovieRepository;
+import com.example.fakeflix.data.local.MovieEntity;
+import com.example.fakeflix.data.repository.MovieRepository;
 
-import com.example.netflixadmin.data.local.CategoryEntity;
-import com.example.netflixadmin.data.repository.CategoryRepository;
+import com.example.fakeflix.data.local.CategoryEntity;
+import com.example.fakeflix.data.repository.CategoryRepository;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.netflixadmin.ui.viewmodel;
+package com.example.fakeflix.ui.viewmodel;
 
 import android.app.Application;
 
