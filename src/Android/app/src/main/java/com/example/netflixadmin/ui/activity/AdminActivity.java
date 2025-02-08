@@ -3,7 +3,9 @@ package com.example.netflixadmin.ui.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +37,7 @@ import com.example.netflixadmin.ui.adapter.CategoryAdapter;
 import com.example.netflixadmin.ui.adapter.MovieAdapter;
 import com.example.netflixadmin.ui.viewmodel.CategoryViewModel;
 import com.example.netflixadmin.ui.viewmodel.MovieViewModel;
+import com.example.netflixadmin.ui.viewmodel.ViewModelFactory;
 import com.example.netflixadmin.utils.LiveDataUtils;
 import com.google.android.material.button.MaterialButton;
 
@@ -68,6 +71,9 @@ public class AdminActivity extends AppCompatActivity {
     private Button btnAddCategory;
     private Button btnAddMovie;
 
+    private SharedPreferences preferences;
+    private String jwtToken;
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -84,6 +90,8 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+        preferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        jwtToken = preferences.getString("jwtToken", null);
 
         RecyclerView categoryRecyclerView = findViewById(R.id.recyclerViewCategories);
         btnAddCategory = findViewById(R.id.btnAddCategory);
@@ -92,10 +100,11 @@ public class AdminActivity extends AppCompatActivity {
 
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-        movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
+        ViewModelFactory factory = new ViewModelFactory(jwtToken, this.getApplication());
+        categoryViewModel = new ViewModelProvider(this, factory).get(CategoryViewModel.class);
+        movieViewModel = new ViewModelProvider(this, factory).get(MovieViewModel.class);
 
-        categoryAdapter = new CategoryAdapter(null, new CategoryAdapter.OnItemClickListener() {
+        categoryAdapter = new CategoryAdapter( null, new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onEditClick(CategoryEntity category) {
                 showEditCategoryDialog(category);
@@ -108,7 +117,7 @@ public class AdminActivity extends AppCompatActivity {
         });
         categoryRecyclerView.setAdapter(categoryAdapter);
 
-        movieAdapter = new MovieAdapter(null, new MovieAdapter.OnItemClickListener() {
+        movieAdapter = new MovieAdapter( null, new MovieAdapter.OnItemClickListener() {
             @Override
             public void onEditClick(MovieEntity movie) {
                 showEditMovieDialog(movie);

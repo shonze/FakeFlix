@@ -22,8 +22,9 @@ public class CategoryRepository {
     private CategoryDao dao;
     private ApiService apiService;
     private CategoryListData categoryListData;
+    private String jwtToken;
 
-    public CategoryRepository(Application application) {
+    public CategoryRepository(String jwtToken, Application application) {
         // Initialize local database and DAO
         CategoryDatabase db = CategoryDatabase.getInstance(application);
         dao = db.categoryDao();
@@ -33,6 +34,7 @@ public class CategoryRepository {
 
         // Initialize MutableLiveData for categories
         categoryListData = new CategoryListData();
+        this.jwtToken= jwtToken;
     }
 
     // Inner class for MutableLiveData
@@ -57,7 +59,7 @@ public class CategoryRepository {
         }
 
         private void fetchCategoriesFromApi() {
-            apiService.getAllCategories().enqueue(new Callback<List<CategoryEntity>>() {
+            apiService.getAllCategories("Bearer" + jwtToken).enqueue(new Callback<List<CategoryEntity>>() {
                 @Override
                 public void onResponse(Call<List<CategoryEntity>> call, Response<List<CategoryEntity>> response) {
                     if (response.isSuccessful() && response.body() != null) {
@@ -94,16 +96,16 @@ public class CategoryRepository {
 
     // Method to add a new category
     public void addCategory(CategoryEntity category, Callback<CategoryEntity> callback) {
-        apiService.addCategory(category).enqueue(callback);
+        apiService.addCategory("Bearer" + jwtToken, category).enqueue(callback);
     }
 
     // Method to update a category
     public void updateCategory(String id, CategoryEntity category, Callback<CategoryEntity> callback) {
-        apiService.updateCategory(id, category).enqueue(callback);
+        apiService.updateCategory("Bearer" + jwtToken, id, category).enqueue(callback);
     }
 
     // Method to delete a category
     public void deleteCategory(String id, Callback<Void> callback) {
-        apiService.deleteCategory(id).enqueue(callback);
+        apiService.deleteCategory("Bearer" + jwtToken, id).enqueue(callback);
     }
 }

@@ -5,17 +5,17 @@ const UserService = require('../services/user');
 
 const createMovie = async (req, res) => {
     try {
-        // let existingUserByUsername;
+        let existingUserByUsername;
 
-        // // Use the new helper function to validate the token and retrieve the user
-        // try {
-        //     existingUserByUsername = await UserService.validateAndGetUser(req);
-        // } catch (error) {
-        //     return res.status(403).json({ errors: error.message });
-        // }
-        // if (existingUserByUsername.isAdmin == false) { 
-        //     return res.status(403).json({ errors: 'User is not an admin' });
-        // }
+        // Use the new helper function to validate the token and retrieve the user
+        try {
+            existingUserByUsername = await UserService.validateAndGetUser(req);
+        } catch (error) {
+            return res.status(403).json({ errors: error.message });
+        }
+        if (existingUserByUsername.isAdmin == false) { 
+            return res.status(403).json({ errors: 'User is not an admin' });
+        }
         console.log(req.body);
         const Movie_and_Status = await MovieService.createMovie(req.body.title, req.body.categories,
             req.body.description, req.body.length, req.body.thumbnail, req.body.thumbnailName, req.body.video,req.body.videoName);
@@ -69,11 +69,11 @@ const getMovie = async (req, res) => {
         let existingUserByUsername;
 
         // Use the new helper function to validate the token and retrieve the user
-        // try {
-        //     existingUserByUsername = await UserService.validateAndGetUser(req);
-        // } catch (error) {
-        //     return res.status(403).json({ errors: error.message });
-        // }
+        try {
+            existingUserByUsername = await UserService.validateAndGetUser(req);
+        } catch (error) {
+            return res.status(403).json({ errors: error.message });
+        }
 
         const Movie_and_Status = await MovieService.getMovieById(req.params.id);
 
@@ -97,14 +97,14 @@ const updateMovie = async (req, res) => {
         let existingUserByUsername;
 
         // Use the new helper function to validate the token and retrieve the user
-        // try {
-        //     existingUserByUsername = await UserService.validateAndGetUser(req);
-        // } catch (error) {
-        //     return res.status(403).json({ errors: error.message });
-        // }
-        // if (existingUserByUsername.isAdmin == false) { 
-        //     return res.status(403).json({ errors: 'User is not an admin' });
-        // }
+        try {
+            existingUserByUsername = await UserService.validateAndGetUser(req);
+        } catch (error) {
+            return res.status(403).json({ errors: error.message });
+        }
+        if (existingUserByUsername.isAdmin == false) { 
+            return res.status(403).json({ errors: 'User is not an admin' });
+        }
 
         const Movie_and_Status = await MovieService.updateMovie(req.params.id,req.body.title, req.body.categories,
             req.body.description, req.body.length, req.body.thumbnail, req.body.thumbnailName, req.body.video ,req.body.videoName);
@@ -130,14 +130,14 @@ const deleteMovie = async (req, res) => {
         let existingUserByUsername;
 
         // Use the new helper function to validate the token and retrieve the user
-        // try {
-        //     existingUserByUsername = await UserService.validateAndGetUser(req);
-        // } catch (error) {
-        //     return res.status(403).json({ errors: error.message });
-        // }
-        // if (existingUserByUsername.isAdmin == false) { 
-        //     return res.status(403).json({ errors: 'User is not an admin' });
-        // }
+        try {
+            existingUserByUsername = await UserService.validateAndGetUser(req);
+        } catch (error) {
+            return res.status(403).json({ errors: error.message });
+        }
+        if (existingUserByUsername.isAdmin == false) { 
+            return res.status(403).json({ errors: 'User is not an admin' });
+        }
 
         console.log(req.params.id);
 

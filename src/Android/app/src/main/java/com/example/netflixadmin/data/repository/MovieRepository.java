@@ -2,6 +2,7 @@ package com.example.netflixadmin.data.repository;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 
@@ -35,8 +36,9 @@ public class MovieRepository {
     private MovieDao dao;
     private ApiService apiService;
     private MovieListData movieListData;
+    private String jwtToken;
 
-    public MovieRepository(Application application) {
+    public MovieRepository(String jwtToken, Application application) {
         // Initialize local database and DAO
         MovieDatabase db = MovieDatabase.getInstance(application);
         dao = db.movieDao();
@@ -46,6 +48,7 @@ public class MovieRepository {
 
         // Initialize MutableLiveData for movies
         movieListData = new MovieListData();
+        this.jwtToken= jwtToken;
     }
 
     // Inner class for MutableLiveData
@@ -70,7 +73,7 @@ public class MovieRepository {
         }
 
         private void fetchMoviesFromApi() {
-            apiService.getAllMovies().enqueue(new Callback<List<MovieEntity>>() {
+            apiService.getAllMovies("Bearer" + jwtToken).enqueue(new Callback<List<MovieEntity>>() {
                 @Override
                 public void onResponse(Call<List<MovieEntity>> call, Response<List<MovieEntity>> response) {
                     if (response.isSuccessful() && response.body() != null) {
@@ -106,17 +109,18 @@ public class MovieRepository {
 
     // Method to add a new movie
     public void addMovie(MovieEntity movie, Callback<MovieEntity> callback) {
-        apiService.addMovie(movie).enqueue(callback);
+
+        apiService.addMovie("Bearer" + jwtToken, movie).enqueue(callback);
     }
 
     // Method to update a movie
     public void updateMovie(MovieEntity movie, Callback<MovieEntity> callback) {
-        apiService.updateMovie(movie.getId(), movie).enqueue(callback);
+        apiService.updateMovie("Bearer" + jwtToken,movie.getId(), movie).enqueue(callback);
     }
 
     // Method to delete a movie
     public void deleteMovie(String id, Callback<Void> callback) {
-        apiService.deleteMovie(id).enqueue(new Callback<Void>() {
+        apiService.deleteMovie("Bearer" + jwtToken, id).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -153,7 +157,7 @@ public class MovieRepository {
         }).start();
 
         // Fetch movie from remote API
-        apiService.getMovieById(id).enqueue(new Callback<MovieEntity>() {
+        apiService.getMovieById("Bearer" + jwtToken, id).enqueue(new Callback<MovieEntity>() {
             @Override
             public void onResponse(Call<MovieEntity> call, Response<MovieEntity> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -183,7 +187,7 @@ public class MovieRepository {
         MutableLiveData<Pair<String, String>> resultLiveData = new MutableLiveData<>();
         MultipartBody.Part imagePart = prepareFilePartImage(imageUri, context);
 
-        apiService.uploadImage(imagePart).enqueue(new Callback<ResponseBody>() {
+        apiService.uploadImage("Bearer" + jwtToken, imagePart).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -216,7 +220,7 @@ public class MovieRepository {
         MutableLiveData<Pair<String, String>> resultLiveData = new MutableLiveData<>();
         MultipartBody.Part videoPart = prepareFilePartVideo(videoUri, context);
 
-        apiService.uploadVideo(videoPart).enqueue(new Callback<ResponseBody>() {
+        apiService.uploadVideo("Bearer" + jwtToken,videoPart).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {

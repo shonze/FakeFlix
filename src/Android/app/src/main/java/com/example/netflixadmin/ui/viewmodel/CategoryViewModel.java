@@ -19,9 +19,9 @@ public class CategoryViewModel extends AndroidViewModel {
     private final CategoryRepository repository;
     public MutableLiveData<List<CategoryEntity>> categoriesLiveData = new MutableLiveData<>();
 
-    public CategoryViewModel(Application application) {
+    public CategoryViewModel(String jwtToken, Application application) {
         super(application);
-        repository = new CategoryRepository(application);
+        repository = new CategoryRepository(jwtToken, application);
     }
 
     public void fetchCategories() {

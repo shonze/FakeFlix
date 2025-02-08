@@ -25,6 +25,7 @@ public class MovieViewModel extends AndroidViewModel {
     public MutableLiveData<List<MovieEntity>> moviesLiveData = new MutableLiveData<>();
     private MutableLiveData<Pair<String,String>> thumbnailUrl = new MutableLiveData<>();
     private MutableLiveData<Pair<String,String>> videoUrl = new MutableLiveData<>();
+    private String jwtToken;
 
 
     public LiveData<Pair<String,String>> getThumbnailUrl() {
@@ -62,10 +63,10 @@ public class MovieViewModel extends AndroidViewModel {
     }
 
 
-    public MovieViewModel(Application application) {
+    public MovieViewModel(String jwtToken, Application application) {
         super(application);
-        repository = new MovieRepository(application);
-        categoryRepository = new CategoryRepository(application);
+        repository = new MovieRepository(jwtToken, application);
+        categoryRepository = new CategoryRepository(jwtToken, application);
     }
 
     public  LiveData<List<CategoryEntity>> getCategories(){
