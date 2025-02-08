@@ -32,6 +32,8 @@ import com.example.advanced_programing_ex_4.entities.Category;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
 import com.example.fakeflix.R;
+import com.example.fakeflix.WatchMovieActivity;
+import com.example.fakeflix.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,7 @@ public class CategoryMoviesActivity extends AppCompatActivity {
     private SharedPreferences preferences;
 
     private String jwtToken;
+    private Movie randomMovie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,33 +97,33 @@ public class CategoryMoviesActivity extends AppCompatActivity {
 
         if (topMoviePlayButton != null) {
             topMoviePlayButton.setOnClickListener(v -> {
-                Intent intent = new Intent(context, CategoryMoviesActivity.class);
+                Intent intent2 = new Intent(context, CategoryMoviesActivity.class);
 
-                   intent.putExtra("movieId", randomMovie.getMovieId());
-                   intent.putExtra("movieTitle", randomMovie.getTitle());
-                   intent.putExtra("movieThumbnail", randomMovie.getThumbnailName());
-                   intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
-                   intent.putExtra("movieDescription", Constants.BASE_URL + "/uploads/" + randomMovie.getDescription());
-                   intent.putExtra("movieLength", randomMovie.getLength());
-                   intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
+                intent2.putExtra("movieId", randomMovie.getMovieId());
+                intent2.putExtra("movieTitle", randomMovie.getTitle());
+                intent2.putExtra("movieThumbnail", randomMovie.getThumbnailName());
+                intent2.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
+                intent2.putExtra("movieDescription", Constants.BASE_URL + "/uploads/" + randomMovie.getDescription());
+                intent2.putExtra("movieLength", randomMovie.getLength());
+                intent2.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
 
-                   context.startActivity(intent);
+                   context.startActivity(intent2);
             });
         }
 
         if (topMovieDescriptionButton != null) {
             topMovieDescriptionButton.setOnClickListener(v -> {
-                Intent intent = new Intent(context, WatchMovieActivity.class);
+                Intent intent3 = new Intent(context, WatchMovieActivity.class);
 
-                intent.putExtra("movieId", randomMovie.getMovieId());
-                intent.putExtra("movieTitle", randomMovie.getTitle());
-                intent.putExtra("movieThumbnail", randomMovie.getThumbnailName());
-                intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
-                intent.putExtra("movieDescription", Constants.BASE_URL + "/uploads/" + randomMovie.getDescription());
-                intent.putExtra("movieLength", randomMovie.getLength());
-                intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
+                intent3.putExtra("movieId", randomMovie.getMovieId());
+                intent3.putExtra("movieTitle", randomMovie.getTitle());
+                intent3.putExtra("movieThumbnail", randomMovie.getThumbnailName());
+                intent3.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
+                intent3.putExtra("movieDescription", Constants.BASE_URL + "/uploads/" + randomMovie.getDescription());
+                intent3.putExtra("movieLength", randomMovie.getLength());
+                intent3.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
 
-                context.startActivity(intent);
+                context.startActivity(intent3);
             });
         }
 
@@ -129,7 +132,7 @@ public class CategoryMoviesActivity extends AppCompatActivity {
 
         // Display random movie from category
         if (category.getMovies() != null && !category.getMovies().isEmpty()) {
-            Movie randomMovie = category.getMovies().get(0);
+            randomMovie = category.getMovies().get(0);
 
             if (randomMovie != null) {
                 if (topMovieTitleTextView != null) {

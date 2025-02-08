@@ -44,6 +44,10 @@ import com.example.advanced_programing_ex_4.View_Models.MoviesViewModel;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
 import com.example.fakeflix.R;
+import com.example.fakeflix.SearchActivity;
+import com.example.fakeflix.WatchMovieActivity;
+import com.example.fakeflix.ui.activity.AdminActivity;
+import com.example.fakeflix.utils.Constants;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -73,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         // Get from the intent if the user is admin
-       if (getIntent().getBooleanExtra("isAdmin")) isAdmin = true;
+       if (getIntent().getBooleanExtra("isAdmin",false)) isAdmin = true;
        else isAdmin = false;
 
         // Get the user token
