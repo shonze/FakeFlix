@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.fakeflix.R;
 import com.example.advanced_programing_ex_4.entities.Movie;
+import com.example.fakeflix.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
             holder.movieTitleTextView.setText(currentMovie.getTitle());
 
-            String thumbnailUrl = "http://10.0.2.2:8080/uploads/" + currentMovie.getThumbnailName();
+            String thumbnailUrl = Constants.BASE_URL +"/uploads/" + currentMovie.getThumbnailName();
 
             // Set image using Glide
             Glide.with(holder.itemView.getContext())
