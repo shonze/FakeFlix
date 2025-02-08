@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fakeflix.Adapters.MovieAdapter;
 import com.example.fakeflix.entities.Movie;
+import com.example.fakeflix.utils.Constants;
 
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -67,8 +68,8 @@ public class SearchActivity extends AppCompatActivity {
 
             intent.putExtra("movieId", movie.getMovieId());
             intent.putExtra("movieTitle", movie.getTitle());
-            intent.putExtra("movieThumbnail", "http://10.0.0.16:8080/uploads/" + movie.getThumbnailName());
-            intent.putExtra("movieVideo", "http://10.0.0.16:8080/uploads/" + movie.getVideoName());
+            intent.putExtra("movieThumbnail", Constants.BASE_URL + "/uploads/" + movie.getThumbnailName());
+            intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + movie.getVideoName());
 
             intent.putExtra("movieDescription", movie.getDescription());
             intent.putExtra("movieLength", movie.getLength());

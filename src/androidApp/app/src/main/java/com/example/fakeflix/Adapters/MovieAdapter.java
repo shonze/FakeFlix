@@ -14,6 +14,8 @@ import com.example.fakeflix.R;
 import com.example.fakeflix.SearchActivity;
 import com.example.fakeflix.WatchMovieActivity;
 import com.example.fakeflix.entities.Movie;
+import com.example.fakeflix.utils.Constants;
+
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
@@ -60,7 +62,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Movie movie = movies.get(position);
         holder.movieTitle.setText(movie.getTitle());
 
-        String imageUrl = "http://10.0.0.16:8080/uploads/" +movie.getThumbnailName();
+        String imageUrl = Constants.BASE_URL + "/uploads/" +movie.getThumbnailName();
         Uri imageUri = Uri.parse(imageUrl);
 
         Glide.with(context).load(imageUri).into(holder.movieThumbnail);

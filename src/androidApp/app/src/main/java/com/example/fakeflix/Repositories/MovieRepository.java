@@ -7,6 +7,8 @@ import com.example.fakeflix.DB.MovieDatabase;
 import com.example.fakeflix.Dao.MovieDao;
 import com.example.fakeflix.api.MovieApiService;
 import com.example.fakeflix.entities.Movie;
+import com.example.fakeflix.utils.Constants;
+
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,7 +27,7 @@ public class MovieRepository {
 
         // Initialize Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.0.16:8080/api/") // Change this to your actual API URL
+                .baseUrl(Constants.BASE_URL + "/api/") // Change this to your actual API URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
