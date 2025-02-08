@@ -4,7 +4,6 @@ import static com.example.advanced_programing_ex_4.MyApplication.context;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,11 +21,11 @@ import com.example.advanced_programing_ex_4.entities.Movie;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
+public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.MovieViewHolder> {
     private List<Movie> moviesList;
     private final LayoutInflater inflater;
 
-    public MovieAdapter(Context context, List<Movie> movies) {
+    public MovieCardAdapter(Context context, List<Movie> movies) {
         this.inflater = LayoutInflater.from(context);
         this.moviesList = movies;
     }

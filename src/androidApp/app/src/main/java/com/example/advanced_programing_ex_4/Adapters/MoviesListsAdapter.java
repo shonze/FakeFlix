@@ -1,7 +1,6 @@
 package com.example.advanced_programing_ex_4.Adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,11 +44,11 @@ public class MoviesListsAdapter extends RecyclerView.Adapter<MoviesListsAdapter.
             holder.listTitleTextView.setText(currentMoviesList.getMoviesTitle());
 
             if (holder.moviesRecyclerView.getAdapter() == null) {
-                MovieAdapter moviesAdapter = new MovieAdapter(holder.itemView.getContext(), currentMoviesList.getMovieList());
+                MovieCardAdapter moviesAdapter = new MovieCardAdapter(holder.itemView.getContext(), currentMoviesList.getMovieList());
                 holder.moviesRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
                 holder.moviesRecyclerView.setAdapter(moviesAdapter);
             } else {
-                ((MovieAdapter) holder.moviesRecyclerView.getAdapter()).setMovies(currentMoviesList.getMovieList());
+                ((MovieCardAdapter) holder.moviesRecyclerView.getAdapter()).setMovies(currentMoviesList.getMovieList());
             }
         }
     }
