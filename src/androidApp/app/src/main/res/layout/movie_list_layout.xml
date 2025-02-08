@@ -10,8 +10,8 @@
         android:id="@+id/movie_list_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Movie List Title"
-        android:textColor="@android:color/white"
+        android:text="@string/movie_list_title"
+        android:textColor="?android:textColorPrimary"
         android:textSize="18sp"
         android:textStyle="bold" />
 

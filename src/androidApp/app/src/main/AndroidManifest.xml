@@ -22,6 +22,9 @@
             android:name=".WatchMovieActivity"
             android:exported="false" />
         <activity
+            android:name=".CategoryMoviesActivity"
+            android:exported="false" />
+        <activity
             android:name=".VideoPlayerActivity"
             android:exported="false" />
         <activity

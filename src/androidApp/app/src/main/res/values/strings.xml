@@ -48,4 +48,13 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="categories">Categories</string>
+    <string name="top_movie_desc">A brief description of the featured movie goes here.</string>
+    <string name="top_movie_title">Featured Movie Title</string>
+    <string name="close">Close</string>
+    <string name="movie_list_title">Movie List Title</string>
+    <string name="fakeflix">FakeFlix</string>
+    <string name="toggle_theme">Toggle Theme</string>
+    <string name="admin_page">Admin Page</string>
+    <string name="log_out">Log Out</string>
 </resources>

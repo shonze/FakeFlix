@@ -22,8 +22,8 @@
             android:id="@+id/top_movie_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Featured Movie Title"
-            android:textColor="@android:color/white"
+            android:text="@string/top_movie_title"
+            android:textColor="?android:textColorPrimary"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -32,8 +32,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="A brief description of the featured movie goes here."
-            android:textColor="@android:color/white"
+            android:text="@string/top_movie_desc"
+            android:textColor="?android:textColorPrimary"
             android:textSize="14sp" />
 
         <LinearLayout
@@ -46,14 +46,14 @@
                 android:id="@+id/top_movie_play_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Play" />
+                android:text="@string/play" />
 
             <Button
                 android:id="@+id/top_movie_info_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="More Info" />
+                android:text="@string/more_info" />
 
         </LinearLayout>
 
