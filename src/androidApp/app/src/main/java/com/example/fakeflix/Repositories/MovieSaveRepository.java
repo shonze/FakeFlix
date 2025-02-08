@@ -16,12 +16,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MovieRepository {
+public class MovieSaveRepository {
     private final MovieDao movieDao;
     private final MovieApiService movieApiService;
     private final MutableLiveData<List<Movie>> searchResults = new MutableLiveData<>();
 
-    public MovieRepository(Application application) {
+    public MovieSaveRepository(Application application) {
         MovieDatabase db = MovieDatabase.getDatabase(application);
         movieDao = db.movieDao();
 
