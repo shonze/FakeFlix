@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import androidx.room.Room;
+
+import com.example.advanced_programing_ex_4.MainActivity;
 import com.example.fakeflix.databinding.ActivityLoginBinding;
 import org.json.JSONObject;
 import okhttp3.ResponseBody;
@@ -110,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                         boolean isAdmin = jsonObject.optBoolean("isAdmin", false);
 
                         // Pass isAdmin to the next activity
-                        Intent intent = new Intent(LoginActivity.this, SearchActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra("isAdmin", isAdmin);
                         startActivity(intent);
                     } catch (Exception e) {

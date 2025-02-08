@@ -11,6 +11,8 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import androidx.core.content.FileProvider;
+
+import com.example.advanced_programing_ex_4.MainActivity;
 import com.example.fakeflix.databinding.ActivityRegisterBinding;
 import android.content.Intent;
 import android.net.Uri;
@@ -312,7 +314,7 @@ public class RegisterActivity extends AppCompatActivity {
                         handleSave(fullName, photoUrl);
 
                         // Navigate to HomeActivity if needed
-                         startActivity(new Intent(RegisterActivity.this, SearchActivity.class));
+                         startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                     } else {
                         Toast.makeText(RegisterActivity.this, "Error: " + response.body().getErrors(), Toast.LENGTH_SHORT).show();
                     }
