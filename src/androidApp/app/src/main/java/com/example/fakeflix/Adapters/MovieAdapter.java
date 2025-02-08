@@ -42,7 +42,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (context instanceof SearchActivity) {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_movie_side, parent, false);
             return new MovieViewHolder(view);
         }
         else if (context instanceof WatchMovieActivity) {
@@ -50,7 +50,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             return new MovieViewHolder(view);
         }
         else {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_movie_side, parent, false);
             return new MovieViewHolder(view);
         }
 //        View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
