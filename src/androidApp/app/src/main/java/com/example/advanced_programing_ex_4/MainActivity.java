@@ -43,6 +43,7 @@ import com.example.advanced_programing_ex_4.View_Models.MoviesListsViewModel;
 import com.example.advanced_programing_ex_4.View_Models.MoviesViewModel;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
+import com.example.fakeflix.R;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Get the user token
         preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY"; //preferences.getString("jwtToken", null);
+        jwtToken = preferences.getString("jwtToken", null);
 
         // Initialize Views Safely
         toolbar = findViewById(R.id.toolbar);

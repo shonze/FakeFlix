@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.advanced_programing_ex_4.Dao.AppDB;
 import com.example.advanced_programing_ex_4.Dao.CategoriesDao;
 import com.example.advanced_programing_ex_4.Dao.MovieDao;
-import com.example.advanced_programing_ex_4.R;
+import com.example.fakeflix.R;
 import com.example.advanced_programing_ex_4.api.CategoriesApi;
 import com.example.advanced_programing_ex_4.api.MovieCallback;
 import com.example.advanced_programing_ex_4.api.MoviesApi;

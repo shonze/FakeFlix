@@ -31,6 +31,7 @@ import com.example.advanced_programing_ex_4.View_Models.MoviesViewModel;
 import com.example.advanced_programing_ex_4.entities.Category;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
+import com.example.fakeflix.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,10 +4,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.advanced_programing_ex_4.Dao.MoviesListsDao;
 import com.example.advanced_programing_ex_4.MyApplication;
-import com.example.advanced_programing_ex_4.R;
+import com.example.fakeflix.R;
 import com.example.advanced_programing_ex_4.Repositories.MoviesListsRepository;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
+import com.example.fakeflix.utils.Constants;
 
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -41,7 +42,7 @@ public class MoviesListsApi {
         this.jwt = jwt;
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(MyApplication.context.getString(R.string.BaseUrl))
+                .baseUrl(Constants.BASE_URL + "/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         webServiceAPI = retrofit.create(WebServiceAPI.class);

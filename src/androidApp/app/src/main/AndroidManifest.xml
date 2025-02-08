@@ -22,7 +22,10 @@
             android:name=".WatchMovieActivity"
             android:exported="false" />
         <activity
-            android:name=".CategoryMoviesActivity"
+            android:name="com.example.advanced_programing_ex_4.CategoryMoviesActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.advanced_programing_ex_4.MainActivity"
             android:exported="false" />
         <activity
             android:name=".VideoPlayerActivity"

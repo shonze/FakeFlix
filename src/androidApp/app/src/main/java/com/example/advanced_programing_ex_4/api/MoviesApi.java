@@ -6,10 +6,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.advanced_programing_ex_4.Dao.MovieDao;
 import com.example.advanced_programing_ex_4.MyApplication;
-import com.example.advanced_programing_ex_4.R;
+import com.example.fakeflix.R;
 import com.example.advanced_programing_ex_4.api.WebServiceAPI;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
+import com.example.fakeflix.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class MoviesApi {
     public MoviesApi(String jwt) {
         // Initialize Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(MyApplication.context.getString(R.string.BaseUrl))
+                .baseUrl(Constants.BASE_URL + "/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         this.webServiceAPI = retrofit.create(WebServiceAPI.class);

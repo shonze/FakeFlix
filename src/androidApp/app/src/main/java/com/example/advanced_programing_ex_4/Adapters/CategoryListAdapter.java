@@ -10,7 +10,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.advanced_programing_ex_4.R;
+import com.example.fakeflix.R;
 import com.example.advanced_programing_ex_4.CategoryMoviesActivity;
 import com.example.advanced_programing_ex_4.entities.Category;
 

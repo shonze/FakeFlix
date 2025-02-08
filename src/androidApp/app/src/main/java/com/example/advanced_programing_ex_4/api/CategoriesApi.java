@@ -4,11 +4,12 @@ import android.content.SharedPreferences;
 
 import com.example.advanced_programing_ex_4.Dao.CategoriesDao;
 import com.example.advanced_programing_ex_4.MyApplication;
-import com.example.advanced_programing_ex_4.R;
+import com.example.fakeflix.R;
 import com.example.advanced_programing_ex_4.Repositories.CategoriesRepository;
 import com.example.advanced_programing_ex_4.Repositories.MoviesListsRepository;
 import com.example.advanced_programing_ex_4.entities.Category;
 import com.example.advanced_programing_ex_4.entities.Movie;
+import com.example.fakeflix.utils.Constants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +31,7 @@ public class CategoriesApi {
     public CategoriesApi(CategoriesDao dao,CategoriesRepository.CategoriesData categoriesData,String jwt) {
         // Initialize Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(MyApplication.context.getString(R.string.BaseUrl))
+                .baseUrl(Constants.BASE_URL + "/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         this.webServiceAPI = retrofit.create(WebServiceAPI.class);
