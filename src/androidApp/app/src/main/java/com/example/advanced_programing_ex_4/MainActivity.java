@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +39,7 @@ import com.example.advanced_programing_ex_4.entities.MoviesList;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private NestedScrollView scrollView;
     private DrawerLayout drawer;
+    private MoviesListsViewModel moviesListsViewModel;
+    private MoviesViewModel moviesViewModel;
+    private  CategoriesViewModel categoriesViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +98,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             lstMoviesLists.setLayoutManager(new LinearLayoutManager(this));
 
             // ViewModel Initialization
-            MoviesListsViewModel moviesListsViewModel = new ViewModelProvider(this, new MoviesListsViewModelFactory(this)).get(MoviesListsViewModel.class);
-            MoviesViewModel moviesViewModel = new ViewModelProvider(this, new MoviesViewModelFactory(this)).get(MoviesViewModel.class);
+            moviesListsViewModel = new ViewModelProvider(this, new MoviesListsViewModelFactory(this)).get(MoviesListsViewModel.class);
+            moviesViewModel = new ViewModelProvider(this, new MoviesViewModelFactory(this)).get(MoviesViewModel.class);
+            categoriesViewModel = new ViewModelProvider(this, new CategoryViewModelFactory(this)).get(CategoriesViewModel.class);
 
             // Observe ViewModel Data Safely
             moviesListsViewModel.get().observe(this, moviesLists -> {
@@ -121,6 +127,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     }
                 }
+            });
+        }
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setOnRefreshListener(() -> {
+
+                Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show();
+
+                moviesListsViewModel.reload();
+                categoriesViewModel.reload();
+
+                new Handler().postDelayed(() -> {
+                    // After loading is done, hide the spinner
+                    swipeRefreshLayout.setRefreshing(false);
+                }, 2000); // Simulating a 2-second delay
             });
         }
     }
@@ -160,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final AlertDialog dialog = builder.create();
 
         RecyclerView recyclerView = view.findViewById(R.id.categoriesRecyclerView);
-        Button closeButton = view.findViewById(R.id.closeButton);
+        AppCompatImageButton closeButton = view.findViewById(R.id.closeButton);
 
         // Ensure RecyclerView exists
         if (recyclerView != null) {

@@ -1,10 +1,10 @@
 package com.example.advanced_programing_ex_4;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.os.Parcelable;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -31,117 +31,105 @@ public class CategoryMoviesActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NestedScrollView scrollView;
     private CategoriesViewModel categoriesViewModel;
-    private MoviesViewModel moviesViewModel;
     private MoviesListsAdapter moviesListsAdapter;
     private TextView movieTitleTextView;
     private TextView movieDescription;
+    private TextView pageTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
+        setContentView(R.layout.activity_category_search);
 
-        Category category = (Category) getIntent().getSerializableExtra("category");
+        Intent intent = getIntent();  // Get the incoming Intent
+        Category category = intent.getParcelableExtra("category");
+        List<Movie> movieList = (List<Movie>) intent.getSerializableExtra("movieList");
 
-        if (category == null) {
-            finish(); // Exit if no category is provided
-            return;
-        }
+        category.setMovies(movieList);
 
-        categoriesViewModel = new ViewModelProvider(this, new CategoryViewModelFactory(this)).get(CategoriesViewModel.class);
-        moviesViewModel = new ViewModelProvider(this, new MoviesViewModelFactory(this)).get(MoviesViewModel.class);
+        pageTitle = findViewById(R.id.category_search_title);
+        pageTitle.setText(category.getName());
 
-        RecyclerView lstMoviesLists = findViewById(R.id.movie_lists_recycler_view);
+        // Initialize the MoviesListsAdapter
         moviesListsAdapter = new MoviesListsAdapter(this);
+        RecyclerView lstMoviesLists = findViewById(R.id.movie_lists_recycler_view);
         lstMoviesLists.setAdapter(moviesListsAdapter);
         lstMoviesLists.setLayoutManager(new LinearLayoutManager(this));
 
+        // Initialize other UI elements
         toolbar = findViewById(R.id.toolbar);
         scrollView = findViewById(R.id.nestedScrollView);
-        AppCompatImageButton goBackButton = findViewById(R.id.go_back);
+        @SuppressLint("WrongViewCast") AppCompatImageButton goBackButton = findViewById(R.id.go_back);
         movieTitleTextView = findViewById(R.id.top_movie_title);
         movieDescription = findViewById(R.id.top_movie_description);
 
-        // Update movies list if category is not null
-        updateMoviesList(category);
-        observeCategoryChanges(category);
+        // Handle scroll transparency for the toolbar
+//        if (scrollView != null && toolbar != null) {
+//            scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+//                int scrollY = Math.min(scrollView.getScrollY(), 500);
+//                float fraction = (float) scrollY / 500;
+//                float alpha = 0f + (0.6f - 0f) * fraction;
+//                int color = Color.argb((int) (alpha * 255), 255, 255, 255);
+//                toolbar.setBackgroundColor(color);
+//            });
+//        }
 
-        // Handle scroll transparency
-        if (scrollView != null && toolbar != null) {
-            scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
-                int scrollY = Math.min(scrollView.getScrollY(), 500);
-                float fraction = (float) scrollY / 500;
-                float alpha = 0f + (0.6f - 0f) * fraction;
-                int color = Color.argb((int) (alpha * 255), 255, 255, 255);
-                toolbar.setBackgroundColor(color);
-            });
-        }
-
-        // Navigate to MainActivity
+        // Navigate to MainActivity on back button click
         if (goBackButton != null) {
             goBackButton.setOnClickListener(v -> {
                 finish(); // Closes the current activity and returns to the previous one
             });
         }
-    }
 
-    private void observeCategoryChanges(Category category) {
-        if (categoriesViewModel == null) return;
+        // Directly use the movies in the Category object
+        updateMoviesList(category);
 
-        categoriesViewModel.get().observe(this, categories -> {
-            if (categories == null || category == null) return;
-
-            for (Category updatedCategory : categories) {
-                if (updatedCategory.getCategoryId().equals(category.getCategoryId()) &&
-                        !updatedCategory.getMoviesIds().equals(category.getMoviesIds())) {
-
-                    category.setMoviesIds(updatedCategory.getMoviesIds());
-                    updateMoviesList(category);
-                }
-            }
-
-            // Display random movie from updated list
-            if (moviesViewModel != null) {
-                Movie randomMovie = moviesViewModel.getRandomMovie(category.getMoviesIds());
-                if (randomMovie != null && movieTitleTextView != null && movieDescription != null) {
-                    movieTitleTextView.setText(randomMovie.getTitle());
-                    movieDescription.setText(randomMovie.getDescription());
-                }
-            }
-        });
+        // Display random movie from category
+        if (category.getMovies() != null && !category.getMovies().isEmpty()) {
+            Movie randomMovie = category.getMovies().get(0); // Example: pick the first movie (you can change this logic)
+            movieTitleTextView.setText(randomMovie.getTitle());
+            movieDescription.setText(randomMovie.getDescription());
+        }
     }
 
     private void updateMoviesList(Category category) {
-        if (category == null || moviesViewModel == null || moviesListsAdapter == null) return;
+        if (category == null || moviesListsAdapter == null) return;
 
-        List<MoviesList> moviesLists = splitMoviesIntoLists(category.getMoviesIds());
-        for (MoviesList moviesList : moviesLists) {
-            moviesViewModel.getMoviesByIds(moviesList.getMovieIds()).observe(this, movies -> {
-                if (movies != null && !movies.isEmpty()) {
-                    moviesList.setMovieList(movies);
-                    moviesListsAdapter.setMoviesLists(new ArrayList<>(moviesLists));
-                }
-            });
-        }
+        List<MoviesList> moviesLists = splitMoviesIntoLists(category.getMovies());
+        moviesListsAdapter.setMoviesLists(moviesLists);
     }
 
-    private List<MoviesList> splitMoviesIntoLists(List<String> movieIds) {
+    private List<MoviesList> splitMoviesIntoLists(List<Movie> movies) {
         List<MoviesList> moviesLists = new ArrayList<>();
-        if (movieIds == null || movieIds.isEmpty()) return moviesLists;
+        if (movies == null || movies.isEmpty()) return moviesLists;
 
-        List<String> batch = new ArrayList<>();
-        for (String movieId : movieIds) {
-            if (movieId != null) {
-                batch.add(movieId);
-                if (batch.size() == 5) {
-                    moviesLists.add(new MoviesList("", new ArrayList<>(batch)));
-                    batch.clear();
+        List<Movie> batch = new ArrayList<>();
+        for (Movie movie : movies) {
+            batch.add(movie);
+            if (batch.size() == 5) {
+                List<String> moviesIds = new ArrayList<>();
+                for (Movie item : batch) {
+                    moviesIds.add(item.getMovieId());
                 }
+                MoviesList movieList = new MoviesList("", moviesIds);
+                movieList.setMovieList(batch);
+
+                moviesLists.add(movieList);
+
+                batch.clear();
             }
         }
         if (!batch.isEmpty()) {
-            moviesLists.add(new MoviesList("", batch));
+            List<String> moviesIds = new ArrayList<>();
+            for (Movie item : batch) {
+                moviesIds.add(item.getMovieId());
+            }
+            MoviesList movieList = new MoviesList("", moviesIds);
+            movieList.setMovieList(batch);
+
+            moviesLists.add(movieList);
         }
         return moviesLists;
     }
 }
+

@@ -50,7 +50,7 @@ public class CategoriesApi {
                         dao.clear();
                         dao.insertList(response.body());
 
-                        categoriesData.fetchMovieDetails(response.body());
+                        categoriesData.fetchMovieDetails(response.body(),false);
                     }).start();
                 }
             }

@@ -12,6 +12,7 @@ import com.example.advanced_programing_ex_4.Dao.AppDB;
 import com.example.advanced_programing_ex_4.Dao.MovieDao;
 import com.example.advanced_programing_ex_4.Dao.MoviesListsDao;
 import com.example.advanced_programing_ex_4.api.MovieCallback;
+import com.example.advanced_programing_ex_4.api.MovieListCallback;
 import com.example.advanced_programing_ex_4.api.MoviesApi;
 import com.example.advanced_programing_ex_4.api.MoviesListsApi;
 import com.example.advanced_programing_ex_4.entities.Movie;
@@ -83,8 +84,36 @@ public class MoviesListsRepository {
         /**
          * Fetches movies from the API when no data is available in the database.
          */
-        private void fetchMoviesFromApi() {
-            moviesListsApi.get();
+        public void fetchMoviesFromApi() {
+            moviesListsApi.get(new MovieListCallback() {
+                @Override
+                public void onSuccess(Map<String, List<String>> responseBody) {
+                    new Thread(() -> {
+                        List<MoviesList> movieLists = new ArrayList<>();
+
+                        // Transform the map into moviesLists
+                        for (Map.Entry<String, List<String>> entry : responseBody.entrySet()) {
+                            String key = entry.getKey();
+                            List<String> moviesIds = entry.getValue();
+
+                            MoviesList movieList = new MoviesList(key, moviesIds);
+                            movieLists.add(movieList);
+                        }
+                        // Clear the DAO and insert the new list
+                        dao.clear();
+                        dao.insertList(movieLists);
+
+                        movieDao.clear();
+
+                        fetchMovieDetails(movieLists);
+                    }).start();
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    System.err.println("Error fetching moviesLists " + ": " + errorMessage);
+                }
+            });
         }
 
         /**
@@ -106,7 +135,7 @@ public class MoviesListsRepository {
                         .map(movieMap::get) // Get movie from map
                         .filter(Objects::nonNull) // Avoid nulls
                         .collect(Collectors.toList());
-                if(filteredMovies.isEmpty()){
+                if (filteredMovies.isEmpty()) {
                     data.remove(item);
                 } else {
                     item.setMovieList(filteredMovies);
@@ -123,7 +152,6 @@ public class MoviesListsRepository {
 
             for (String movieId : movieIds) {
                 Movie cachedMovie = movieDao.getMovieById(movieId);
-
                 if (cachedMovie != null) {
                     movieMap.put(movieId, cachedMovie);
                     latch.countDown();
@@ -160,5 +188,9 @@ public class MoviesListsRepository {
 
     public LiveData<List<MoviesList>> getAll() {
         return moviesListData;
+    }
+
+    public void reload() {
+        moviesListData.fetchMoviesFromApi();
     }
 }

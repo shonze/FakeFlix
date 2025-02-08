@@ -49,7 +49,7 @@ public class CategoriesRepository {
                 if (data == null || data.isEmpty()) {
                     fetchMoviesFromApi();
                 } else {
-                    fetchMovieDetails(data);
+                    fetchMovieDetails(data,true);
                 }
             });
         }
@@ -64,7 +64,7 @@ public class CategoriesRepository {
         /**
          * Fetches movie details for each `Category` item asynchronously.
          */
-        public void fetchMovieDetails(@NonNull List<Category> data) {
+        public void fetchMovieDetails(@NonNull List<Category> data, boolean useDao) {
             if (data == null || data.isEmpty()) {
                 postValue(Collections.emptyList());
                 return;
@@ -78,7 +78,7 @@ public class CategoriesRepository {
             }
 
             // Fetch movie details efficiently
-            Map<String, Movie> movieMap = fromIdsToMovies(new ArrayList<>(uniqueMovieIds));
+            Map<String, Movie> movieMap = fromIdsToMovies(new ArrayList<>(uniqueMovieIds),useDao);
 
             List<Category> filteredCategories = new ArrayList<>();
             for (Category item : data) {
@@ -101,7 +101,7 @@ public class CategoriesRepository {
         /**
          * Converts a list of movie IDs to a map of movie details.
          */
-        public Map<String, Movie> fromIdsToMovies(List<String> movieIds) {
+        public Map<String, Movie> fromIdsToMovies(List<String> movieIds,boolean useDao) {
             if (movieIds == null || movieIds.isEmpty()) return Collections.emptyMap();
 
             ConcurrentHashMap<String, Movie> movieMap = new ConcurrentHashMap<>();
@@ -112,9 +112,11 @@ public class CategoriesRepository {
                     latch.countDown();
                     continue;
                 }
+                Movie cachedMovie = null;
 
-                Movie cachedMovie = movieDao.getMovieById(movieId);
-
+                if(useDao) {
+                    cachedMovie = movieDao.getMovieById(movieId);
+                }
                 if (cachedMovie != null) {
                     movieMap.put(movieId, cachedMovie);
                     latch.countDown();
@@ -153,5 +155,9 @@ public class CategoriesRepository {
 
     public LiveData<List<Category>> getAll() {
         return categoriesData;
+    }
+
+    public void reload() {
+        categoriesData.fetchMoviesFromApi();
     }
 }

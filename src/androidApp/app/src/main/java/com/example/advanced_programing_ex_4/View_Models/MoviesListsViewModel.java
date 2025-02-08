@@ -23,6 +23,6 @@ public class MoviesListsViewModel extends ViewModel {
     public LiveData<List<MoviesList>> get() {
         return moviesLists;
     }
-//
-//    public void reload() { repository.reload(); }
+
+    public void reload() { repository.reload(); }
 }

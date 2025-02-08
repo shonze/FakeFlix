@@ -42,7 +42,7 @@ public class MoviesListsApi {
         webServiceAPI = retrofit.create(WebServiceAPI.class);
     }
 
-    public void get() {
+    public void get(final MovieListCallback callback) {
         Map<String, String> headers = new HashMap<>();
         headers.put("authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY");
         headers.put("Content-Type", "application/json");
@@ -51,34 +51,16 @@ public class MoviesListsApi {
             @Override
             public void onResponse(Call<Map<String, List<String>>> call, Response<Map<String, List<String>>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    new Thread(() -> {
-                        Map<String, List<String>> responseBody = response.body();
-                        List<MoviesList> movieLists = new ArrayList<>();
-
-                        // Transform the map into moviesLists
-                        for (Map.Entry<String, List<String>> entry : responseBody.entrySet()) {
-                            String key = entry.getKey();
-                            List<String> moviesIds = entry.getValue();
-
-                            MoviesList movieList = new MoviesList(key, moviesIds);
-                            movieLists.add(movieList);
-                        }
-                        // Clear the DAO and insert the new list
-                        dao.clear();
-                        dao.insertList(movieLists);
-
-                        // Get the actual moviesLists with the movies
-                        moviesListData.fetchMovieDetails(movieLists);
-                    }).start();
+                    callback.onSuccess(response.body());
                 } else {
                     // Handle the case where the response is not successful or the body is null
-                    System.err.println("Response was not successful or body was null. Code: " + response.code());
+                    callback.onFailure(null);
                 }
             }
 
             @Override
             public void onFailure(Call<Map<String, List<String>>> call, Throwable t) {
-
+                callback.onFailure(null);
             }
         });
     }

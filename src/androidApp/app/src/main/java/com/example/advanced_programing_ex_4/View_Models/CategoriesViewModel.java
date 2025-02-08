@@ -24,4 +24,8 @@ public class CategoriesViewModel extends ViewModel {
     public LiveData<List<Category>> get() {
         return categoriesList;
     }
+
+    public void reload() {
+        repository.reload();
+    }
 }

@@ -13,6 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:swipeRefreshLayoutProgressSpinnerBackgroundColor="?android:textColorPrimary">
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
@@ -35,6 +41,8 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"

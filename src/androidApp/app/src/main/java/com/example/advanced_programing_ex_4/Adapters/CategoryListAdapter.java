@@ -14,6 +14,7 @@ import com.example.advanced_programing_ex_4.R;
 import com.example.advanced_programing_ex_4.CategoryMoviesActivity;
 import com.example.advanced_programing_ex_4.entities.Category;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.categoryButton.setText(currentCategory.getName());
             holder.categoryButton.setOnClickListener(v -> {
                 Intent intent = new Intent(context, CategoryMoviesActivity.class);
+
                 intent.putExtra("category",currentCategory);
+                intent.putExtra("movieList", (Serializable) currentCategory.getMovies());
                 context.startActivity(intent);
             });
         }

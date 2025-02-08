@@ -44,13 +44,12 @@ public class MoviesList {
         this.moviesTitle = moviesTitle;
     }
 
+    // Constructor with movie IDs
     public MoviesList(@NonNull String moviesTitle, List<String> movieIds) {
         this.moviesTitle = moviesTitle;
-        this.movieIds = movieIds;
-
+        this.movieIds = movieIds != null ? movieIds : new ArrayList<>();  // Ensuring non-null list
+        this.movieList = new ArrayList<>();  // Initialize empty list for Movie objects
     }
-
-    public MoviesList() {}
 
     @NonNull
     public String getMoviesTitle() {

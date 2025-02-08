@@ -16,6 +16,7 @@ roomRuntime = "2.6.1"
 roomCompiler = "2.6.1"
 recyclerview = "1.4.0"
 uiGraphicsAndroid = "1.7.7"
+swiperefreshlayout = "1.1.0"
 
 
 [libraries]
@@ -35,6 +36,7 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
+swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 
 [plugins]
