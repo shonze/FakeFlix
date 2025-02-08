@@ -61,7 +61,7 @@ public class CategoryMoviesActivity extends AppCompatActivity {
 
         // Get the user token
         preferences = getSharedPreferences("AppPrefs", getApplicationContext().MODE_PRIVATE);
-        jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY"; //preferences.getString("jwtToken", null);
+        jwtToken = preferences.getString("jwtToken", null);
 
 
         category.setMovies(movieList);
@@ -94,13 +94,33 @@ public class CategoryMoviesActivity extends AppCompatActivity {
 
         if (topMoviePlayButton != null) {
             topMoviePlayButton.setOnClickListener(v -> {
-                Toast.makeText(context, "Play button clicked!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, CategoryMoviesActivity.class);
+
+                   intent.putExtra("movieId", randomMovie.getMovieId());
+                   intent.putExtra("movieTitle", randomMovie.getTitle());
+                   intent.putExtra("movieThumbnail", randomMovie.getThumbnailName());
+                   intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
+                   intent.putExtra("movieDescription", Constants.BASE_URL + "/uploads/" + randomMovie.getDescription());
+                   intent.putExtra("movieLength", randomMovie.getLength());
+                   intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
+
+                   context.startActivity(intent);
             });
         }
 
         if (topMovieDescriptionButton != null) {
             topMovieDescriptionButton.setOnClickListener(v -> {
-                Toast.makeText(context, "Description button clicked!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, WatchMovieActivity.class);
+
+                intent.putExtra("movieId", randomMovie.getMovieId());
+                intent.putExtra("movieTitle", randomMovie.getTitle());
+                intent.putExtra("movieThumbnail", randomMovie.getThumbnailName());
+                intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
+                intent.putExtra("movieDescription", Constants.BASE_URL + "/uploads/" + randomMovie.getDescription());
+                intent.putExtra("movieLength", randomMovie.getLength());
+                intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
+
+                context.startActivity(intent);
             });
         }
 
@@ -119,7 +139,7 @@ public class CategoryMoviesActivity extends AppCompatActivity {
                     topMovieDescription.setText(randomMovie.getDescription());
                 }
 
-                String thumbnailUrl = "http://10.0.2.2:8080/uploads/" + randomMovie.getThumbnailName();
+                String thumbnailUrl = Constants.BASE_URL + "/uploads/" + randomMovie.getThumbnailName();
 
                 // Set image using Glide
                 Glide.with(topMovieThumbnail.getContext())
