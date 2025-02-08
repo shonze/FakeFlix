@@ -1,11 +1,18 @@
 package com.example.advanced_programing_ex_4;
 
+import static com.example.advanced_programing_ex_4.MyApplication.context;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.advanced_programing_ex_4.Adapters.MoviesListsAdapter;
 import com.example.advanced_programing_ex_4.Factories.CategoryViewModelFactory;
 import com.example.advanced_programing_ex_4.Factories.MoviesViewModelFactory;
@@ -32,9 +40,14 @@ public class CategoryMoviesActivity extends AppCompatActivity {
     private NestedScrollView scrollView;
     private CategoriesViewModel categoriesViewModel;
     private MoviesListsAdapter moviesListsAdapter;
-    private TextView movieTitleTextView;
-    private TextView movieDescription;
+    private TextView topMovieTitleTextView;
+    private TextView topMovieDescription;
+    private ImageView topMovieThumbnail;
     private TextView pageTitle;
+
+    private SharedPreferences preferences;
+
+    private String jwtToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +57,11 @@ public class CategoryMoviesActivity extends AppCompatActivity {
         Intent intent = getIntent();  // Get the incoming Intent
         Category category = intent.getParcelableExtra("category");
         List<Movie> movieList = (List<Movie>) intent.getSerializableExtra("movieList");
+
+        // Get the user token
+        preferences = getSharedPreferences("AppPrefs", getApplicationContext().MODE_PRIVATE);
+        jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY"; //preferences.getString("jwtToken", null);
+
 
         category.setMovies(movieList);
 
@@ -60,19 +78,11 @@ public class CategoryMoviesActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         scrollView = findViewById(R.id.nestedScrollView);
         @SuppressLint("WrongViewCast") AppCompatImageButton goBackButton = findViewById(R.id.go_back);
-        movieTitleTextView = findViewById(R.id.top_movie_title);
-        movieDescription = findViewById(R.id.top_movie_description);
-
-        // Handle scroll transparency for the toolbar
-//        if (scrollView != null && toolbar != null) {
-//            scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
-//                int scrollY = Math.min(scrollView.getScrollY(), 500);
-//                float fraction = (float) scrollY / 500;
-//                float alpha = 0f + (0.6f - 0f) * fraction;
-//                int color = Color.argb((int) (alpha * 255), 255, 255, 255);
-//                toolbar.setBackgroundColor(color);
-//            });
-//        }
+        topMovieTitleTextView = findViewById(R.id.top_movie_title);
+        topMovieDescription = findViewById(R.id.top_movie_description);
+        topMovieThumbnail = findViewById(R.id.top_movie_image);
+        Button topMoviePlayButton = findViewById(R.id.top_movie_play_button);
+        Button topMovieDescriptionButton = findViewById(R.id.top_movie_info_button);
 
         // Navigate to MainActivity on back button click
         if (goBackButton != null) {
@@ -81,14 +91,42 @@ public class CategoryMoviesActivity extends AppCompatActivity {
             });
         }
 
+        if (topMoviePlayButton != null) {
+            topMoviePlayButton.setOnClickListener(v -> {
+                Toast.makeText(context, "Play button clicked!", Toast.LENGTH_SHORT).show();
+            });
+        }
+
+        if (topMovieDescriptionButton != null) {
+            topMovieDescriptionButton.setOnClickListener(v -> {
+                Toast.makeText(context, "Description button clicked!", Toast.LENGTH_SHORT).show();
+            });
+        }
+
         // Directly use the movies in the Category object
         updateMoviesList(category);
 
         // Display random movie from category
         if (category.getMovies() != null && !category.getMovies().isEmpty()) {
-            Movie randomMovie = category.getMovies().get(0); // Example: pick the first movie (you can change this logic)
-            movieTitleTextView.setText(randomMovie.getTitle());
-            movieDescription.setText(randomMovie.getDescription());
+            Movie randomMovie = category.getMovies().get(0);
+
+            if (randomMovie != null) {
+                if (topMovieTitleTextView != null) {
+                    topMovieTitleTextView.setText(randomMovie.getTitle());
+                }
+                if (topMovieDescription != null) {
+                    topMovieDescription.setText(randomMovie.getDescription());
+                }
+
+                String thumbnailUrl = "http://10.0.2.2:8080/uploads/" + randomMovie.getThumbnailName();
+
+                // Set image using Glide
+                Glide.with(topMovieThumbnail.getContext())
+                        .load(Uri.parse(thumbnailUrl)) // URL of the image
+                        .placeholder(R.drawable.sample_thumbnail_background) // Default image while loading
+                        .error(R.drawable.sample_thumbnail_background) // If failed to load
+                        .into(topMovieThumbnail); // ImageView reference
+            }
         }
     }
 

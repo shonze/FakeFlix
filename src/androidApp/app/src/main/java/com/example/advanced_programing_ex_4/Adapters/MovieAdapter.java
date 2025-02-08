@@ -3,6 +3,7 @@ package com.example.advanced_programing_ex_4.Adapters;
 import static com.example.advanced_programing_ex_4.MyApplication.context;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.advanced_programing_ex_4.R;
 import com.example.advanced_programing_ex_4.entities.Movie;
 
@@ -44,6 +46,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             Movie currentMovie = moviesList.get(position);
 
             holder.movieTitleTextView.setText(currentMovie.getTitle());
+
+            String thumbnailUrl = "http://10.0.2.2:8080/uploads/" + currentMovie.getThumbnailName();
+
+            // Set image using Glide
+            Glide.with(holder.itemView.getContext())
+                    .load(Uri.parse(thumbnailUrl)) // URL of the image
+                    .placeholder(R.drawable.sample_thumbnail_background) // Default image while loading
+                    .error(R.drawable.sample_thumbnail_background) // If failed to load
+                    .into(holder.movieThumbnail); // ImageView reference
+
             holder.movieThumbnail.setOnClickListener(v -> {
                 Toast.makeText(context, "Image clicked!", Toast.LENGTH_SHORT).show();
             });
@@ -66,7 +78,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     static class MovieViewHolder extends RecyclerView.ViewHolder {
         private final TextView movieTitleTextView;
-
         private final ImageView movieThumbnail;
         public MovieViewHolder(@NonNull View itemView) {
             // The movie should appear as an image that can be clicked.

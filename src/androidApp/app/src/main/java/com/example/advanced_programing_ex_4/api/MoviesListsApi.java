@@ -8,6 +8,8 @@ import com.example.advanced_programing_ex_4.R;
 import com.example.advanced_programing_ex_4.Repositories.MoviesListsRepository;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
+
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -25,15 +27,18 @@ public class MoviesListsApi {
     // So we can use some of its special functunalities
     private MoviesListsRepository.MoviesListData moviesListData;
     private MoviesListsDao dao;
-
     private MoviesApi moviesApi;
+
+    private String jwt;
+
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
 
-    public MoviesListsApi(MoviesListsRepository.MoviesListData moviesListData, MoviesListsDao dao) {
+    public MoviesListsApi(MoviesListsRepository.MoviesListData moviesListData, MoviesListsDao dao,String jwt) {
         this.moviesListData = moviesListData;
         this.dao = dao;
-        this.moviesApi = new MoviesApi();
+        this.moviesApi = new MoviesApi(jwt);
+        this.jwt = jwt;
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(MyApplication.context.getString(R.string.BaseUrl))
@@ -44,7 +49,7 @@ public class MoviesListsApi {
 
     public void get(final MovieListCallback callback) {
         Map<String, String> headers = new HashMap<>();
-        headers.put("authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY");
+        headers.put("authorization", "Bearer " + jwt); //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY");
         headers.put("Content-Type", "application/json");
         Call<Map<String, List<String>>> call = webServiceAPI.getMovies(headers);
         call.enqueue(new Callback<Map<String, List<String>>>() {

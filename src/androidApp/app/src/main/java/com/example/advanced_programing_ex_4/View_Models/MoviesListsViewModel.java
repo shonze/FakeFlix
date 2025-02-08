@@ -15,9 +15,12 @@ public class MoviesListsViewModel extends ViewModel {
     private LiveData<List<MoviesList>> moviesLists;
     private MoviesListsRepository repository;
 
-    public MoviesListsViewModel(Context context) {
-        repository = new MoviesListsRepository(context);
+    private  String jwt;
+
+    public MoviesListsViewModel(Context context,String jwt) {
+        repository = new MoviesListsRepository(context,jwt);
         this.moviesLists = repository.getAll();
+        this.jwt = jwt;
     }
 
     public LiveData<List<MoviesList>> get() {

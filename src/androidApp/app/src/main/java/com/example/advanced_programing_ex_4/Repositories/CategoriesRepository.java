@@ -26,13 +26,16 @@ public class CategoriesRepository {
     private final MoviesApi moviesApi;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public CategoriesRepository(Context context) {
+    private String jwt;
+
+    public CategoriesRepository(Context context,String jwt) {
         AppDB db = AppDB.getInstance(context);
         this.dao = db.categoriesDao();
         this.movieDao = db.movieDao();
         this.categoriesData = new CategoriesData();
-        this.categoriesApi = new CategoriesApi(dao, categoriesData);
-        this.moviesApi = new MoviesApi();
+        this.categoriesApi = new CategoriesApi(dao, categoriesData,jwt);
+        this.moviesApi = new MoviesApi(jwt);
+        this.jwt = jwt;
     }
 
     public class CategoriesData extends MutableLiveData<List<Category>> {

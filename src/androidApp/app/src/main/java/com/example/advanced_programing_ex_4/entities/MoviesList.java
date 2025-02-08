@@ -37,7 +37,7 @@ public class MoviesList {
     }
 
     public void setMovieList(List<Movie> movieList) {
-        this.movieList = movieList;
+        this.movieList = new ArrayList<>(movieList);
     }
 
     public void setMoviesTitle(@NonNull String moviesTitle) {

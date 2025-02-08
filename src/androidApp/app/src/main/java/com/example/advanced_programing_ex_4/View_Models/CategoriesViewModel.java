@@ -16,9 +16,12 @@ public class CategoriesViewModel extends ViewModel {
     private LiveData<List<Category>> categoriesList;
     private CategoriesRepository repository;
 
-    public CategoriesViewModel(Context context) {
-        repository = new CategoriesRepository(context);
+    private String jwt;
+
+    public CategoriesViewModel(Context context, String jwt) {
+        repository = new CategoriesRepository(context,jwt);
         this.categoriesList = repository.getAll();
+        this.jwt = jwt;
     }
 
     public LiveData<List<Category>> get() {

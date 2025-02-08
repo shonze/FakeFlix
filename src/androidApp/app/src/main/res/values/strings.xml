@@ -11,4 +11,7 @@
     <string name="close">Close</string>
     <string name="movie_list_title">Movie List Title</string>
     <string name="fakeflix">FakeFlix</string>
+    <string name="toggle_theme">Toggle Theme</string>
+    <string name="admin_page">Admin Page</string>
+    <string name="log_out">Log Out</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.example.advanced_programing_ex_4.api;
 
+import android.content.SharedPreferences;
+
 import com.example.advanced_programing_ex_4.Dao.CategoriesDao;
 import com.example.advanced_programing_ex_4.MyApplication;
 import com.example.advanced_programing_ex_4.R;
@@ -23,7 +25,9 @@ public class CategoriesApi {
     private final CategoriesDao dao;
     private CategoriesRepository.CategoriesData categoriesData;
 
-    public CategoriesApi(CategoriesDao dao,CategoriesRepository.CategoriesData categoriesData) {
+    private String jwt;
+
+    public CategoriesApi(CategoriesDao dao,CategoriesRepository.CategoriesData categoriesData,String jwt) {
         // Initialize Retrofit
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MyApplication.context.getString(R.string.BaseUrl))
@@ -33,12 +37,13 @@ public class CategoriesApi {
 
         this.categoriesData = categoriesData;
         this.dao = dao;
+        this.jwt = jwt;
     }
 
     // Fetch the movie from the API if not found in local database
     public void get(){
         Map<String, String> headers = new HashMap<>();
-        headers.put("authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY");
+        headers.put("authorization", "Bearer " + jwt); //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY");
         headers.put("Content-Type", "application/json");
 
         Call<List<Category>> call = webServiceAPI.getCategories(headers);

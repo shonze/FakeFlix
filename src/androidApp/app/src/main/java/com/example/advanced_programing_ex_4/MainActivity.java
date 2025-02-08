@@ -1,16 +1,22 @@
 package com.example.advanced_programing_ex_4;
 
+import static android.view.View.VISIBLE;
 import static com.example.advanced_programing_ex_4.MyApplication.context;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.AppCompatImageButton;
 
+import com.bumptech.glide.Glide;
 import com.example.advanced_programing_ex_4.Adapters.CategoryListAdapter;
 import com.example.advanced_programing_ex_4.Adapters.MoviesListsAdapter;
 import com.example.advanced_programing_ex_4.Factories.CategoryViewModelFactory;
@@ -41,6 +48,7 @@ import com.google.android.material.navigation.NavigationView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -52,12 +60,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private MoviesListsViewModel moviesListsViewModel;
     private MoviesViewModel moviesViewModel;
-    private  CategoriesViewModel categoriesViewModel;
+    private CategoriesViewModel categoriesViewModel;
+    private SharedPreferences preferences;
+    private String jwtToken;
+    private boolean isAdmin;
+    private Movie randomMovie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Get from the intent if the user is admin
+        isAdmin = true;
+//        if (getIntent().getBooleanExtra("isAdmin")) isAdmin = true;
+//        else isAdmin = false;
+
+        // Get the user token
+        preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY"; //preferences.getString("jwtToken", null);
 
         // Initialize Views Safely
         toolbar = findViewById(R.id.toolbar);
@@ -65,10 +86,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @SuppressLint("WrongViewCast") AppCompatImageButton searchButton = findViewById(R.id.search_button);
         @SuppressLint("WrongViewCast") AppCompatImageButton menuButton = findViewById(R.id.menuButton);
         RecyclerView lstMoviesLists = findViewById(R.id.movie_lists_recycler_view);
-        TextView movieTitleTextView = findViewById(R.id.top_movie_title);
-        TextView movieDescription = findViewById(R.id.top_movie_description);
+        TextView topMovieTitleTextView = findViewById(R.id.top_movie_title);
+        TextView topMovieDescription = findViewById(R.id.top_movie_description);
+        ImageView topMovieThumbnail = findViewById(R.id.top_movie_image);
+        Button topMoviePlayButton = findViewById(R.id.top_movie_play_button);
+        Button topMovieDescriptionButton = findViewById(R.id.top_movie_info_button);
+
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+
+        MenuItem adminMenuItem = menu.findItem(R.id.admin_screen);
+
+        // Check if the user is an admin
+        if (isAdmin) {
+            // Show the admin menu item
+            adminMenuItem.setVisible(true);
+        } else {
+            // Hide the admin menu item
+            adminMenuItem.setVisible(false);
+        }
+
 
         setSupportActionBar(toolbar);
 
@@ -87,6 +125,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             });
         }
 
+        if (topMoviePlayButton != null) {
+            topMoviePlayButton.setOnClickListener(v -> {
+                if (randomMovie != null) {
+//                    Intent intent = new Intent(context, CategoryMoviesActivity.class);
+//
+//                    intent.putExtra("movieId", randomMovie.getMovieId());
+//                    intent.putExtra("movieTitle", randomMovie.getTitle());
+//                    intent.putExtra("movieThumbnail", randomMovie.getThumbnailName());
+//                    intent.putExtra("movieVideo", "http://10.0.2.2:8080/uploads/" + randomMovie.getVideoName());
+//                    intent.putExtra("movieDescription", "http://10.0.2.2:8080/uploads/" + randomMovie.getDescription());
+//                    intent.putExtra("movieLength", randomMovie.getLength());
+//                    intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
+//
+//                    context.startActivity(intent);
+                    Toast.makeText(context, "Play button clicked!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        if (topMovieDescriptionButton != null) {
+            topMovieDescriptionButton.setOnClickListener(v -> {
+                Toast.makeText(context, "Description button clicked!", Toast.LENGTH_SHORT).show();
+            });
+        }
+
         if (menuButton != null) {
             menuButton.setOnClickListener(v -> drawer.openDrawer(GravityCompat.START));
         }
@@ -98,9 +161,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             lstMoviesLists.setLayoutManager(new LinearLayoutManager(this));
 
             // ViewModel Initialization
-            moviesListsViewModel = new ViewModelProvider(this, new MoviesListsViewModelFactory(this)).get(MoviesListsViewModel.class);
-            moviesViewModel = new ViewModelProvider(this, new MoviesViewModelFactory(this)).get(MoviesViewModel.class);
-            categoriesViewModel = new ViewModelProvider(this, new CategoryViewModelFactory(this)).get(CategoriesViewModel.class);
+            moviesListsViewModel = new ViewModelProvider(this, new MoviesListsViewModelFactory(this, jwtToken)).get(MoviesListsViewModel.class);
+            moviesViewModel = new ViewModelProvider(this, new MoviesViewModelFactory(this, jwtToken)).get(MoviesViewModel.class);
+            categoriesViewModel = new ViewModelProvider(this, new CategoryViewModelFactory(this, jwtToken)).get(CategoriesViewModel.class);
 
             // Observe ViewModel Data Safely
             moviesListsViewModel.get().observe(this, moviesLists -> {
@@ -115,15 +178,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
 
                     if (!uniqueMovieIds.isEmpty()) {
-                        Movie randomMovie = moviesViewModel.getRandomMovie(new ArrayList<>(uniqueMovieIds));
+                        randomMovie = moviesViewModel.getRandomMovie(new ArrayList<>(uniqueMovieIds));
 
                         if (randomMovie != null) {
-                            if (movieTitleTextView != null) {
-                                movieTitleTextView.setText(randomMovie.getTitle());
+                            if (topMovieTitleTextView != null) {
+                                topMovieTitleTextView.setText(randomMovie.getTitle());
                             }
-                            if (movieDescription != null) {
-                                movieDescription.setText(randomMovie.getDescription());
+                            if (topMovieDescription != null) {
+                                topMovieDescription.setText(randomMovie.getDescription());
                             }
+                            String thumbnailUrl = "http://10.0.2.2:8080/uploads/" + randomMovie.getThumbnailName();
+
+                            // Set image using Glide
+                            Glide.with(topMovieThumbnail.getContext())
+                                    .load(Uri.parse(thumbnailUrl)) // URL of the image
+                                    .placeholder(R.drawable.sample_thumbnail_background) // Default image while loading
+                                    .error(R.drawable.sample_thumbnail_background) // If failed to load
+                                    .into(topMovieThumbnail); // ImageView reference
                         }
                     }
                 }
@@ -153,8 +224,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_categories) {
             showFloatingList();
+        } else if (id == R.id.admin_screen) {
+//            Intent intent = new Intent(context, AdminActivity.class);
+//
+//            context.startActivity(intent);
+            Toast.makeText(this, "Admin Page Clicked", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_theme) {
+            Toast.makeText(this, "Admin Page Clicked", Toast.LENGTH_SHORT).show();
             ThemeUtils.toggleTheme(this);
+        } else if (id == R.id.logout) {
+            // Delete the shared preference of the JwtToken
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.remove("AppPrefs");
+            editor.apply();
+
+            //            Intent intent = new Intent(context, AdminActivity.class);
+//
+//            context.startActivity(intent);
+            Toast.makeText(context, "Log Out button clicked!", Toast.LENGTH_SHORT).show();
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -186,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Ensure RecyclerView exists
         if (recyclerView != null) {
-            CategoriesViewModel categoriesViewModel = new ViewModelProvider(this, new CategoryViewModelFactory(this)).get(CategoriesViewModel.class);
+            CategoriesViewModel categoriesViewModel = new ViewModelProvider(this, new CategoryViewModelFactory(this, jwtToken)).get(CategoriesViewModel.class);
             CategoryListAdapter adapter = new CategoryListAdapter(this, new ArrayList<>());
 
             categoriesViewModel.get().observe(this, categories -> {

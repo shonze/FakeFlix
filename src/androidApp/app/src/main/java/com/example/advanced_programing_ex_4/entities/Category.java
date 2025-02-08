@@ -23,7 +23,7 @@ public class Category implements Parcelable {
     @SerializedName("movies")
     private List<String> moviesIds;
     @Ignore
-    private List<Movie> movies;
+    private transient List<Movie> movies;
 
     public List<Movie> getMovies() {
         return movies;

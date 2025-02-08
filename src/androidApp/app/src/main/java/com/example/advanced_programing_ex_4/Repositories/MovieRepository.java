@@ -36,11 +36,14 @@ public class MovieRepository {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public MovieRepository(Context context) {
+    private String jwt;
+
+    public MovieRepository(Context context,String jwt) {
         AppDB db = AppDB.getInstance(context);
         dao = db.movieDao();
         moviesData = new MoviesData();
-        moviesApi = new MoviesApi();
+        moviesApi = new MoviesApi(jwt);
+        this.jwt = jwt;
     }
 
     public class MoviesData extends MutableLiveData<List<Movie>> {

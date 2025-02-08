@@ -1,5 +1,7 @@
 package com.example.advanced_programing_ex_4.api;
 
+import android.content.SharedPreferences;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.advanced_programing_ex_4.Dao.MovieDao;
@@ -23,20 +25,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MoviesApi {
     private WebServiceAPI webServiceAPI;
+    private String jwt;
 
-    public MoviesApi() {
+    public MoviesApi(String jwt) {
         // Initialize Retrofit
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MyApplication.context.getString(R.string.BaseUrl))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         this.webServiceAPI = retrofit.create(WebServiceAPI.class);
+        this.jwt = jwt;
     }
 
     // Fetch the movie from the API if not found in local database
     public void getMovieById(String movieId,final MovieCallback callback){
         Map<String, String> headers = new HashMap<>();
-        headers.put("authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY");
+        headers.put("authorization", "Bearer " + jwt); //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYWgiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzM4NTk2NzQyfQ.d2YFHNmbIZ-OkgoRvvgVG0GtOtfX9mNR2ZPsC3HKHyY");
         headers.put("Content-Type", "application/json");
 
         Call<Movie> call = webServiceAPI.getMovieById(movieId, headers);

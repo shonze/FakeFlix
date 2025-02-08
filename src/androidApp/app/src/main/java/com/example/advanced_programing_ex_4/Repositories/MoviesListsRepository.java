@@ -47,13 +47,16 @@ public class MoviesListsRepository {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public MoviesListsRepository(Context context) {
+    private String jwt;
+
+    public MoviesListsRepository(Context context,String jwt) {
         AppDB db = AppDB.getInstance(context);
         dao = db.moviesListsDao();
         movieDao = db.movieDao();
         moviesListData = new MoviesListData();
-        moviesListsApi = new MoviesListsApi(moviesListData, dao);
-        moviesApi = new MoviesApi();
+        moviesListsApi = new MoviesListsApi(moviesListData, dao, jwt);
+        moviesApi = new MoviesApi(jwt);
+        this.jwt = jwt;
     }
 
     public class MoviesListData extends MutableLiveData<List<MoviesList>> {

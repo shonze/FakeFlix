@@ -2,6 +2,7 @@ package com.example.advanced_programing_ex_4.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -33,20 +34,35 @@ public class Movie implements Serializable {
     private String description;
 
     private String length;
+    private String thumbnailName;
+    private String videoName;
 
-    private String thumbnail;
+    public String getThumbnailName() {
+        return thumbnailName;
+    }
 
-    private String video;
+    public void setThumbnailName(String thumbnailName) {
+        this.thumbnailName = thumbnailName;
+
+    }
+
+    public String getVideoName() {
+        return videoName;
+    }
+
+    public void setVideoName(String videoName) {
+        this.videoName = videoName;
+    }
 
     public Movie(@NonNull String movieId, String title, List<String> categories, String description,
-                 String length, String thumbnail, String video) {
+                 String length, String thumbnailName, String videoName) {
         this.movieId = movieId;
         this.title = title;
         this.categories = categories;
         this.description = description;
         this.length = length;
-        this.thumbnail = thumbnail;
-        this.video = video;
+        this.thumbnailName = thumbnailName;
+        this.videoName = videoName;
     }
 
     public String getTitle() {
@@ -79,21 +95,5 @@ public class Movie implements Serializable {
 
     public void setLength(String length) {
         this.length = length;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public String getVideo() {
-        return video;
-    }
-
-    public void setVideo(String video) {
-        this.video = video;
     }
 }
