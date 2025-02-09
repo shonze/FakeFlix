@@ -18,7 +18,8 @@ The backend also serves the React-based web UI, allowing users to interact with 
 ## 🚀 How to Run the Project
 
 ### 1️⃣ **Run the Backend (Web Server)**
-1. Make sure to put the right **Ports**, **MongoDB Connection String** and **JWT_secret_token**. \n
+1. Make sure to put the right **Ports**, **MongoDB Connection String** and **JWT_secret_token**.
+   
    Check out the **docker-compose.yml** file, this is the arguments you should change:
 
    ![image](https://github.com/user-attachments/assets/d1c38b30-a525-4c6e-aab6-43b981308da3)
