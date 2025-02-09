@@ -28,11 +28,10 @@ The backend also serves the React-based web UI, allowing users to interact with 
    
    Check out the **docker-compose.yml** file, this is the arguments you should change:
 
-   ![image](https://github.com/user-attachments/assets/99fc5aef-9e29-499f-8800-ca100fe789f1)
+   ![image](https://github.com/user-attachments/assets/ab6896be-0e85-4c1d-9799-236e6682642f)
 
-   And (Change 5000 to the cpp-recommandationSystem port you want)
 
-   ![image](https://github.com/user-attachments/assets/ff7142fe-0de8-4c5e-9e40-988d0054f43e)
+   ![image](https://github.com/user-attachments/assets/7414b6d1-2400-4a1d-ba4a-e508904eb68c)
 
 
    
@@ -47,9 +46,7 @@ The backend also serves the React-based web UI, allowing users to interact with 
 1. Open **src/androidApp** directory in Android Studio.
 2. Make sure to change the constant **BASE_URL** in the path **androidApp\app\src\main\java\com\example\fakeflix\utils\Constants.java**
 
-   Change **8080** to the **Port** you entered earlier as the 
-   ![image](https://github.com/user-attachments/assets/71618cff-72f5-47ed-91f4-4349f63ce71e)
-
+   ![image](https://github.com/user-attachments/assets/2e9afe8c-b273-4fd6-b799-fa121fe9c614)
    
 2. Ensure an emulator or physical device is connected.
 3. Build and run the app from Android Studio.
