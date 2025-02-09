@@ -854,15 +854,7 @@ const AdminScreen = () => {
                     <p>  </p>
                     <button type="submit">Update Movie</button>
                     <p1>  </p1>
-                    {/* <button className="delete-button" onClick={() => handleDeleteMovie(foundMovie._id)}>Delete Movie</button> */}
-                    <button
-                        type="button" // Prevent form submission
-                        className="delete-button"
-                        onClick={() => handleDeleteMovie(foundMovie._id)}
-                    >
-                        Delete Movie
-                    </button>
-
+                    <button className="delete-button" onClick={() => handleDeleteMovie(foundMovie._id)}>Delete Movie</button>
                   </form>
                 </div>
               )}

@@ -139,6 +139,8 @@ const deleteMovie = async (req, res) => {
             return res.status(403).json({ errors: 'User is not an admin' });
         }
 
+        console.log(req.params.id);
+
         const Movie_and_Status = await MovieService.deleteMovie(req.params.id);
 
         // Get the status code from the Movie_and_Status array
@@ -169,7 +171,7 @@ const searchMovies = async (req, res) => {
         if (status != 200) {
             return res.status(status).json({ errors: Movie_or_Error });
         }
-        console.log(Movie_or_Error);
+
         res.status(status).json(Movie_or_Error);
     }
     catch (error) {
@@ -207,7 +209,7 @@ const getRecoomendations = async (req, res) => {
                 return movie;
             })
         );
-        
+
         console.log(Movies);
 
         res.status(status).json(Movies);

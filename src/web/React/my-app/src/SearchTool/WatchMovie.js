@@ -1,52 +1,121 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation , useNavigate} from 'react-router-dom';
 import './WatchMovie.css';
+import Movieslst from '../Movieslst/Movieslst'
 import PleaseConnect from '../Pages/PleaseConnect';
 
 
 
 const WatchMovie = () => {
-
+    const [recommendedMovies, setRecommendedMovies] = useState([]);
     const location = useLocation();
     const selectedMovie = location.state?.movie;
     const [isPlaying, setIsPlaying] = useState(false);
     const [categories, setCategories] = useState([]); // State to hold category names
+    const [recommendation, setRecommendation] = useState([]);
     const navigate = useNavigate();
     const [isLogged, setIsLogged] = useState(null);
+    const [movielst, setmovielst] = useState([]);
 
     const handleBackClick = () => {
         navigate('/home'); 
     };
 
-    // Checks if the user is permitted to enter the screen
-    useEffect(() => {
-        const checkValidation = async () => {
-            try {
-                const token = localStorage.getItem('jwtToken');
+        // Checks if the user is permitted to enter the screen
+    const checkValidation = async () => {
+        try {
+            const token = localStorage.getItem('jwtToken');
 
-                const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/tokens/validate`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json',
-                        'Requireadmin': false,
-                    }
-                });
-                if (!response.ok) {
-                    setIsLogged(false)
-                    return;
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/tokens/validate`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'Requireadmin': false,
                 }
-                // const isAdmin = await response.json();
-                // setIsAdmin(isAdmin.isAdmin);
-                setIsLogged(true)
-                
-            } catch (error) {
+            });
+            if (!response.ok) {
                 setIsLogged(false)
-            };
+                return;
+            }
+            // const isAdmin = await response.json();
+            // setIsAdmin(isAdmin.isAdmin);
+            setIsLogged(true)
+            
+        } catch (error) {
+            setIsLogged(false)
         };
+    };
 
+    const getRecommendation = async () => {
+        if (!selectedMovie || !selectedMovie._id) {
+            console.error("No selected movie found for recommendations.");
+            return;
+        }
+    
+        try {
+            const token = localStorage.getItem('jwtToken');
+    
+            console.log(`Fetching recommendations from: http://localhost:${process.env.REACT_APP_PORT}/api/movies/${selectedMovie._id}/recommend`);
+    
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${selectedMovie._id}/recommend`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            console.log("Recommendation data received:", data);
+    
+            // Extract only the movie IDs from the received movie objects
+            const movieIds = data.map(movie => movie._id);
+    
+            setmovielst(movieIds); // Store only the IDs in movielst
+    
+        } catch (error) {
+            console.error("Error fetching recommendations:", error);
+        }
+    };
+    
+    
+
+    useEffect(() => {
         checkValidation();
     }, []);
+
+    useEffect(() => {
+        if (selectedMovie && !isPlaying) { // Only fetch recommendations when not playing
+            getRecommendation();
+        }
+    }, [selectedMovie, isPlaying]);
+
+
+        
+    const notifyWatchMovie = async () => {
+        try {
+            const token = localStorage.getItem('jwtToken');
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${selectedMovie._id}/recommend`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                setIsLogged(false);
+                return;
+            }
+        }
+        catch (error) {
+            console.log(error);
+        };
+    };
 
     // Function to bring categories based on selected movie
     const bringCategories = async () => {
@@ -73,12 +142,15 @@ const WatchMovie = () => {
         }
     };
 
+
     // Use useEffect to fetch categories when the component mounts or when selectedMovie changes
     useEffect(() => {
         bringCategories(); // Always call this function, it handles the condition
     }, [selectedMovie]);
 
     const handlePlayClick = () => {
+        setmovielst([]);
+        notifyWatchMovie();
         setIsPlaying(true); // Show the video player
     };
 
@@ -126,6 +198,14 @@ const WatchMovie = () => {
                             </div>
                         )}
                     </div>
+                    { movielst.length > 0 && (
+                        <div>
+                            <div className = 'recommended-title'> Recommended:</div>
+                            <div className='watchMovie-recommendation'>
+                                <Movieslst Movieslst={movielst} />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

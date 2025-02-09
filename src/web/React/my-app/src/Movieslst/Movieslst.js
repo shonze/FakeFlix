@@ -9,6 +9,10 @@ function Movielst({ Movieslst }) {
     const [totalScrolls, setTotalScrolls] = useState(0);
     const [currentScrollIndex, setCurrentScrollIndex] = useState(0);
 
+    const checkMovielst = () => {
+        console.log("THEEEEE movies Are: " + Movieslst);
+    };
+
     useEffect(() => {
         const checkScrollability = () => {
             if (scrollContainerRef.current) {
@@ -64,7 +68,7 @@ function Movielst({ Movieslst }) {
             );
         }
     };
-
+    
     return (
         <div className="position-relative">
             { totalScrolls !== 1 ? (
