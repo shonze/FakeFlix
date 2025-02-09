@@ -5,7 +5,7 @@
     android:id="@+id/CategoryPage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context="com.example.advanced_programing_ex_4.MainActivity">
 
 
     <androidx.core.widget.NestedScrollView
@@ -43,7 +43,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent">
+        android:background="?android:windowBackground"
+        android:alpha="0.8">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -51,26 +52,28 @@
 
             <ImageButton
                 android:id="@+id/go_back"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/more_info"
-                android:src="@drawable/go_back_icon" />
+                android:src="@drawable/go_back_icon"
+                app:tint="?android:textColorPrimary" />
 
             <ImageButton
                 android:id="@+id/search_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/searchbar_scrolling_view_behavior"
                 android:scaleType="fitCenter"
-                android:src="@drawable/search_removebg_preview" />
+                android:src="@drawable/search_removebg_preview"
+                app:tint="?android:textColorPrimary" />
 
         </RelativeLayout>
 

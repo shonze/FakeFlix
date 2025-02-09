@@ -156,17 +156,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (topMovieDescriptionButton != null) {
             topMovieDescriptionButton.setOnClickListener(v -> {
-                Intent intent = new Intent(MainActivity.this, WatchMovieActivity.class);
+                if(randomMovie != null) {
+                    Intent intent = new Intent(MainActivity.this, WatchMovieActivity.class);
 
-                intent.putExtra("movieId", randomMovie.getMovieId());
-                intent.putExtra("movieTitle", randomMovie.getTitle());
-                intent.putExtra("movieThumbnail", Constants.BASE_URL + "/uploads/" + randomMovie.getThumbnailName());
-                intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
-                intent.putExtra("movieDescription",  randomMovie.getDescription());
-                intent.putExtra("movieLength", randomMovie.getLength());
-                intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
+                    intent.putExtra("movieId", randomMovie.getMovieId());
+                    intent.putExtra("movieTitle", randomMovie.getTitle());
+                    intent.putExtra("movieThumbnail", Constants.BASE_URL + "/uploads/" + randomMovie.getThumbnailName());
+                    intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
+                    intent.putExtra("movieDescription", randomMovie.getDescription());
+                    intent.putExtra("movieLength", randomMovie.getLength());
+                    intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
 
-                startActivity(intent);
+                    startActivity(intent);
+                }
             });
         }
 
