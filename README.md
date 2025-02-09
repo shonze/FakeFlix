@@ -46,6 +46,8 @@ The backend also serves the React-based web UI, allowing users to interact with 
 1. Open **src/androidApp** directory in Android Studio.
 2. Make sure to change the constant **BASE_URL** in the path **androidApp\app\src\main\java\com\example\fakeflix\utils\Constants.java**
 
+   Change **10.0.2.2** to the **IP of the device running the react Web Server**.
+
    ![image](https://github.com/user-attachments/assets/2e9afe8c-b273-4fd6-b799-fa121fe9c614)
    
 2. Ensure an emulator or physical device is connected.
