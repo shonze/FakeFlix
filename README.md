@@ -17,17 +17,21 @@ The backend also serves the React-based web UI, allowing users to interact with 
 
 ## 🚀 How to Run the Project
 
+**X - React Web Server Port (8080) **
+**Y - Cpp Recommendation System Port (5000) **
+**Z - MongoDB Connection String (27017/ex3) **
+
 ### 1️⃣ **Run the Backend (Web Server)**
 1. Make sure to put the right **Ports**, **MongoDB Connection String** and **JWT_secret_token**.
    
    Check out the **docker-compose.yml** file, this is the arguments you should change:
 
-   ![image](https://github.com/user-attachments/assets/d1c38b30-a525-4c6e-aab6-43b981308da3)
-
+   ![image](https://github.com/user-attachments/assets/99fc5aef-9e29-499f-8800-ca100fe789f1)
 
    And (Change 5000 to the cpp-recommandationSystem port you want)
-   
-   ![image](https://github.com/user-attachments/assets/017a2865-7764-40f1-b112-2ea0161bf354)
+
+   ![image](https://github.com/user-attachments/assets/ff7142fe-0de8-4c5e-9e40-988d0054f43e)
+
 
    
 3. Navigate to the project root and run:
@@ -39,8 +43,14 @@ The backend also serves the React-based web UI, allowing users to interact with 
 ### 2️⃣ **Run the Android App**
 
 1. Open **src/androidApp** directory in Android Studio.
-3. Ensure an emulator or physical device is connected.
-4. Build and run the app from Android Studio.
+2. Make sure to change the constant **BASE_URL** in the path **androidApp\app\src\main\java\com\example\fakeflix\utils\Constants.java**
+
+   Change **8080** to the **Port** you entered earlier as the 
+   ![image](https://github.com/user-attachments/assets/71618cff-72f5-47ed-91f4-4349f63ce71e)
+
+   
+2. Ensure an emulator or physical device is connected.
+3. Build and run the app from Android Studio.
 
 The app will interact with the backend to fetch movie data and recommendations.
 
