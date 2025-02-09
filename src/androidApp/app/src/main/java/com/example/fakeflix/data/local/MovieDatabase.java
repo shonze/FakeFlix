@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.fakeflix.utils.Converters;
 
-@Database(entities = {MovieEntity.class}, version = 3) // Current version is 3
+@Database(entities = {MovieEntity.class}, version = 4) // Current version is 3
 @TypeConverters({Converters.class})
 public abstract class MovieDatabase extends RoomDatabase {
     private static volatile MovieDatabase instance;
@@ -25,6 +25,7 @@ public abstract class MovieDatabase extends RoomDatabase {
                 if (instance == null) {
                     instance = Room.databaseBuilder(context.getApplicationContext(), MovieDatabase.class, "movies_database")
                             .addMigrations(MIGRATION_1_2, MIGRATION_2_3) // Add both migrations here
+                            .fallbackToDestructiveMigration()  // Allows destructive migration (erases data)
                             .build();
                 }
             }

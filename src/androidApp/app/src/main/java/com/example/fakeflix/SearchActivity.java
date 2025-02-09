@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -43,11 +44,20 @@ public class SearchActivity extends AppCompatActivity {
     private String theme;
     private SharedPreferences preferences;
     private final Handler handler = new Handler();
+
+    private Button goBackButton;
     private final long debounceDelay = 100; // 100ms debounce delay
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        goBackButton = findViewById(R.id.go_back_button);
+        if(goBackButton != null){
+            goBackButton.setOnClickListener(v -> {
+                finish();
+            });
+        }
 
         searchInput = findViewById(R.id.searchInput);
         recyclerView = findViewById(R.id.recyclerView);
