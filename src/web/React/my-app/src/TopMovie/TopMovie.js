@@ -72,26 +72,30 @@ const TopMovie = ({ id }) => {
 
     return (
         <div className="video-container">
-            <div >
-            <video
-                ref={videoRef}
-                className="full-movie"
-                autoPlay={isVisible}
-                muted
-                loop 
-                src={movie.video} type="video/mp4"
-            >
-                Your browser does not support the video tag.
-            </video>
-            </div>
-            <div className="text-overlay position-absolute top-50 start-0 translate-middle-y text-white">
-                <h1 className="top-movie-text display-3">{movie.title}</h1>
-                <p className="top-movie-text lead">{movie.description}</p>
-                <button
-                    className='top-movie-button'
-                    onClick={() => { navigate('/watch-movie', { state: { movie } }) }}
-                >Play</button>
-            </div>
+            {!(!movie || Object.keys(movie).length === 0) ? (
+                <div>
+                    <div >
+                        <video
+                            ref={videoRef}
+                            className="full-movie"
+                            autoPlay={isVisible}
+                            muted
+                            loop
+                            src={movie.video} type="video/mp4"
+                        >
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div className="text-overlay position-absolute top-50 start-0 translate-middle-y text-white">
+                        <h1 className="top-movie-text display-3">{movie.title}</h1>
+                        <p className="top-movie-text lead">{movie.description}</p>
+                        <button
+                            className='top-movie-button'
+                            onClick={() => { navigate('/watch-movie', { state: { movie } }) }}
+                        >Play</button>
+                    </div>
+                </div>
+            ) : null}
         </div>
     );
 };
