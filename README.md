@@ -18,7 +18,9 @@ The backend also serves the React-based web UI, allowing users to interact with 
 ## 🚀 How to Run the Project
 
 **X - React Web Server Port (8080)**
+
 **Y - Cpp Recommendation System Port (5000)**
+
 **Z - MongoDB Connection String (27017/ex3)**
 
 ### 1️⃣ **Run the Backend (Web Server)**
