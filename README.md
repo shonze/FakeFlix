@@ -21,7 +21,8 @@ The backend also serves the React-based web UI, allowing users to interact with 
 1. Make sure to put the right **Ports**, **MongoDB Connection String** and **JWT_secret_token**.
    Check out the **docker-compose.yml** file, this is the arguments you should change:
 
-   ![image](https://github.com/user-attachments/assets/b06aa9fc-d33b-42bb-bed0-057b5c21d40b)
+   ![image](https://github.com/user-attachments/assets/d1c38b30-a525-4c6e-aab6-43b981308da3)
+
 
    And (Change 5000 to the cpp-recommandationSystem port you want)
    
