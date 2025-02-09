@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import com.example.advanced_programing_ex_4.MainActivity;
 import com.example.fakeflix.databinding.ActivityStartingBinding;
 
 import org.json.JSONObject;
@@ -38,7 +39,7 @@ public class StartingActivity extends AppCompatActivity {
         if ("true".equals(rememberMe) && jwtToken != null) {
             bringData(jwtToken);
             // Redirect to homepage if needed
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish(); // Prevent returning to LoginActivity
         }

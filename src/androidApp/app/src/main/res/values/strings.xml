@@ -1,4 +1,9 @@
 <resources>
+    <string name="BaseUrl">http://10.0.2.2:8080/api/</string>
+    <string name="more_info">ℹ More Info</string>
+    <string name="play">▶ Play</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="movie_thumbnail">Movie Thumbnail</string>
     <string name="app_name">fakeflix</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
@@ -43,4 +48,13 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="categories">Categories</string>
+    <string name="top_movie_desc">A brief description of the featured movie goes here.</string>
+    <string name="top_movie_title">Featured Movie Title</string>
+    <string name="close">Close</string>
+    <string name="movie_list_title">Movie List Title</string>
+    <string name="fakeflix">FakeFlix</string>
+    <string name="toggle_theme">Toggle Theme</string>
+    <string name="admin_page">Admin Page</string>
+    <string name="log_out">Log Out</string>
 </resources>

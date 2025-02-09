@@ -228,64 +228,124 @@ const deleteMovie = async (id) => {
         ListOfObjects.push(Category);
     }
 
-    // Remove the movie from the user's watched movies in the cpp recommendation server
+    // // Remove the movie from the user's watched movies in the cpp recommendation server
+    // const net = require('net');
+
+    // const ip = 'host.docker.internal'; // Ensure IP is defined
+    // const port = process.env.CPP_PORT || 3001; // Ensure port is defined
+
+    // const client = new net.Socket();
+
+    // // Use a Promise to handle asynchronous connection and communication
+    // await new Promise((resolve, reject) => {
+    //     client.connect(port, ip, async () => {
+    //         try {
+    //             const users = await userServices.getUsers();
+
+    //             for (const user of users) {
+
+    //                 // Remove the movie to the user list of movies
+    //                 user.movies = user.movies.filter(movie_id => {
+    //                     return movie_id.toString() !== Movie._id.toString();
+    //                 });
+
+    //                 // To save it later if no problems accure
+    //                 ListOfObjects.push(user);
+
+    //                 // Send a DELETE command to the server
+    //                 await new Promise((resolve) => {
+    //                     client.write(`DELETE ${user._id.toString()} ${id}`);
+
+    //                     // Wait for response before sending next command
+    //                     const handleData = (data) => {
+    //                         console.log('Received response:', data.toString());
+    //                         client.removeListener('data', handleData);
+    //                         resolve();
+    //                     };
+
+    //                     client.on('data', handleData);
+    //                 });
+    //             }
+    //             resolve();
+    //         } catch (error) {
+    //             client.destroy();
+    //             reject(error);
+    //         }
+    //     });
+
+    //     // Handle any connection errors
+    //     client.on('error', (err) => {
+    //         reject(err);
+    //     });
+
+    //     // Ensure the socket is closed properly
+    //     client.on('close', () => {
+    //         console.log("Connection closed");
+    //     });
+    // });
+
+    // // After communication is done, destroy the client socket
+    // client.destroy();
+
     const net = require('net');
 
-    const ip = process.env.CPP_IP || 'host.docker.internal'; // Ensure IP is defined
+    const ip = 'host.docker.internal'; // Ensure IP is correct
     const port = process.env.CPP_PORT || 3001; // Ensure port is defined
 
     const client = new net.Socket();
 
-    // Use a Promise to handle asynchronous connection and communication
-    await new Promise((resolve, reject) => {
-        client.connect(port, ip, async () => {
-            try {
-                const users = await userServices.getUsers();
+    async function sendDeleteRequest(client, userId, movieId) {
+        return new Promise((resolve, reject) => {
+            client.write(`DELETE ${userId} ${movieId}`);
+
+            client.once('data', (data) => {
+                console.log('Received response:', data.toString());
+                resolve();
+            });
+
+            client.once('error', (err) => {
+                reject(err);
+            });
+        });
+    }
+
+    async function processUsers() {
+        try {
+            const users = await userServices.getUsers();
+
+            client.connect(port, ip, async () => {
+                console.log(`Connected to ${ip}:${port}`);
 
                 for (const user of users) {
+                    // Remove the movie from the user's list
+                    user.movies = user.movies.filter(movie_id => movie_id.toString() !== Movie._id.toString());
 
-                    // Remove the movie to the user list of movies
-                    user.movies = user.movies.filter(movie_id => {
-                        return movie_id.toString() !== Movie._id.toString();
-                    });
-
-                    // To save it later if no problems accure
+                    // Store modified users for saving later
                     ListOfObjects.push(user);
 
-                    // Send a DELETE command to the server
-                    await new Promise((resolve) => {
-                        client.write(`DELETE ${user._id.toString()} ${id}`);
-
-                        // Wait for response before sending next command
-                        const handleData = (data) => {
-                            console.log('Received response:', data.toString());
-                            client.removeListener('data', handleData);
-                            resolve();
-                        };
-
-                        client.on('data', handleData);
-                    });
+                    // Send DELETE request to the C++ server
+                    await sendDeleteRequest(client, user._id.toString(), id);
                 }
-                resolve();
-            } catch (error) {
+
+                console.log("All users processed. Closing connection.");
                 client.destroy();
-                reject(error);
-            }
-        });
+            });
 
-        // Handle any connection errors
-        client.on('error', (err) => {
-            reject(err);
-        });
+            client.on('error', (err) => {
+                console.error("Socket error:", err);
+                client.destroy();
+            });
 
-        // Ensure the socket is closed properly
-        client.on('close', () => {
-            console.log("Connection closed");
-        });
-    });
+            client.on('close', () => {
+                console.log("Connection closed");
+            });
+        } catch (error) {
+            console.error("Error processing users:", error);
+        }
+    }
 
-    // After communication is done, destroy the client socket
-    client.destroy();
+    // Call the function
+    processUsers();
 
 
     await MoviesModel.deleteOne(Movie);
@@ -345,20 +405,39 @@ const getRecoomendations = async (userId, movieId) => {
             try {
                 // Convert the data to a string
                 const dataString = data.toString();
+                console.log(`recived : ${dataString}`);
 
                 // Split the string by newline to separate status and movies
-                const parts = dataString.split('\n').map(part => part.trim());
+                // const partscomb = dataString.split('\n').map(part => part.trim());
+                // const parts = partscomb[1].split(/\s+/).map(part => part.trim()); // Split by any whitespace
 
-                // Extract the status code from the first part (e.g., "200 Ok")
-                const statusLine = parts[0];
+
+                // // Extract the status code from the first part (e.g., "200 Ok")
+                // const statusLine = parts[0];
+                // const statusMatch = statusLine.match(/^(\d{3})/); // Match the status code (e.g., "200")
+                // const status = statusMatch ? parseInt(statusMatch[1], 10) : null; // Extract and parse the status code
+
+                // // Extract the movies (remaining lines after an empty line)
+                // const movies = parts.slice(1).filter(movie => movie);
+
+                // // Combine the status and movies into a single array
+                // const result = status !== null ? [status, ...movies] : movies;
+
+                // Split by double newlines to separate status from numbers
+                const parts = dataString.split('\n\n').map(part => part.trim());
+
+                // Extract the status code (first part)
+                const statusLine = parts[0] || "";
                 const statusMatch = statusLine.match(/^(\d{3})/); // Match the status code (e.g., "200")
-                const status = statusMatch ? parseInt(statusMatch[1], 10) : null; // Extract and parse the status code
 
-                // Extract the movies (remaining lines after an empty line)
-                const movies = parts.slice(1).filter(movie => movie);
+                // Extract and parse the status code
+                const status = statusMatch ? parseInt(statusMatch[1], 10) : null;
 
-                // Combine the status and movies into a single array
-                const result = status !== null ? [status, ...movies] : movies;
+                // Extract the numbers (second part, space-separated)
+                const numbers = parts[1] ? parts[1].split(/\s+/).map(num => num.trim()) : [];
+
+                // Combine into final result
+                const result = status !== null ? [status, ...numbers] : numbers;
 
                 // Resolve the promise with the result
                 resolve(result);

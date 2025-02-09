@@ -169,7 +169,7 @@ const searchMovies = async (req, res) => {
         if (status != 200) {
             return res.status(status).json({ errors: Movie_or_Error });
         }
-
+        console.log(Movie_or_Error);
         res.status(status).json(Movie_or_Error);
     }
     catch (error) {
@@ -199,7 +199,18 @@ const getRecoomendations = async (req, res) => {
         if (status != 201 && status != 204 && status != 200 && status != '201' && status != '204' && status != '200') {
             return res.status(status).json({ errors: Movie_or_Error });
         }
-        res.status(status).end();
+        console.log(Movie_or_Error);
+        // const Movies = await Promise.all(Movie_or_Error.map(id => MovieService.getMovieById(id)));
+        const Movies = await Promise.all(
+            Movie_or_Error.map(async id => {
+                const [, movie] = await MovieService.getMovieById(id); // Destructure to discard 200
+                return movie;
+            })
+        );
+        
+        console.log(Movies);
+
+        res.status(status).json(Movies);
     }
     catch (error) {
         res.status(500).json({ errors: [error.message] });

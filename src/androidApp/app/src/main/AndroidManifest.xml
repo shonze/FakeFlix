@@ -17,6 +17,23 @@
         android:theme="@style/Theme.Fakeflix"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <activity
+            android:name=".WatchMovieActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.advanced_programing_ex_4.CategoryMoviesActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.advanced_programing_ex_4.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VideoPlayerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Fakeflix" />
         <activity
             android:name=".HomeActivity"
             android:exported="false"
@@ -27,6 +44,10 @@
             android:theme="@style/Theme.Fakeflix" />
         <activity
             android:name=".LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Fakeflix" />
+        <activity
+            android:name="com.example.fakeflix.ui.activity.AdminActivity"
             android:exported="false"
             android:theme="@style/Theme.Fakeflix" />
         <activity

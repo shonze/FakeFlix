@@ -35,4 +35,3 @@ public class User {
         this.photoUrl = photoUrl;
     }
 }
-

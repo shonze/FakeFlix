@@ -33,7 +33,7 @@
             app:endIconTint="@color/white"
             app:boxStrokeColor="@color/white"
             app:hintTextColor="@color/white"
-            app:boxBackgroundColor="@android:color/transparent">
+            app:boxBackgroundMode="none">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etUsername"
@@ -55,7 +55,7 @@
             app:endIconTint="@color/white"
             app:boxStrokeColor="@color/white"
             app:hintTextColor="@color/white"
-            app:boxBackgroundColor="@android:color/transparent"
+            app:boxBackgroundMode="none"
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText

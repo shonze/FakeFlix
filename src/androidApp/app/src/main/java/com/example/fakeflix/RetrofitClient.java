@@ -4,6 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import com.example.fakeflix.utils.Constants;
 
 public class RetrofitClient {
     private static Retrofit retrofit = null;
@@ -19,7 +20,7 @@ public class RetrofitClient {
                     .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.0.0.16:8080/api/") // Change port if needed
+                    .baseUrl(Constants.BASE_URL + "/api/") // Change port if needed
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();
