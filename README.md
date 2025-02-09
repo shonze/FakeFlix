@@ -1,86 +1,90 @@
 # FakeFlix
 
-Welcome to the our **FakeFlix**, a web and Android application designed for managing movies and categories. This platform provides an intuitive and dynamic user experience for both regular users and administrators.
-
-## Overview
-Our **FakeFlix** consists of two main components:
-- **Website** (Developed with React)
-- **Android App** (Developed with Java)
+FakeFlix is a movie streaming platform with both an **Android app** and a **web server**. It provides a seamless experience for browsing, selecting, and watching movies.
 
 ---
 
-## Features
+## 📌 Project Overview
 
-### 1. User Authentication
-Users can sign up and log in securely using JWT authentication. Role-based permissions ensure that only authorized users can access administrative functions.
+FakeFlix consists of two main components:
 
+- **Android App** – A mobile application for browsing movies, managing user preferences, and streaming content.
+- **Web Server** – A Node.js backend that handles user authentication, movie data, and interactions with a recommendation system implemented in C++.
 
-
----
-
-### 2. Movie Browsing & Search
-Users can explore the movie catalog, search for specific movies, and view detailed information, including descriptions, categories, and thumbnails.
-
-**Screenshot:**
+The backend also serves the React-based web UI, allowing users to interact with FakeFlix from a browser.
 
 ---
 
-### 3. Movie Details Page
-Clicking on a movie opens a dedicated details page, showcasing the movie’s description, categories, and options to watch or manage it.
+## 🚀 How to Run the Project
 
-**Screenshot:**
+### 1️⃣ **Clone the Repository**
 
----
+```bash
+git clone https://github.com/your-repo/fakeflix.git
+cd fakeflix
+```
 
-### 4. Dynamic Hover Effect (Web Only)
-On the website, hovering over a movie expands it to display additional details and an option to play.
+### 2️⃣ **Run the Backend (Web Server)**
 
-**Screenshot:**
+#### **Using Docker (Recommended)**
 
----
+1. Ensure Docker is installed and running.
+2. Navigate to the project root and run:
+   ```bash
+   docker-compose up --build
+   ```
+   This starts the **Node.js web server**, **MongoDB**, and **C++ recommendation system** inside Docker containers.
 
-### 5. Admin Dashboard
-Administrators have access to a dedicated dashboard for managing movies and categories.
+#### **Manual Setup** (Without Docker)
 
-**Screenshot:**
-
----
-
-### 6. Adding & Managing Movies
-Admins can add new movies, update existing ones, and delete movies from the catalog.
-
-**Screenshot:**
-
----
-
-### 7. Adding & Managing Categories
-Categories help organize movies effectively. Admins can create, update, and remove categories.
-
-**Screenshot:**
-
----
-
-### 8. File Upload Support
-Admins can upload movie thumbnails and video files, ensuring a rich and engaging experience.
-
-**Screenshot:**
+1. Navigate to the backend folder:
+   ```bash
+   cd src/web/MVC
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the server:
+   ```bash
+   npm start
+   ```
+   The backend will run on **[http://localhost:8080](http://localhost:8080)** by default.
 
 ---
 
-### 9. Mobile-Friendly Experience (Android App)
-The Android app provides seamless access to the movie catalog, admin functionalities, and search features optimized for mobile devices.
+### 3️⃣ **Run the Android App**
 
-**Screenshot:**
+1. Open the **Android project** in Android Studio.
+2. Ensure an emulator or physical device is connected.
+3. Build and run the app from Android Studio.
 
----
-
-### 10. Smooth Navigation & UI
-Both the web and mobile apps are designed with an intuitive and modern UI, ensuring an easy and engaging experience for all users.
-
-**Screenshot:**
+The app will interact with the backend to fetch movie data and recommendations.
 
 ---
 
-## Conclusion
-The **Netflix-Like Movie Manager** offers a comprehensive solution for movie enthusiasts and administrators, providing an interactive and well-organized platform for managing movies and categories across both web and mobile applications.
+## ⚙️ **Project Architecture**
 
+### **Backend:**
+
+- **Node.js & Express.js** – Handles API requests.
+- **MongoDB** – Stores movie and user data.
+- **C++ Recommendation System** – Provides movie recommendations based on user preferences.
+- **React Frontend** – Web-based UI for browsing and streaming movies.
+
+### **Android App:**
+
+- **Kotlin** – Main programming language.
+- **Retrofit** – Handles API requests.
+- **Room Database** – Manages offline data.
+- **MVVM Architecture** – Ensures scalability and maintainability.
+
+---
+
+## 📌 **Work Process Summary**
+
+1. **Planning & Design** – Defined requirements, UI/UX wireframes.
+2. **Backend Development** – Built API, database, and authentication system.
+3. **Android Development** – Created UI, integrated backend, implemented movie playback.
+4. **Testing & Debugging** – Ensured smooth performance across devices.
+5. **Deployment** – Prepared Dockerized containers for easy deployment.
