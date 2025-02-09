@@ -21,8 +21,7 @@ The backend also serves the React-based web UI, allowing users to interact with 
 
 #### **Using Docker (Recommended)**
 
-1. Ensure Docker is installed and running.
-2. Navigate to the project root and run:
+1. Navigate to the project root and run:
    ```bash
    docker-compose up --build
    ```
