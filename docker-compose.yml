@@ -16,7 +16,7 @@ services:
       context: ./src/web 
       dockerfile: Dockerfile
       args:
-        CONNECTION_STRING: "mongodb://host.docker.internal:27017/moreTests"
+        CONNECTION_STRING: "mongodb://host.docker.internal:27017/godamn"
         PORT: "8080"
         JWT_SECRET: "SECRET_balls"
         CPP_PORT: "5000"

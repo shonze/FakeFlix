@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/top_movie_title"
-            android:textColor="?android:textColorPrimary"
+            android:textColor="#FF0000"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/top_movie_desc"
-            android:textColor="?android:textColorPrimary"
+            android:textColor="#FF0000"
             android:textSize="14sp" />
 
         <LinearLayout
@@ -47,13 +47,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/play" />
-
-            <Button
-                android:id="@+id/top_movie_info_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="@string/more_info" />
 
         </LinearLayout>
 

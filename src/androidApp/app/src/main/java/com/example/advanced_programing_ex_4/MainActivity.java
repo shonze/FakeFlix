@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView topMovieDescription = findViewById(R.id.top_movie_description);
         ImageView topMovieThumbnail = findViewById(R.id.top_movie_image);
         Button topMoviePlayButton = findViewById(R.id.top_movie_play_button);
-        Button topMovieDescriptionButton = findViewById(R.id.top_movie_info_button);
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -143,27 +142,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (topMoviePlayButton != null) {
             topMoviePlayButton.setOnClickListener(v -> {
-                if (randomMovie != null) {
-                    ApiService apiService = RetrofitClient.getApiService();
-                    Call<ResponseBody> call = apiService.updateUserWatchedMovies("Bearer " + jwtToken, randomMovie.getMovieId());
-
-                    Intent intent = new Intent(MainActivity.this, VideoPlayerActivity.class);
-
-                    intent.putExtra("movieId", randomMovie.getMovieId());
-                    intent.putExtra("movieTitle", randomMovie.getTitle());
-                    intent.putExtra("movieThumbnail", Constants.BASE_URL + "/uploads/" + randomMovie.getThumbnailName());
-                    intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
-                    intent.putExtra("movieDescription", randomMovie.getDescription());
-                    intent.putExtra("movieLength", randomMovie.getLength());
-                    intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
-
-                    startActivity(intent);
-                }
-            });
-        }
-
-        if (topMovieDescriptionButton != null) {
-            topMovieDescriptionButton.setOnClickListener(v -> {
                 if (randomMovie != null) {
                     Intent intent = new Intent(MainActivity.this, WatchMovieActivity.class);
 

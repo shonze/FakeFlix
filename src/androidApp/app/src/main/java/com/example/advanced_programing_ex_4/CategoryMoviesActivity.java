@@ -97,7 +97,6 @@ public class CategoryMoviesActivity extends AppCompatActivity {
         topMovieDescription = findViewById(R.id.top_movie_description);
         topMovieThumbnail = findViewById(R.id.top_movie_image);
         Button topMoviePlayButton = findViewById(R.id.top_movie_play_button);
-        Button topMovieDescriptionButton = findViewById(R.id.top_movie_info_button);
 
         // Navigate to MainActivity on back button click
         if (goBackButton != null) {
@@ -108,24 +107,6 @@ public class CategoryMoviesActivity extends AppCompatActivity {
 
         if (topMoviePlayButton != null) {
             topMoviePlayButton.setOnClickListener(v -> {
-                if(randomMovie != null) {
-                    Intent intent2 = new Intent(CategoryMoviesActivity.this, VideoPlayerActivity.class);
-
-                    intent2.putExtra("movieId", randomMovie.getMovieId());
-                    intent2.putExtra("movieTitle", randomMovie.getTitle());
-                    intent2.putExtra("movieThumbnail", Constants.BASE_URL + "/uploads/" + randomMovie.getThumbnailName());
-                    intent2.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
-                    intent2.putExtra("movieDescription", randomMovie.getDescription());
-                    intent2.putExtra("movieLength", randomMovie.getLength());
-                    intent2.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
-
-                    startActivity(intent2);
-                }
-            });
-        }
-
-        if (topMovieDescriptionButton != null) {
-            topMovieDescriptionButton.setOnClickListener(v -> {
                 if(randomMovie != null) {
                     Intent intent3 = new Intent(CategoryMoviesActivity.this, WatchMovieActivity.class);
 
