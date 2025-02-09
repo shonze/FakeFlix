@@ -17,14 +17,7 @@ The backend also serves the React-based web UI, allowing users to interact with 
 
 ## 🚀 How to Run the Project
 
-### 1️⃣ **Clone the Repository**
-
-```bash
-git clone https://github.com/your-repo/fakeflix.git
-cd fakeflix
-```
-
-### 2️⃣ **Run the Backend (Web Server)**
+### 1️⃣ **Run the Backend (Web Server)**
 
 #### **Using Docker (Recommended)**
 
@@ -53,7 +46,7 @@ cd fakeflix
 
 ---
 
-### 3️⃣ **Run the Android App**
+### 2️⃣ **Run the Android App**
 
 1. Open the **Android project** in Android Studio.
 2. Ensure an emulator or physical device is connected.
