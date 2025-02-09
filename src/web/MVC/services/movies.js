@@ -112,6 +112,7 @@ const { deleteFileService } = require("../services/file");
 
 const updateMovie = async (id, title,categories, description, length, thumbnail,thumbnailName, video, videoName) => {
     let Movie = await getMovieById(id);
+    console.log("Hello update");
     console.log(Movie);
     // Returns 404 if the Movie is not found
     if (Movie[0] != 200) return Movie;
@@ -201,6 +202,7 @@ const updateMovie = async (id, title,categories, description, length, thumbnail,
 
     return [204, Movie];
 };
+
 
 const deleteMovie = async (id) => {
     let Movie = await getMovieById(id);

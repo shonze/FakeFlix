@@ -22,6 +22,30 @@
     left: 0;
     filter: brightness(200%); /* Darken the background */
 }
+.watchMovie-recommendation{
+    background-color: #ffffff1a;
+    bottom: 4vh;
+    box-shadow: 0 4px 30px #000000b3;
+    height: 250px;
+    position: absolute;
+    width: 100%;
+    z-index: 200;
+    left: 5px;
+
+}
+.recommended-title {
+    background-color: #ffffff1a;
+    border-radius: 3px;
+    color: #fcf7f7;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 5px;
+    text-transform: uppercase;
+    left: 5px;
+    position: absolute;
+    bottom: 280px;
+}
 
 .watchMovie-overlay {
     position: absolute;
@@ -33,7 +57,6 @@
     display: flex; /* Flex to center content */
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
-    padding: 20px; /* Padding */
 }
 
 .watchMovie-movie-info {
@@ -44,17 +67,19 @@
     color: white; /* White text */
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7); /* Deeper shadow effect */
     transition: background-color 0.3s; /* Smooth background change */
+    position: absolute;
+    top: 5vh;
 }
 
 .watchMovie-movie-title {
-    font-size: 2.5rem; /* Large title */
+    font-size: 2rem; /* Large title */
     font-weight: bold; /* Bold */
-    margin-bottom: 10px; /* Margin bottom */
+    margin-bottom: 7px; /* Margin bottom */
 }
 
 .watchMovie-movie-description {
-    font-size: 1.125rem; /* Regular size */
-    margin-bottom: 10px; /* Margin bottom */
+    font-size: 1rem; /* Regular size */
+    margin-bottom: 7px; /* Margin bottom */
     line-height: 1.5; /* Line height */
 }
 
@@ -62,9 +87,9 @@
     background-color: #e50914; /* Netflix Red */
     color: white; /* White text */
     font-weight: bold; /* Bold */
-    padding: 12px 24px; /* Padding */
+    padding: 8px 16px; /* Padding */
     border-radius: 5px; /* Rounded corners */
-    margin-bottom: 10px; /* Margin bottom */
+    margin-bottom: 8px; /* Margin bottom */
     border: none; /* No border */
     cursor: pointer; /* Pointer cursor */
     font-size: 1rem; /* Regular size */

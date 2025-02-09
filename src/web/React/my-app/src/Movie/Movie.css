@@ -1,12 +1,13 @@
 .movie-container {
     position: relative;
     width: 200px;
-    height: 300px;
+    height: 230px;
     margin: 10px;
     overflow: hidden;
     border-radius: 10px;
     background-color: #141414;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 400;
 }
 
 .movie-container.hovered {
@@ -57,13 +58,13 @@
 }
 
 .hover-overlay h3 {
-    font-size: 18px;
+    font-size: 14px;
     margin-bottom: 10px;
     font-weight: bold;
 }
 
 .hover-overlay p {
-    font-size: 14px;
+    font-size: 11px;
     line-height: 1.5;
     margin-bottom: 10px;
 }

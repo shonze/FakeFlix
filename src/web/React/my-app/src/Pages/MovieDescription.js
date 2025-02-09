@@ -9,61 +9,6 @@ function HomeDescriptionPage({ movie }) {
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchRecommandation = async () => {
-      try {
-        const token = localStorage.getItem("jwtToken");
-        const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${movie._id}/recommend/`, {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const recommendedMovies = await response.json();
-        setRecommendedMovies(recommendedMovies);
-      } catch (error) {
-        console.error("Error fetching recommended movies:", error);
-      }
-    };
-
-    const fetchCategories = async () => {
-      try {
-        const token = localStorage.getItem("jwtToken");
-        const categories = await Promise.all(
-          movie.categories.map(async (categoryId) => {
-            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories/${categoryId}`, {
-              method: "GET",
-              headers: {
-                Authorization: "Bearer " + token,
-                "Content-Type": "application/json",
-              },
-            });
-
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const category = await response.json();
-            return category.name;
-          })
-        );
-
-        setCategories(categories);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchRecommandation();
-    fetchCategories();
-  }, [movie._id, movie.categories]);
-
   return (
     <div className={`movieDescription-body ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"}`}>
       <div className="movieDescription-container">
@@ -86,13 +31,6 @@ function HomeDescriptionPage({ movie }) {
           </div>
         </div>
       </div>
-
-      {recommendedMovies.length > 0 && (
-        <div className="recommended">
-          <h3 className="recommended-title">Recommended Movies</h3>
-          <Movielst Movieslst={recommendedMovies} />
-        </div>
-      )}
     </div>
   );
 }

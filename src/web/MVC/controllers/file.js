@@ -19,8 +19,9 @@ const uploadFile = (req, res) => {
         //     message: "Files uploaded successfully",
         //     files: filesInfo,
         // });
-
+        console.log("HERE 0");
         const baseUrl = `${req.protocol}://${req.get("host")}`;
+        console.log("HERE 1");
         const filesInfo = req.files
             ? req.files.map(file => ({
                 url: `${baseUrl}/uploads/${file.filename}`,
@@ -37,6 +38,7 @@ const uploadFile = (req, res) => {
         });
 
     } catch (error) {
+        console.log("Oh No!!!!!");
         console.error(error);
         res.status(500).json({ message: "Error uploading file", error });
     }
