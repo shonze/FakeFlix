@@ -83,3 +83,6 @@ The app will interact with the backend to fetch movie data and recommendations.
 3. **Android Development** – Created UI, integrated backend, implemented movie playback.
 4. **Testing & Debugging** – Ensured smooth performance across devices.
 5. **Deployment** – Prepared Dockerized containers for easy deployment.
+
+## **For More Inforamtion**
+ Enter The Wiki Page
