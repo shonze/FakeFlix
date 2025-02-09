@@ -18,8 +18,17 @@ The backend also serves the React-based web UI, allowing users to interact with 
 ## 🚀 How to Run the Project
 
 ### 1️⃣ **Run the Backend (Web Server)**
+1. Make sure to put the right **Ports**, **MongoDB Connection String** and **JWT_secret_token**.
+   Check out the **docker-compose.yml** file, this is the arguments you should change:
 
-1. Navigate to the project root and run:
+   ![image](https://github.com/user-attachments/assets/b06aa9fc-d33b-42bb-bed0-057b5c21d40b)
+
+   And
+   
+   ![image](https://github.com/user-attachments/assets/017a2865-7764-40f1-b112-2ea0161bf354)
+
+   
+3. Navigate to the project root and run:
    ```bash
    docker-compose up --build
    ```
@@ -46,7 +55,7 @@ The app will interact with the backend to fetch movie data and recommendations.
 
 ### **Android App:**
 
-- **Kotlin** – Main programming language.
+- **Java** – Main programming language.
 - **Retrofit** – Handles API requests.
 - **Room Database** – Manages offline data.
 - **MVVM Architecture** – Ensures scalability and maintainability.
