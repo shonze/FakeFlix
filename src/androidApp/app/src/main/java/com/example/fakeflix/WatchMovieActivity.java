@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -74,8 +75,14 @@ public class WatchMovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch_movie);
 
-
         Glide.with(this);
+
+        ImageButton goBackButton = findViewById(R.id.go_back_to_home_page);
+        if(goBackButton != null){
+            goBackButton.setOnClickListener(v -> {
+                finish();
+            });
+        }
 
         recommendedMoviesButton = findViewById(R.id.recommendedMoviesButton);
 

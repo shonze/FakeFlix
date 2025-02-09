@@ -8,6 +8,12 @@
     android:padding="16dp"
     tools:context=".ui.activity.AdminActivity">
 
+    <Button
+        android:id="@+id/return_to_homepage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Return To Home Page" />
+
     <!-- Button to Add a New Movie -->
     <Button
         android:id="@+id/btnAddMovie"

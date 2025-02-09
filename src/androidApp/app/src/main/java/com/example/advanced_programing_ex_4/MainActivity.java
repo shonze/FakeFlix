@@ -43,7 +43,9 @@ import com.example.advanced_programing_ex_4.View_Models.MoviesListsViewModel;
 import com.example.advanced_programing_ex_4.View_Models.MoviesViewModel;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
+import com.example.fakeflix.ApiService;
 import com.example.fakeflix.R;
+import com.example.fakeflix.RetrofitClient;
 import com.example.fakeflix.SearchActivity;
 import com.example.fakeflix.StartingActivity;
 import com.example.fakeflix.VideoPlayerActivity;
@@ -60,6 +62,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Toolbar toolbar;
@@ -80,10 +85,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Get from the intent if the user is admin
         preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        if(preferences.getString("isAdmin", "false").equals("true"))
-            isAdmin= true;
+        if (preferences.getString("isAdmin", "false").equals("true"))
+            isAdmin = true;
         else
-            isAdmin= false;
+            isAdmin = false;
 
         // Get the user token
         preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
@@ -139,24 +144,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (topMoviePlayButton != null) {
             topMoviePlayButton.setOnClickListener(v -> {
                 if (randomMovie != null) {
-                   Intent intent = new Intent(MainActivity.this, VideoPlayerActivity.class);
+                    ApiService apiService = RetrofitClient.getApiService();
+                    Call<ResponseBody> call = apiService.updateUserWatchedMovies("Bearer " + jwtToken, randomMovie.getMovieId());
+
+                    Intent intent = new Intent(MainActivity.this, VideoPlayerActivity.class);
 
                     intent.putExtra("movieId", randomMovie.getMovieId());
                     intent.putExtra("movieTitle", randomMovie.getTitle());
                     intent.putExtra("movieThumbnail", Constants.BASE_URL + "/uploads/" + randomMovie.getThumbnailName());
                     intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
-                    intent.putExtra("movieDescription",  randomMovie.getDescription());
+                    intent.putExtra("movieDescription", randomMovie.getDescription());
                     intent.putExtra("movieLength", randomMovie.getLength());
                     intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
 
-                   startActivity(intent);
+                    startActivity(intent);
                 }
             });
         }
 
         if (topMovieDescriptionButton != null) {
             topMovieDescriptionButton.setOnClickListener(v -> {
-                if(randomMovie != null) {
+                if (randomMovie != null) {
                     Intent intent = new Intent(MainActivity.this, WatchMovieActivity.class);
 
                     intent.putExtra("movieId", randomMovie.getMovieId());
@@ -247,9 +255,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_categories) {
             showFloatingList();
         } else if (id == R.id.admin_screen) {
-           Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+            Intent intent = new Intent(MainActivity.this, AdminActivity.class);
 
-           startActivity(intent);
+            startActivity(intent);
         } else if (id == R.id.nav_theme) {
             Toast.makeText(this, "Changed theme!", Toast.LENGTH_SHORT).show();
             ThemeUtils.toggleTheme(this);
