@@ -1,0 +1,30 @@
+services:
+  cpp-service:
+    build:
+      context: ./src/recommendationSystem
+      dockerfile: Dockerfile
+    expose:
+      - "5000" 
+    entrypoint: ["./myapp","5000"]
+    networks:
+      - app-network
+
+  node-service:
+    build:
+      context: ./src/web 
+      dockerfile: Dockerfile
+      args:
+        CONNECTION_STRING: "mongodb://host.docker.internal:27017/ex3"
+        PORT: "8080"
+        JWT_SECRET: "SECRET_balls"
+        CPP_PORT: "5000"
+    depends_on:
+      - cpp-service
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

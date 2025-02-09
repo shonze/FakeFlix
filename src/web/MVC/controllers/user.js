@@ -76,7 +76,7 @@ const checkUser = async (req, res) => {
             return res.status(400).json({ errors: ['email already in use'] })
         }
         console.log("PASEED check")
-        return res.status(201).json();
+        return res.status(201).json({});
 
     } catch (error) {
         console.error('Error creating user:', error);
