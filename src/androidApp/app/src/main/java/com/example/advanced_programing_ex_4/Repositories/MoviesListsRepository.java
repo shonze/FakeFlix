@@ -21,6 +21,7 @@ import com.example.advanced_programing_ex_4.entities.MoviesList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -133,13 +134,16 @@ public class MoviesListsRepository {
             Map<String, Movie> movieMap = fromIdsToMovies(new ArrayList<>(uniqueMovieIds));
 
             // Assign fetched movies to each MoviesList
-            for (MoviesList item : data) {
+            Iterator<MoviesList> iterator = data.iterator();
+            while (iterator.hasNext()) {
+                MoviesList item = iterator.next();
                 List<Movie> filteredMovies = item.getMovieIds().stream()
-                        .map(movieMap::get) // Get movie from map
-                        .filter(Objects::nonNull) // Avoid nulls
+                        .map(movieMap::get)
+                        .filter(Objects::nonNull)
                         .collect(Collectors.toList());
+
                 if (filteredMovies.isEmpty()) {
-                    data.remove(item);
+                    iterator.remove(); // ✅ Safe removal using Iterator
                 } else {
                     item.setMovieList(filteredMovies);
                 }

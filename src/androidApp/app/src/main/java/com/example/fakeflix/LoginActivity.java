@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 import androidx.room.Room;
 
+import com.example.fakeflix.R;
 import com.example.advanced_programing_ex_4.MainActivity;
 import com.example.fakeflix.databinding.ActivityLoginBinding;
 import org.json.JSONObject;
@@ -109,7 +110,12 @@ public class LoginActivity extends AppCompatActivity {
                         // Convert response body to JSON and extract isAdmin
                         String jsonString = response.body().string();
                         JSONObject jsonObject = new JSONObject(jsonString);
-                        boolean isAdmin = jsonObject.optBoolean("isAdmin", false);
+                        String isAdmin = jsonObject.getString("isAdmin");
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("isAdmin", isAdmin);
+                        editor.apply();
 
                         // Pass isAdmin to the next activity
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

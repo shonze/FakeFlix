@@ -32,6 +32,7 @@ import com.example.advanced_programing_ex_4.entities.Category;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
 import com.example.fakeflix.R;
+import com.example.fakeflix.SearchActivity;
 import com.example.fakeflix.WatchMovieActivity;
 import com.example.fakeflix.utils.Constants;
 
@@ -57,6 +58,15 @@ public class CategoryMoviesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_search);
+
+        @SuppressLint("WrongViewCast") AppCompatImageButton searchButton = findViewById(R.id.search_button);
+        if (searchButton != null) {
+            searchButton.setOnClickListener(v -> {
+                Intent intent = new Intent(CategoryMoviesActivity.this, SearchActivity.class);
+
+                startActivity(intent);
+            });
+        }
 
         Intent intent = getIntent();  // Get the incoming Intent
         Category category = intent.getParcelableExtra("category");

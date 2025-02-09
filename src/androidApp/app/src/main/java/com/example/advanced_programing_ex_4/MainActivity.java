@@ -79,8 +79,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         // Get from the intent if the user is admin
-       if (getIntent().getBooleanExtra("isAdmin",false)) isAdmin = true;
-       else isAdmin = false;
+        preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        if(preferences.getString("isAdmin", "false").equals("true"))
+            isAdmin= true;
+        else
+            isAdmin= false;
 
         // Get the user token
         preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
@@ -138,13 +141,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (randomMovie != null) {
                    Intent intent = new Intent(MainActivity.this, VideoPlayerActivity.class);
 
-                   intent.putExtra("movieId", randomMovie.getMovieId());
-                   intent.putExtra("movieTitle", randomMovie.getTitle());
-                   intent.putExtra("movieThumbnail", Constants.BASE_URL + "/uploads/" + randomMovie.getThumbnailName());
-                   intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
-                   intent.putExtra("movieDescription",  randomMovie.getDescription());
-                   intent.putExtra("movieLength", randomMovie.getLength());
-                   intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
+                    intent.putExtra("movieId", randomMovie.getMovieId());
+                    intent.putExtra("movieTitle", randomMovie.getTitle());
+                    intent.putExtra("movieThumbnail", Constants.BASE_URL + "/uploads/" + randomMovie.getThumbnailName());
+                    intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
+                    intent.putExtra("movieDescription",  randomMovie.getDescription());
+                    intent.putExtra("movieLength", randomMovie.getLength());
+                    intent.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
 
                    startActivity(intent);
                 }
@@ -253,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();
             editor.apply();
-            
+
             Intent intent = new Intent(MainActivity.this, StartingActivity.class);
 
             startActivity(intent);

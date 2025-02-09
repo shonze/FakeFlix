@@ -37,6 +37,7 @@ import com.example.fakeflix.Adapters.MovieAdapter;
 import com.example.fakeflix.databinding.ActivityLoginBinding;
 import com.example.fakeflix.databinding.ActivityWatchMovieBinding;
 import com.example.fakeflix.entities.Movie;
+import com.example.fakeflix.utils.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -150,8 +151,8 @@ public class WatchMovieActivity extends AppCompatActivity {
 //            Intent intent = new Intent(SearchActivity.this, VideoPlayerActivity.class);
             intent2.putExtra("movieId", movie.getMovieId());
             intent2.putExtra("movieTitle", movie.getTitle());
-            intent2.putExtra("movieThumbnail", getString(R.string.api_base_url) + "/uploads/" + movie.getThumbnailName());
-            intent2.putExtra("movieVideo", getString(R.string.api_base_url) + "/uploads/" + movie.getVideoName());
+            intent2.putExtra("movieThumbnail", Constants.BASE_URL + "/uploads/" + movie.getThumbnailName());
+            intent2.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + movie.getVideoName());
 
             intent2.putExtra("movieDescription", movie.getDescription());
             intent2.putExtra("movieLength", movie.getLength());
