@@ -28,7 +28,7 @@ const createCategory = async (req, res) => {
             req.body.createdAt,
             req.body.movies
         );
-        return res.status(201).json();
+        return res.status(201).json({});
     } catch (error) {
         console.error('Error creating category:', error);
         res.status(500).json({ errors: ['Internal server error'] });
@@ -89,7 +89,7 @@ const deleteCategory = async (req, res) => {
             return res.status(404).json({ errors: ['Category not found'] });
         }
 
-        return res.status(204).json();
+        return res.status(204).json({});
     // In case the Category ID is not valid
     } catch (error) {
         console.error('Error deleting category:', error);
@@ -133,7 +133,7 @@ const updateCategory = async (req, res) => {
             return res.status(404).json({ errors: ['Category not found'] });
         }
 
-        return res.status(204).json();
+        return res.status(204).json({});
     // In case the Category ID is not valid
     } catch (error) {
         console.error('Error updating category:', error);
