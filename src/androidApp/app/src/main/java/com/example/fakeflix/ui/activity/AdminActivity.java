@@ -93,6 +93,13 @@ public class AdminActivity extends AppCompatActivity {
         preferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         jwtToken = preferences.getString("jwtToken", null);
 
+        Button returnButton = findViewById(R.id.return_to_homepage);
+        if(returnButton != null){
+            returnButton.setOnClickListener(v -> {
+                finish();
+            });
+        }
+
         RecyclerView categoryRecyclerView = findViewById(R.id.recyclerViewCategories);
         btnAddCategory = findViewById(R.id.btnAddCategory);
         btnAddMovie = findViewById(R.id.btnAddMovie);

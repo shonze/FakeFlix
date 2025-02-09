@@ -11,7 +11,7 @@ import com.example.fakeflix.Dao.MovieDao;
 import com.example.fakeflix.entities.Movie;
 import androidx.room.TypeConverters;
 
-@Database(entities = {Movie.class}, version = 1, exportSchema = false)
+@Database(entities = {Movie.class}, version = 2, exportSchema = false)
 @TypeConverters(Converters.class) // Add this line
 public abstract class MovieDatabase extends RoomDatabase {
     private static volatile MovieDatabase INSTANCE;

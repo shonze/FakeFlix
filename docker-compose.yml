@@ -6,6 +6,8 @@ services:
     expose:
       - "5000" 
     entrypoint: ["./myapp","5000"]
+    ports:
+      - "5000:5000"
     networks:
       - app-network
 
@@ -14,7 +16,7 @@ services:
       context: ./src/web 
       dockerfile: Dockerfile
       args:
-        CONNECTION_STRING: "mongodb://host.docker.internal:27017/ex3"
+        CONNECTION_STRING: "mongodb://host.docker.internal:27017/godamn"
         PORT: "8080"
         JWT_SECRET: "SECRET_balls"
         CPP_PORT: "5000"

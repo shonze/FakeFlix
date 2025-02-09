@@ -11,7 +11,7 @@ import com.example.advanced_programing_ex_4.entities.Category;
 import com.example.advanced_programing_ex_4.entities.Movie;
 import com.example.advanced_programing_ex_4.entities.MoviesList;
 
-@Database(entities = {MoviesList.class, Movie.class, Category.class}, version = 17)
+@Database(entities = {MoviesList.class, Movie.class, Category.class}, version = 19)
 @TypeConverters(MovieIdsConverter.class) // Register the TypeConverter
 public abstract class AppDB extends RoomDatabase {
     private static volatile AppDB instance;
