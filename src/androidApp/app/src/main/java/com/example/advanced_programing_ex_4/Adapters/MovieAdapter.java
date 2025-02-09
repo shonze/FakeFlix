@@ -60,17 +60,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                     .into(holder.movieThumbnail); // ImageView reference
 
             holder.movieThumbnail.setOnClickListener(v -> {
-                Intent intent = new Intent(context, WatchMovieActivity.class);
+                Intent intent = new Intent(v.getContext(), WatchMovieActivity.class);
 
                 intent.putExtra("movieId", currentMovie.getMovieId());
                 intent.putExtra("movieTitle", currentMovie.getTitle());
-                intent.putExtra("movieThumbnail", currentMovie.getThumbnailName());
+                intent.putExtra("movieThumbnail", Constants.BASE_URL + "/uploads/" + currentMovie.getThumbnailName());
                 intent.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + currentMovie.getVideoName());
-                intent.putExtra("movieDescription", Constants.BASE_URL + "/uploads/" + currentMovie.getDescription());
+                intent.putExtra("movieDescription",  currentMovie.getDescription());
                 intent.putExtra("movieLength", currentMovie.getLength());
                 intent.putExtra("movieCategories", currentMovie.getCategories().toArray(new String[0]));
 
-                context.startActivity(intent);
+                v.getContext().startActivity(intent);
             });
         }
     }

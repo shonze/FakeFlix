@@ -101,9 +101,9 @@ public class CategoryMoviesActivity extends AppCompatActivity {
 
                 intent2.putExtra("movieId", randomMovie.getMovieId());
                 intent2.putExtra("movieTitle", randomMovie.getTitle());
-                intent2.putExtra("movieThumbnail", randomMovie.getThumbnailName());
+                intent2.putExtra("movieThumbnail", Constants.BASE_URL + "/uploads/" + randomMovie.getThumbnailName());
                 intent2.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
-                intent2.putExtra("movieDescription", Constants.BASE_URL + "/uploads/" + randomMovie.getDescription());
+                intent2.putExtra("movieDescription",  randomMovie.getDescription());
                 intent2.putExtra("movieLength", randomMovie.getLength());
                 intent2.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
 
@@ -117,9 +117,9 @@ public class CategoryMoviesActivity extends AppCompatActivity {
 
                 intent3.putExtra("movieId", randomMovie.getMovieId());
                 intent3.putExtra("movieTitle", randomMovie.getTitle());
-                intent3.putExtra("movieThumbnail", randomMovie.getThumbnailName());
+                intent3.putExtra("movieThumbnail", Constants.BASE_URL + "/uploads/" + randomMovie.getThumbnailName());
                 intent3.putExtra("movieVideo", Constants.BASE_URL + "/uploads/" + randomMovie.getVideoName());
-                intent3.putExtra("movieDescription", Constants.BASE_URL + "/uploads/" + randomMovie.getDescription());
+                intent3.putExtra("movieDescription",  randomMovie.getDescription());
                 intent3.putExtra("movieLength", randomMovie.getLength());
                 intent3.putExtra("movieCategories", randomMovie.getCategories().toArray(new String[0]));
 
