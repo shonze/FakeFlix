@@ -27,9 +27,9 @@ The backend also serves the React-based web UI, allowing users to interact with 
 
 ### 2️⃣ **Run the Android App**
 
-1. Open the **Android project** in Android Studio.
-2. Ensure an emulator or physical device is connected.
-3. Build and run the app from Android Studio.
+1. Open **src/androidApp** directory in Android Studio.
+3. Ensure an emulator or physical device is connected.
+4. Build and run the app from Android Studio.
 
 The app will interact with the backend to fetch movie data and recommendations.
 
