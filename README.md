@@ -48,7 +48,8 @@ The backend also serves the React-based web UI, allowing users to interact with 
 
    Change **10.0.2.2** to the **IP of the device running the react Web Server**.
 
-   ![image](https://github.com/user-attachments/assets/2e9afe8c-b273-4fd6-b799-fa121fe9c614)
+   ![image](https://github.com/user-attachments/assets/e7b69890-918a-46a8-aae4-ce847ab75ab6)
+
    
 2. Ensure an emulator or physical device is connected.
 3. Build and run the app from Android Studio.
