@@ -19,31 +19,11 @@ The backend also serves the React-based web UI, allowing users to interact with 
 
 ### 1️⃣ **Run the Backend (Web Server)**
 
-#### **Using Docker (Recommended)**
-
 1. Navigate to the project root and run:
    ```bash
    docker-compose up --build
    ```
    This starts the **Node.js web server**, **MongoDB**, and **C++ recommendation system** inside Docker containers.
-
-#### **Manual Setup** (Without Docker)
-
-1. Navigate to the backend folder:
-   ```bash
-   cd src/web/MVC
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the server:
-   ```bash
-   npm start
-   ```
-   The backend will run on **[http://localhost:8080](http://localhost:8080)** by default.
-
----
 
 ### 2️⃣ **Run the Android App**
 
